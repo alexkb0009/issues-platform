@@ -33,13 +33,12 @@ def application():
     
     # Create global logging machine if not on OpenShift
     print("Logmachine Status: " + str(os.environ.get('OPENSHIFT_LOGMACHINE')))
-    if os.environ.get('OPENSHIFT_LOGMACHINE') is None:
-        from app.utilities.issues_logger import LogMachine
-        globals.logMachine = LogMachine()
-        if __name__ != '__main__':
-            globals.logMachine.commandLine = False
-            sys.stdout = globals.logMachine.writeLog
-            sys.stderr = globals.logMachine.errorLog
+    from app.utilities.issues_logger import LogMachine
+    globals.logMachine = LogMachine()
+    if __name__ != '__main__' and os.environ.get('OPENSHIFT_LOGMACHINE') is None:
+        globals.logMachine.commandLine = False
+        sys.stdout = globals.logMachine.writeLog
+        sys.stderr = globals.logMachine.errorLog
 
     # Setup Bottle
     from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
