@@ -1,0 +1,206 @@
+body.guest {
+  background: #333;
+}
+
+body.guest div.main-body > #bgImg {
+  background-image: url('../img/large/golden-gate.jpg');
+  background-size: cover;
+  background-position: 50% 25%;
+  transition: 5s;
+  top: 0;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+body.guest.loaded div.main-body > #bgImg {
+  opacity: 1;
+}
+
+body.guest div.main-body > #bgImgOverlay {
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: 0;
+  background-image: url('../img/assets/transparent-bg-layer.png');
+  background-size: cover;
+  background-position: 50% 0%;
+  transition: 5s;
+}
+
+body.guest.loaded div.main-body > #bgImgOverlay {
+  opacity: 0.8;
+}
+
+body.guest.loaded div.main-body > #bgImgOverlay:hover {
+  opacity: 0.5;
+}
+
+body.guest footer {
+  background-color: #333;
+  color: #aaa;
+}
+
+/** Stylistic stuff included **/
+
+body.guest #introContainer {
+  opacity: 0;
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 7px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+body.guest #introContainer > div.clone {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+body.guest.loaded #introContainer {
+  opacity: 1;
+  transition: opacity 5s 1s, background 2.5s;
+}
+
+body.guest #introContainer:after,
+body.guest #introContainer:before {
+  display: block;
+  content: ' ';
+  width: 2px;
+  height: 0%;
+  background-color: #fff;
+  position: absolute;
+  transition: height 4s 5s, opacity 1s 6s;
+  opacity: 0.3;
+}
+
+body.guest #introContainer:before {
+  left: -2px;
+  top: 0;
+}
+
+body.guest #introContainer:after {
+  bottom: 0px;
+  right: -2px;
+  transition: height 4s 6s, opacity 1s 6s;
+}
+
+body.guest #introContainer > div.clone:after,
+body.guest #introContainer > div.clone:before {
+  display: block;
+  content: ' ';
+  left: 0px;
+  width: 0%;
+  height: 2px;
+  background-color: #fff;
+  position: absolute;
+  transition: width 5s 1s, opacity 1s 6s;
+  opacity: 0.3;
+}
+
+body.guest #introContainer > div.clone:before {
+  top: 0px;
+  transition: width 4.5s 1.5s, opacity 1s 6s;
+}
+
+body.guest #introContainer > div.clone:after {
+  bottom: 0px;
+}
+
+body.guest.loaded #introContainer:after,
+body.guest.loaded #introContainer:before {
+  height: 100%;
+}
+
+body.guest.loaded #introContainer > div.clone:after,
+body.guest.loaded #introContainer > div.clone:before {
+  width: 100%;
+  opacity: 0;
+}
+
+body.guest.loaded #introContainer:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+body.guest.loaded #introContainer:hover > div.clone:after,
+body.guest.loaded #introContainer:hover > div.clone:before {
+  opacity: 0.3;
+  transition: width 5s 1s, opacity 1s;
+}
+
+/** Typography **/
+
+body.guest div.main-body .main-content.row h1.intro,
+body.guest div.main-body .main-content.row h4.intro {
+  color: #fff;
+}
+
+body.guest div.main-body .main-content.row h1.intro {
+  font-size: 4em;
+  margin-bottom: -10px;
+}
+
+body.guest div.main-body .main-content.row h4.intro {
+  margin-top: 0;
+}
+
+/** Login Block **/
+
+div.main-body div.large-4.login-block {
+  background: #333;
+  background: rgba(200,200,200,0.1);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  border-radius: 3px;
+}
+
+div.main-body div.large-4.login-block > h2 {
+  margin: 0;
+  font-weight: normal;
+  color: #fff;
+}
+
+div.main-body div.large-4.login-block > h6 {
+  margin-bottom: 12px;
+  border-bottom: 1px dotted #888;
+  padding-bottom: 8px;
+  color: #aaa;
+}
+
+div.main-body div.large-4.login-block input.button.radius {
+  margin: 0;
+}
+
+/** Mobile Adjustments **/
+
+@media only screen and (max-width: 1000px){
+
+  body.guest div.main-body .main-content.row {
+    padding-bottom: 0;
+  }
+
+  div.main-body div.large-4.login-block {
+    margin-top: 30px;
+    margin-bottom: 0;
+    border-radius: 0;
+    padding-top: 18px;
+    background-color: rgba(255,255,255,0.9);
+  }
+  
+  div.main-body div.large-4.login-block > h2 {
+    color: #444;
+  }
+  
+  div.main-body div.large-4.login-block > h6 {
+    text-align: left !important;
+  }
+
+}
+

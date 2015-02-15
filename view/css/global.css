@@ -1,0 +1,176 @@
+
+
+body {
+  background: #DBDDE4;
+}
+
+/** Top Menu **/
+
+nav.top-bar ul li a > i {
+  padding-right: 24px;
+}
+
+nav.top-bar ul li:not(.has-form):not(.active) a:not(.button):hover {
+  /* box-shadow: inset 0px 1px 6px #000; */
+  background: #222 !important;
+}
+
+nav.top-bar ul.title-area li.crumb {
+  height: 2.8125rem;
+  line-height: 2.8125rem;
+  margin-left: 0;
+  color: #fff;
+}
+
+nav.top-bar ul.title-area li.crumb:before {
+  content: '>';
+  color: #bbb;
+  padding-right: 9px;
+}
+
+nav.top-bar ul.title-area li.name h1 a {
+  font-weight: 700;
+  font-size: 1.2em;
+  font-family: SansPro, Junction;
+}
+
+
+
+/** Subheader (Messages, Notices, etc.) **/
+
+div.main-subheader {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: #fff;
+  padding-left: 0.9375em;
+  padding-right: 0.9375em;
+}
+
+div.main-subheader ul {
+  margin-bottom: 5px;
+  font-size: 0.875em;
+}
+
+div.main-subheader.confirmation {
+  background-color: rgb(112, 211, 112);
+}
+
+div.main-subheader.warning {
+  background-color: rgb(255, 168, 114);
+  border-bottom: 4px solid rgb(255, 145, 112);
+}
+
+div.main-subheader > h4 {
+  margin: 4px 0 0;
+}
+
+
+
+/** Footer **/
+
+footer {
+  background: #d0d0d0;
+  padding: 11px 0 9px;
+}
+
+footer > div {
+  font-size: 0.87em;
+}
+
+footer ul.inline-list {
+  margin-bottom: 0;
+}
+
+
+
+/** Common Elements' Styling **/
+
+div.main-body > .main-content.row {
+  padding-top: 17px;
+  padding-bottom: 17px;
+}
+
+.section-header {
+  border-bottom: 1px dotted #888;
+  padding-bottom: 2px;
+}
+
+.section-header > span.ext {
+  font-weight: 100;
+}
+
+
+
+
+
+/* Issues */
+
+.issue.listview {
+  border-radius: 5px;
+  margin: 6px 0;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+
+.issue.listview > * {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.issue.listview > :first-child {
+  padding-top: 7px;
+}
+
+.issue.listview > :last-child {
+  padding-bottom: 7px;
+}
+
+
+.issue.listview h5.issue-title {
+  margin: 0;
+  padding-top: 7px;
+  padding-bottom: 3px;
+  line-height: 32px;
+}
+
+.issue.listview h5.issue-title > .open-icon,
+.issue.listview h5.issue-title > .subscribe-icon {
+  float: right;
+  opacity: 0.3;
+  line-height: inherit;
+  margin-top: -1px;
+}
+
+.issue.listview h5.issue-title > .open-icon {
+  margin-right: 4px;
+}
+
+.issue.listview h5.issue-title > .subscribe-icon {
+  margin-right: 9px;
+}
+
+.issue.listview h5.issue-title > .subscribe-icon.subscribed {
+  opacity: 1;
+  color: rgb(239, 109, 0);
+}
+
+.issue.listview h5.issue-title > .open-icon:hover,
+.issue.listview h5.issue-title > .subscribe-icon:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.issue.listview h5.issue-title > .subscribe-icon:hover:before {
+  content: "\f005";
+  color: rgb(239, 109, 0);
+}
+
+.issue.listview h5.issue-title > .subscribe-icon.subscribed:hover:before {
+  content: "\f006";
+  color: #000;
+}
+
+.issue.listview div.description {
+  padding-top: 6px;
+  border-top: 1px solid #eee;
+}

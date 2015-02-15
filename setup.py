@@ -1,3 +1,7 @@
+## This file is used for deploying on OpenShift.
+## For local / VM deployments, this is not used at all.
+## OpenShift automatically installs 'install_requires' dependencies each time a gear is launched.
+
 from setuptools import setup
 
 setup(name='My Issues',

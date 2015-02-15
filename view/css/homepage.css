@@ -1,0 +1,20 @@
+div.main-body {
+  position: relative;
+}
+
+div.main-body > div.main-subheader {
+  z-index: 10;
+  position: relative;
+}
+
+body.logged_in div.main-body > #bgImgOverlay {
+  display: none;
+}
+
+
+/** Subheader Messages, etc. **/
+
+div.main-subheader h4 {
+  border-bottom: 1px dotted rgba(0,0,0,0.7);
+  padding-bottom: 7px;
+}
