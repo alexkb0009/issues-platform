@@ -1,4 +1,6 @@
 *.pyc
 logs/*
+temp_data/sessions/*
 Thumbs.db
 *.bak
+web.config

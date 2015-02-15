@@ -27,19 +27,21 @@ def application():
     # Create global state module
     globals = imp.new_module('app.globals')
     sys.modules['app.state'] = globals
+    
+    # Create global logging machine if not on OpenShift
+    print("Logmachine Status: " + str(os.environ.get('OPENSHIFT_LOGMACHINE')))
+    if os.environ.get('OPENSHIFT_LOGMACHINE') is None:
+        from app.utilities.issues_logger import LogMachine
+        globals.logMachine = LogMachine()
+        if __name__ != '__main__':
+            globals.logMachine.commandLine = False
+            sys.stdout = globals.logMachine.writeLog
+            sys.stderr = globals.logMachine.errorLog
 
     # Setup Bottle
     from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
     globals.app = Bottle()
     globals.app.config.load_config('settings.ini') # Read config/settings, e.g. for MongoDB connection
-
-    # Create global logging machine
-    from app.utilities.issues_logger import LogMachine
-    globals.logMachine = LogMachine()
-    if __name__ != '__main__' and globals.app.config['security.log_files'] not in [False, "false", "False"]:
-        globals.logMachine.commandLine = False
-        sys.stdout = globals.logMachine.writeLog
-        sys.stderr = globals.logMachine.errorLog
 
     # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
     TEMPLATE_PATH.insert(0, './view/templates/')
@@ -52,7 +54,6 @@ def application():
     # Connect to MongoDB Instance
     from pymongo import MongoClient
 
-    print(os.environ.get('OPENSHIFT_MONGODB_DB_URL'))
     if os.environ.get('OPENSHIFT_MONGODB_DB_URL') != None: # Production / OpenShift
         mongo_url = os.environ.get('OPENSHIFT_MONGODB_DB_URL')
     else: # Testing
@@ -86,7 +87,7 @@ def application():
     application = globals.beakerMiddleware
 
     # Setup Logging to Files, if set
-    if globals.app.config['security.log_files'] not in [False, "false", "False"]: 
+    if globals.app.config['security.log_files'] not in [False, "false", "False"] and os.environ.get('OPENSHIFT_LOGMACHINE') is None: 
         from logging.handlers import TimedRotatingFileHandler
         from requestlogger import WSGILogger, ApacheFormatter
         log_handlers = [ TimedRotatingFileHandler(globals.app.config['app_info.log_dir'] + 'access.log', when='d', interval=1, backupCount=5) , ]

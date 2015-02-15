@@ -12,7 +12,7 @@ class LogMachine():
         config = configparser.ConfigParser()
         config.read('settings.ini');
         
-        if config['security']['log_files'] not in [False, "false", "False"]:
+        if os.environ.get('OPENSHIFT_LOGMACHINE') is None or os.environ.get('OPENSHIFT_LOGMACHINE') == True:
             self.writeLog = open(config['app_info']['log_dir'] + 'service.write.log', 'a+')
             self.errorLog = open(config['app_info']['log_dir'] + 'service.error.log', 'a+')
             logfiles = True
