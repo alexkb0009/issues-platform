@@ -25,12 +25,13 @@ globals = imp.new_module('app.globals')
 sys.modules['app.state'] = globals
 
 # Create global logging machine
-from app.utilities.issues_logger import LogMachine
-globals.logMachine = LogMachine()
-if __name__ != '__main__':
-    globals.logMachine.commandLine = False
-    sys.stdout = globals.logMachine.writeLog
-    sys.stderr = globals.logMachine.errorLog
+if globals.app.config['security.log_files'] not in [False, "false", "False"]:
+    from app.utilities.issues_logger import LogMachine
+    globals.logMachine = LogMachine()
+    if __name__ != '__main__':
+        globals.logMachine.commandLine = False
+        sys.stdout = globals.logMachine.writeLog
+        sys.stderr = globals.logMachine.errorLog
 
 # Setup Bottle
 from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
