@@ -8,7 +8,6 @@ class LogMachine():
     logfiles = False
 
     def __init__(self):
-        os.chdir(os.path.dirname(os.path.realpath(__file__)) + '/../..')
         config = configparser.ConfigParser()
         config.read('settings.ini');
         
