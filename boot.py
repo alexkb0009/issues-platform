@@ -9,6 +9,8 @@
 ##          Password Encryption Library 
 ##     - Jinja2 (Used v2.7.3, Installed w/ setup.py install + "distribute" extension) 
 ##          Twig & Django-like Templating Engine
+##     - Beaker 1.6.5
+##          Session management
 ##     - wsgi-request-logger (Used 0.4.2)
 ##     - CherryPy 
 ##          WSGI-Compliant Multi-Threaded Webserver. May be replaced on production.
