@@ -1,5 +1,4 @@
 *.pyc
-settings.ini
 logs/*
 Thumbs.db
 *.bak
