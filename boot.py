@@ -20,102 +20,108 @@
 ##   creating another user to manage it (find docs online).
 ##
 
-
-# Create global state module
 import sys, imp, os
-globals = imp.new_module('app.globals')
-sys.modules['app.state'] = globals
 
-# Setup Bottle
-from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
-globals.app = Bottle()
-globals.app.config.load_config('settings.ini') # Read config/settings, e.g. for MongoDB connection
+def application():
 
-# Create global logging machine
-from app.utilities.issues_logger import LogMachine
-globals.logMachine = LogMachine()
-if __name__ != '__main__' and globals.app.config['security.log_files'] not in [False, "false", "False"]:
-    globals.logMachine.commandLine = False
-    sys.stdout = globals.logMachine.writeLog
-    sys.stderr = globals.logMachine.errorLog
+    # Create global state module
+    globals = imp.new_module('app.globals')
+    sys.modules['app.state'] = globals
 
-# Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
-TEMPLATE_PATH.insert(0, './view/templates/')
-Jinja2Template.defaults = {
-    'url' : url,
-    'site_name' : globals.app.config['app_info.site_name'],
-    'root' : globals.app.config['app_info.root_directory']
-}
+    # Setup Bottle
+    from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
+    globals.app = Bottle()
+    globals.app.config.load_config('settings.ini') # Read config/settings, e.g. for MongoDB connection
 
-# Connect to MongoDB Instance
-from pymongo import MongoClient
+    # Create global logging machine
+    from app.utilities.issues_logger import LogMachine
+    globals.logMachine = LogMachine()
+    if __name__ != '__main__' and globals.app.config['security.log_files'] not in [False, "false", "False"]:
+        globals.logMachine.commandLine = False
+        sys.stdout = globals.logMachine.writeLog
+        sys.stderr = globals.logMachine.errorLog
 
-print(os.environ.get('OPENSHIFT_MONGODB_DB_URL'))
-if os.environ.get('OPENSHIFT_MONGODB_DB_URL') != None: # Production / OpenShift
-    mongo_url = os.environ.get('OPENSHIFT_MONGODB_DB_URL')
-else: # Testing
-    mongo_url = globals.app.config['security.mongo_url']
+    # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
+    TEMPLATE_PATH.insert(0, './view/templates/')
+    Jinja2Template.defaults = {
+        'url' : url,
+        'site_name' : globals.app.config['app_info.site_name'],
+        'root' : globals.app.config['app_info.root_directory']
+    }
 
-globals.mongo_client = MongoClient(mongo_url)
-globals.db = globals.mongo_client[globals.app.config['security.mongo_db']]
+    # Connect to MongoDB Instance
+    from pymongo import MongoClient
 
-# Set Up Sessions
-from beaker.middleware import SessionMiddleware
-session_opts = {
-    'session.type': globals.app.config['security.sessions_type'],
-    'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
-    'session.data_dir': globals.app.config['security.sessions_dir']
-}
-globals.beakerMiddleware = SessionMiddleware(globals.app, session_opts)
+    print(os.environ.get('OPENSHIFT_MONGODB_DB_URL'))
+    if os.environ.get('OPENSHIFT_MONGODB_DB_URL') != None: # Production / OpenShift
+        mongo_url = os.environ.get('OPENSHIFT_MONGODB_DB_URL')
+    else: # Testing
+        mongo_url = globals.app.config['security.mongo_url']
 
-# Index DB Collections
-globals.db.users.ensure_index([('username', 1)], cache_for=31536000, unique=True)
-globals.db.flood_ip.ensure_index([('timestamp', -1)], cache_for=31536000, unique=False, expireAfterSeconds=int(globals.app.config['security.ip_flood_limit']))
+    globals.mongo_client = MongoClient(mongo_url)
+    globals.db = globals.mongo_client[globals.app.config['security.mongo_db']]
+
+    # Set Up Sessions
+    from beaker.middleware import SessionMiddleware
+    session_opts = {
+        'session.type': globals.app.config['security.sessions_type'],
+        'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
+        'session.data_dir': globals.app.config['security.sessions_dir']
+    }
+    globals.beakerMiddleware = SessionMiddleware(globals.app, session_opts)
+
+    # Index DB Collections
+    globals.db.users.ensure_index([('username', 1)], cache_for=31536000, unique=True)
+    globals.db.flood_ip.ensure_index([('timestamp', -1)], cache_for=31536000, unique=False, expireAfterSeconds=int(globals.app.config['security.ip_flood_limit']))
 
 
-# Schedule Any Tasks
-import app.schedule_tasks
+    # Schedule Any Tasks
+    import app.schedule_tasks
 
-# Route Up
-import app.routing
+    # Route Up
+    import app.routing
 
-# Set application variable to current runnable wsgi app.
-# The obj given to OpenShift to run.
-application = globals.beakerMiddleware
+    # Set application variable to current runnable wsgi app.
+    # The obj given to OpenShift to run.
+    application = globals.beakerMiddleware
 
-# Setup Logging to Files, if set
-if globals.app.config['security.log_files'] not in [False, "false", "False"]: 
-    from logging.handlers import TimedRotatingFileHandler
-    from requestlogger import WSGILogger, ApacheFormatter
-    log_handlers = [ TimedRotatingFileHandler(globals.app.config['app_info.log_dir'] + 'access.log', when='d', interval=1, backupCount=5) , ]
-    globals.loggedApp = WSGILogger(globals.beakerMiddleware, log_handlers, ApacheFormatter())
+    # Setup Logging to Files, if set
+    if globals.app.config['security.log_files'] not in [False, "false", "False"]: 
+        from logging.handlers import TimedRotatingFileHandler
+        from requestlogger import WSGILogger, ApacheFormatter
+        log_handlers = [ TimedRotatingFileHandler(globals.app.config['app_info.log_dir'] + 'access.log', when='d', interval=1, backupCount=5) , ]
+        globals.loggedApp = WSGILogger(globals.beakerMiddleware, log_handlers, ApacheFormatter())
 
-    def fix_environ_middleware(app):
-        def fixed_app(environ, start_response):
-            environ['wsgi.url_scheme'] = 'http'
-            environ['HTTP_X_FORWARDED_HOST'] = globals.app.config['app_info.side_domain']
-            return app(environ, start_response)
-        return fixed_app
+        def fix_environ_middleware(app):
+            def fixed_app(environ, start_response):
+                environ['wsgi.url_scheme'] = 'http'
+                environ['HTTP_X_FORWARDED_HOST'] = globals.app.config['app_info.side_domain']
+                return app(environ, start_response)
+            return fixed_app
 
-    print(globals.loggedApp)
-    globals.loggedApp.wsgi = fix_environ_middleware(globals.loggedApp)
-    application = globals.loggedApp
+        print(globals.loggedApp)
+        globals.loggedApp.wsgi = fix_environ_middleware(globals.loggedApp)
+        application = globals.loggedApp
+        
+    return application
 
     
 # Run on local w/ CherryPy if not on OpenShift.
 if os.environ.get('OPENSHIFT_APP_NAME') == None:
 
+    application = application()
     # CherryPy Server Setup
     import cherrypy
+    from app.state import app
     cherrypy.tree.graft(application, '/') 
     cherrypy.config.update({
-      'log.access_file' : globals.app.config['app_info.log_dir'] + 'access_cherry.txt',
-      'log.error_file' : globals.app.config['app_info.log_dir'] + 'error_cherry.txt',
+      'log.access_file' : app.config['app_info.log_dir'] + 'access_cherry.txt',
+      'log.error_file' : app.config['app_info.log_dir'] + 'error_cherry.txt',
       'log.screen' : False,
       'engine.autoreload.on': False,
       'server.socket_host': '0.0.0.0',
       'environment' : 'production',
-      'server.socket_port' : int(globals.app.config['app_info.site_port'])
+      'server.socket_port' : int(app.config['app_info.site_port'])
     })
 
     # Debug
