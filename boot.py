@@ -48,6 +48,7 @@ Jinja2Template.defaults = {
 # Connect to MongoDB Instance
 from pymongo import MongoClient
 
+print(os.environ.get('OPENSHIFT_MONGODB_DB_URL'))
 if os.environ.get('OPENSHIFT_MONGODB_DB_URL') != None: # Production / OpenShift
     mongo_url = os.environ.get('OPENSHIFT_MONGODB_DB_URL')
 else: # Testing
