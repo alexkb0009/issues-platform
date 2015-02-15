@@ -24,6 +24,11 @@ import sys, imp, os
 globals = imp.new_module('app.globals')
 sys.modules['app.state'] = globals
 
+# Setup Bottle
+from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
+globals.app = Bottle()
+globals.app.config.load_config('settings.ini') # Read config/settings, e.g. for MongoDB connection
+
 # Create global logging machine
 if globals.app.config['security.log_files'] not in [False, "false", "False"]:
     from app.utilities.issues_logger import LogMachine
@@ -32,11 +37,6 @@ if globals.app.config['security.log_files'] not in [False, "false", "False"]:
         globals.logMachine.commandLine = False
         sys.stdout = globals.logMachine.writeLog
         sys.stderr = globals.logMachine.errorLog
-
-# Setup Bottle
-from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
-globals.app = Bottle()
-globals.app.config.load_config('settings.ini') # Read config/settings, e.g. for MongoDB connection
 
 # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
 TEMPLATE_PATH.insert(0, './view/templates/')
