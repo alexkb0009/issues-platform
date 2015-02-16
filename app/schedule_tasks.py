@@ -1,5 +1,6 @@
 from app.state import app, db
 from app.utilities.scheduling import periodic_scheduler
+import os
 
 # Bulk Data Imports, if enabled
 
@@ -28,3 +29,15 @@ if app.config['security.sessions_type'] == 'file':
       60 * 60 * 24, 
       cleanSessions
     )
+    
+# Filter OpenShift log files
+
+if os.environ.get('OPENSHIFT_LOGMACHINE') is not None:
+    from app.utilities.filter_openshift_logs import run as filter_openshift_logs
+    periodic_scheduler(
+      None, 
+      60 * 60 * 24, 
+      filter_openshift_logs
+    )
+    
+    
