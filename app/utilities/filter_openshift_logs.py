@@ -1,4 +1,5 @@
 def run():
+    from datetime import datetime
     logfilepath = '../../logs/python.log'
     outputfilepath = '../../logs/filtered_' + datetime.now().strftime('%B-%d-%Y-%I%M') + '.log'
     skippedStrings = [
