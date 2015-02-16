@@ -14,7 +14,7 @@ def run():
         for input_line in input_file:
             if input_line[:1] == "#": continue # is a comment, skip it.
             found = False
-            for ip in ip_address:
+            for ip in skippedStrings:
                 if ip in input_line[:15]: found = True #Filter out all home IP addresses.
             if found: continue
             output_file.write(input_line)
