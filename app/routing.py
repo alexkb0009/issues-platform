@@ -39,7 +39,15 @@ def do_register():
     else: 
         return "<b>Error!</b><br>" + str(result)
    
-    
+@app.route('/admin/do/filterlogs')
+def filterlogs():
+    import os
+    if os.environ.get('OPENSHIFT_LOGMACHINE') is not None:
+        from app.utilities import filter_openshift_logs as fol
+        return { 'message' : fol.run() }
+    else:
+        return { 'message' : "Not on OpenShift" }
+
     
 ## Others
 

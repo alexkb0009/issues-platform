@@ -19,7 +19,7 @@ def run():
             output_file.write(input_line)
         output_file.close()
 		
-	print('Finished filtering logfile.')
+	return 'Finished filtering logfile.'
 	
 	
 
