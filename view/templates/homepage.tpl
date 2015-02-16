@@ -53,7 +53,11 @@
       </div>
       <div class="large-4 columns login-block">
         <h2 class="block-title">Welcome!</h2>
-        <h6 class="subheader text-center">Please log in or <a href="{{ root }}register">register</a>.</h6>
+        <h6 class="subheader text-right">
+          Please log in or 
+          <a href="{{ root }}register" class="button super-tiny radius request-invite">request an invite</a>
+        </h6>
+        
         {% include 'components/login-block.tpl' %}
       </div>
       

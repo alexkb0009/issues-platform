@@ -87,13 +87,20 @@
         </select>
       </div>
       <div class="large-12 columns">
-        <button type="submit" class="right">Next &nbsp;<span class="fi-play"></span></button>
+        <label for="r_aboutme_f">About Me</label>
+        <textarea name="about" rows="3" id="r_aboutme_f" placeholder="Please write a little of anything about yourself. This will be included in your profile."></textarea>
+      </div>
+      <div class="large-12 columns">
+        <button type="submit" class="right">Next &nbsp;<i class="fa fa-chevron-right"></i></button>
       </div>
     </form>
     {% elif page_number == 3 and status == 'registered' %}
        <br>
        <h2>Your account has been registered!</h2>
-       <h4 class="subheader">Please login from the <a href="/">home page</a>.</h4>
+       <h4 class="subheader">
+       You may login from the <a href="/">home page</a>.<br>
+       It might take a little bit of time before you are able to post or contribute.
+       </h4>
     {% endif %}
   </div>
 {%- endblock %}

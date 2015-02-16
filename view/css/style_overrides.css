@@ -30,6 +30,19 @@
   font-size: 0.6875rem;
 }
 
+.button {
+  font-family: SansPro, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/** Form Errors **/
+
+[data-abide] .error small.error, 
+[data-abide] .error span.error,
+[data-abide] span.error, 
+[data-abide] small.error {
+  padding-bottom: .375rem;
+}
+
 /** Lists **/
 
 ul.inline-list > li > a {

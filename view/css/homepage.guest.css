@@ -48,7 +48,7 @@ body.guest footer {
 body.guest #introContainer {
   opacity: 0;
   position: relative;
-  padding-top: 11px;
+  padding-top: 13px;
   padding-bottom: 11px;
   padding-left: 25px;
   padding-right: 25px;
@@ -153,10 +153,10 @@ body.guest div.main-body .main-content.row h1.intro {
   margin-bottom: -10px;
 }
 
-body.guest div.main-body .main-content.row h1.intro span.lighter {
+body.guest div.main-body .main-content.row h1.intro .lighter {
   font-weight: 100;
-  font-size: 0.875em;
-  /* margin-right: -0.075em; */
+  /* font-size: 1em; */
+  /* margin-right: -0.175em; */ 
 }
 
 body.guest div.main-body .main-content.row h4.intro {
@@ -188,8 +188,25 @@ div.main-body div.large-4.login-block > h6 {
   color: #aaa;
 }
 
+div.main-body div.large-4.login-block .request-invite.button {
+  margin-bottom: 0; 
+  position: relative; 
+  top: -2px; 
+  font-size: .9em;
+  margin-left: 5px;
+  border-bottom: 2px solid #0C6F8C;
+  background-color: #CB922B;
+  border-bottom-color: #8C550C;
+}
+div.main-body div.large-4.login-block .request-invite.button:hover {
+  background-color: #A8661C;
+}
+
 div.main-body div.large-4.login-block input.button.radius {
   margin: 0;
+  border-bottom: 2px solid #0C6F8C;
+  padding-top: 1.0625rem;
+  font-weight: 500;
 }
 
 /** Mobile Adjustments **/

@@ -29,13 +29,10 @@ def do_logout():
         
 @app.route('/do/register', method='POST')
 def do_register():
-
     from app.functions.auth import register_new_account
     result = register_new_account(db, request.forms, app.config)
-    
     if result == True:
         redirect(app.config['app_info.root_directory'] + 'register/3?s=registered')
-        
     else: 
         return "<b>Error!</b><br>" + str(result)
    
