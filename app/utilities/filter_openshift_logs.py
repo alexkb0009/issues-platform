@@ -10,7 +10,7 @@ def run():
     ]
 
     with open(logfilepath) as input_file:
-        output_file = open(outputfilename, "a+")
+        output_file = open(outputfilepath, "a+")
         for input_line in input_file:
             if input_line[:1] == "#": continue # is a comment, skip it.
             found = False
