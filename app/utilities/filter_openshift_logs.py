@@ -18,10 +18,10 @@ def run():
             if found: continue
             output_file.write(input_line)
         output_file.close()
-	
+
     return 'Finished filtering logfile.'
-	
-	
+
+
 
 if __name__ == '__main__' and os.environ.get('OPENSHIFT_LOGMACHINE') is not None:
-	run()
+    run()
