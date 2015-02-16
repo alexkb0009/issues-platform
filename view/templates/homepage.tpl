@@ -47,7 +47,7 @@
       <div class="large-8 columns">
         <div id="introContainer">
           <div class="clone"></div>
-          <h1 class="intro title">Issues</h1>
+          <h1 class="intro title"><span class="lighter">My </span>Issues</h1>
           <h4 class="intro subtitle">Discuss Problems, Find Solutions</h4>
         </div>
       </div>

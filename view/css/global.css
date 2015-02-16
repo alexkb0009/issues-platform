@@ -34,6 +34,11 @@ nav.top-bar ul.title-area li.name h1 a {
   font-family: SansPro, Junction;
 }
 
+nav.top-bar ul.title-area li.name h1 a span.lighter {
+  font-size: inherit;
+  font-weight: 300;
+}
+
 
 
 /** Subheader (Messages, Notices, etc.) **/

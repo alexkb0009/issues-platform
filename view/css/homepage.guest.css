@@ -48,10 +48,11 @@ body.guest footer {
 body.guest #introContainer {
   opacity: 0;
   position: relative;
-  padding-top: 8px;
-  padding-bottom: 7px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  padding-left: 25px;
+  padding-right: 25px;
+  max-width: 600px;
 }
 
 body.guest #introContainer > div.clone {
@@ -75,7 +76,7 @@ body.guest #introContainer:before {
   height: 0%;
   background-color: #fff;
   position: absolute;
-  transition: height 4s 5s, opacity 1s 6s;
+  transition: height 4s 5s, opacity 1s 8s;
   opacity: 0.3;
 }
 
@@ -87,7 +88,7 @@ body.guest #introContainer:before {
 body.guest #introContainer:after {
   bottom: 0px;
   right: -2px;
-  transition: height 4s 6s, opacity 1s 6s;
+  transition: height 4s 6s, opacity 1s 8s;
 }
 
 body.guest #introContainer > div.clone:after,
@@ -99,13 +100,13 @@ body.guest #introContainer > div.clone:before {
   height: 2px;
   background-color: #fff;
   position: absolute;
-  transition: width 5s 1s, opacity 1s 6s;
+  transition: width 5s 1s, opacity 1s 8s;
   opacity: 0.3;
 }
 
 body.guest #introContainer > div.clone:before {
   top: 0px;
-  transition: width 4.5s 1.5s, opacity 1s 6s;
+  transition: width 4.5s 1.5s, opacity 1s 8s;
 }
 
 body.guest #introContainer > div.clone:after {
@@ -115,6 +116,7 @@ body.guest #introContainer > div.clone:after {
 body.guest.loaded #introContainer:after,
 body.guest.loaded #introContainer:before {
   height: 100%;
+  opacity: 0;
 }
 
 body.guest.loaded #introContainer > div.clone:after,
@@ -125,6 +127,12 @@ body.guest.loaded #introContainer > div.clone:before {
 
 body.guest.loaded #introContainer:hover {
   background: rgba(255,255,255,0.1);
+}
+
+body.guest.loaded #introContainer:hover:after,
+body.guest.loaded #introContainer:hover:before {
+  opacity: 0.3;
+  transition: height 5s 1s, opacity 1s;
 }
 
 body.guest.loaded #introContainer:hover > div.clone:after,
@@ -143,6 +151,12 @@ body.guest div.main-body .main-content.row h4.intro {
 body.guest div.main-body .main-content.row h1.intro {
   font-size: 4em;
   margin-bottom: -10px;
+}
+
+body.guest div.main-body .main-content.row h1.intro span.lighter {
+  font-weight: 100;
+  font-size: 0.875em;
+  /* margin-right: -0.075em; */
 }
 
 body.guest div.main-body .main-content.row h4.intro {
@@ -187,7 +201,7 @@ div.main-body div.large-4.login-block input.button.radius {
   }
 
   div.main-body div.large-4.login-block {
-    margin-top: 30px;
+    margin-top: 17px;
     margin-bottom: 0;
     border-radius: 0;
     padding-top: 18px;

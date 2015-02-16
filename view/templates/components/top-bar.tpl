@@ -1,7 +1,7 @@
 <nav class="top-bar" data-topbar role="navigation">
   <ul class="title-area inline-list">
     <li class="name">
-      <h1><a href="{{ root }}">Issues</a></h1>
+      <h1><a href="{{ root }}"><span class="lighter">My </span>Issues</a></h1>
     </li>
     {% if route %}
       {% for crumb in route %}
