@@ -1,7 +1,7 @@
 
 window.app.fce = {
   introContainer : $('#introContainer'),
-  loginBlock : $('div.login-block')
+  loginBlock : $('div.login-area.columns')
 }
 
 /**
@@ -25,8 +25,8 @@ $(window).load(function(){
 function resizeHomePage(){
   /** Title + Login Block **/
   if (app.ce.body.width() > 1025) {
-    app.fce.introContainer.css('margin-top', verticalCenterOffset(app.cd.innerBodyMinHeight, window.app.fce.introContainer.height()) - 30);
-    app.fce.loginBlock.css('margin-top', Math.max(verticalCenterOffset(app.cd.innerBodyMinHeight, window.app.fce.loginBlock.height()) - 30, 0));
+    app.fce.introContainer.css('margin-top', verticalCenterOffset(app.cd.innerBodyMinHeight, window.app.fce.introContainer.height()) - 40);
+    app.fce.loginBlock.css('margin-top', Math.max(verticalCenterOffset(app.cd.innerBodyMinHeight, window.app.fce.loginBlock.height()) - 40, 0));
   } else {
     app.fce.introContainer.css('margin-top', '');
     app.fce.loginBlock.css('margin-top', '');

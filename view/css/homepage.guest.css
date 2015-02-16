@@ -165,30 +165,30 @@ body.guest div.main-body .main-content.row h4.intro {
 
 /** Login Block **/
 
-div.main-body div.large-4.login-block {
+div.main-body div.large-4 > .login-block {
   background: #333;
   background: rgba(200,200,200,0.1);
-  margin-top: 20px;
   margin-bottom: 20px;
   padding-top: 13px;
   padding-bottom: 13px;
   border-radius: 3px;
 }
 
-div.main-body div.large-4.login-block > h2 {
-  margin: 0;
-  font-weight: normal;
+div.main-body div.large-4 > h2 {
+  margin: 24px 0 5px 0;
+  font-weight: 300;
   color: #fff;
 }
 
-div.main-body div.large-4.login-block > h6 {
+div.main-body div.large-4 > .login-block > h6 {
   margin-bottom: 12px;
+  margin-top: 3px;
   border-bottom: 1px dotted #888;
   padding-bottom: 8px;
-  color: #aaa;
+  color: #ddd;
 }
 
-div.main-body div.large-4.login-block .request-invite.button {
+div.main-body div.large-4 > .login-block .request-invite.button {
   margin-bottom: 0; 
   position: relative; 
   top: -2px; 
@@ -197,15 +197,17 @@ div.main-body div.large-4.login-block .request-invite.button {
   border-bottom: 2px solid #0C6F8C;
   background-color: #CB922B;
   border-bottom-color: #8C550C;
+  background-color: #96CB2B;
+  border-bottom-color: #5D8C0C;
 }
-div.main-body div.large-4.login-block .request-invite.button:hover {
-  background-color: #A8661C;
+div.main-body div.large-4 > .login-block .request-invite.button:hover {
+  background-color: #71A012;
 }
 
-div.main-body div.large-4.login-block input.button.radius {
+div.main-body div.large-4 > .login-block input.button.radius {
   margin: 0;
   border-bottom: 2px solid #0C6F8C;
-  padding-top: 1.0625rem;
+  padding-bottom: 1rem;
   font-weight: 500;
 }
 
@@ -231,6 +233,7 @@ div.main-body div.large-4.login-block input.button.radius {
   
   div.main-body div.large-4.login-block > h6 {
     text-align: left !important;
+    color: #888;
   }
 
 }
