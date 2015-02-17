@@ -15,8 +15,8 @@
 ##     
 ##     ## - pycrypto 2.6.1
 ##     ##- beaker_mongodb (0.3)
-##     ##- redis
-##     ##- beaker-extensions-0.2.0.dev0
+##     - redis (2.10.3)
+##     - beaker-extensions-0.2.0.dev0
 ##     - CherryPy 
 ##          WSGI-Compliant Multi-Threaded Webserver. May be replaced on production.
 ##
@@ -71,18 +71,37 @@ def application():
 
     # Set Up Sessions
     from beaker.middleware import SessionMiddleware
-    session_opts = {
-        'session.type': 'file',
-        #'session.auto' : True,
-        #'session.url' : mongo_url + '/' + globals.app.config['security.mongo_db'] + '.sessions'
-        'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
-        #'session.cookie_domain' : '.' + globals.app.config['app_info.site_domain'],
-        #'session.key' : globals.app.config['app_info.app_service_name'],
-        #'session.secret' : globals.app.config['security.cookies_secret'],
-        #'session.encrypt_key' : 'test12',
-        #'session.validate_key' : 'testMore'
-        'session.data_dir': globals.app.config['security.sessions_dir']
-    }
+    session_opts = None
+    
+    # Memcached
+    if globals.app.config['security.sessions_type'] == 'memcached': 
+        session_opts = {
+            'session.type': 'ext:memcached',
+            'session.url' : globals.app.config['security.memcached_url'],
+            'session.username' : globals.app.config['security.memcached_user'],
+            'session.password' : globals.app.config['security.memcached_password'],
+        }
+    # Redis
+    elif globals.app.config['security.sessions_type'] == 'redis':
+        session_opts = {
+            'session.type': 'redis',
+            'session.url' : globals.app.config['security.redis_url'],
+            'session.password' : globals.app.config['security.redis_password'],
+            'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
+            'session.data_dir': globals.app.config['security.sessions_dir']
+        }
+    # Cookies
+    elif globals.app.config['security.sessions_type'] == 'cookie':
+        session_opts = {
+            'session.type': 'cookie',
+            'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
+            'session.key' : globals.app.config['app_info.app_service_name'],
+            'session.secret' : globals.app.config['security.cookies_secret'],
+            #'session.encrypt_key' : 'test12',
+            'session.validate_key' : 'testMore',
+            'session.data_dir': globals.app.config['security.sessions_dir']
+        }
+        
     globals.beakerMiddleware = SessionMiddleware(globals.app, session_opts)
 
     # Index DB Collections
