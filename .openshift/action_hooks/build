@@ -1,0 +1,3 @@
+source ~/python-2.6/virtenv/bin/activate    
+# example uses pip but you could use setuptools/setup.py just as easily.  
+pip install --log $OPENSHIFT_DATA_DIR/inst.log -E $VIRTUAL_ENV app/includes/beaker_extensions
