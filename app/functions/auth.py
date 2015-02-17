@@ -34,8 +34,8 @@ def check_sent_auth_info(key, returnUser = False):
 # returns auth'd user object 
             
 def login_user(): 
-    from app.includes.bottle import request
-    request.session = request.environ['beaker.session']
+    from app.includes.bottle import request, response
+    session = request.environ['beaker.session']
     username = str(request.forms.get('username'))
     password = str(request.forms.get('password'))
     authd_user = check_login(db, username, password, request.remote_addr)
@@ -43,9 +43,11 @@ def login_user():
     # Save in session (not really RESTful but w/e, security is better)
     if authd_user != False:
         authd_user['auth_key'] = generateAuthKey(authd_user['username'], authd_user['passhash'])
-        request.session['username'] = authd_user['username']
-        request.session['auth_key'] = authd_user['auth_key']
-        request.session.save()
+        session['username'] = authd_user['username']
+        session['auth_key'] = authd_user['auth_key']
+        session.save()
+        #response.set_cookie('auth_key', authd_user['auth_key'])
+        #print(session)
         
     return authd_user
     
@@ -57,7 +59,7 @@ def session_auth():
     from app.includes.bottle import request
     request.session = request.environ['beaker.session']
     request.user = None
-    
+
     if 'username' in request.session and 'auth_key' in request.session:
         authd_user = check_sent_auth_info(request.session['auth_key'], True) ## Get user object if auth stuff in session.
         if authd_user != None and request.session['username'] == authd_user['username']:
@@ -115,8 +117,9 @@ def register_new_account(db, form, config):
     username = str(form.get('username'))
 
     if db.users.find_one({ 'username': username }):
-        log("Oops, username " + username + " already exists.")
-        return False
+        errormsg = "Oops, username " + username + " already exists."
+        log(errormsg)
+        return ("username_exists", username)
         
     else: 
         from datetime import date, datetime
@@ -133,7 +136,8 @@ def register_new_account(db, form, config):
               'dob' : datetime(int(form.get('dob[year]')), int(form.get('dob[month]')), int(form.get('dob[day]')))
             },
             'profile' : {
-              'about' : form.get('about')
+              'about' : form.get('about'),
+              'approved' : False
             },
             'subscribed_issues' : []
         })

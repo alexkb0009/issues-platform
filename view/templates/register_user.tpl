@@ -8,9 +8,19 @@
 {%- endblock %} 
 
 {% block sub_menu_block -%}
+  {% if status == 'error' %}
+  <div class="intro main-subheader warning">
+    <h4>Error</h4>
+  </div>
+  {% elif status == 'registered' %}
+  <div class="intro main-subheader confirmation">
+    You are now registered.
+  </div>
+  {% else %}
   <div class="intro main-subheader">
     Welcome! Please follow steps below to create an account.
   </div>
+  {% endif %}
 {%- endblock %}
 
 {% block content -%}
@@ -94,14 +104,21 @@
         <button type="submit" class="right">Next &nbsp;<i class="fa fa-chevron-right"></i></button>
       </div>
     </form>
-    {% elif page_number == 3 and status == 'registered' %}
-       <br>
-       <h2>Your account has been registered!</h2>
-       <h4 class="subheader">
-       You may login from the <a href="/">home page</a>.<br>
-       It might take a little bit of time before you are able to post or contribute.
-       </h4>
+  {% elif page_number == 2 %}
+    {% if status == 'registered' %}
+      <br>
+      <h2>Your account has been registered!</h2>
+      <p>
+      It might take some time before you are able to post or contribute.<br>
+      You may now log in from the <a href="/">home page</a>.
+      </p>
+    {% elif status == 'error' and reason == 'username_exists' %}
+      <br>
+      <h2>Sorry, username {{ more }} already exists.</h2>
+      <p>Please try again using a different username.</p>
+      <a class="button radius" href="{{ root }}register/1">Back to Registration</a>
     {% endif %}
+  {% endif %}
   </div>
 {%- endblock %}
 

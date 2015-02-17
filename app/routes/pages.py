@@ -16,7 +16,7 @@ print = logMachine.log # Debug stuff better
 def index():
     status = request.query.get('s')
     returnObj = {}
-    
+
     if session_auth():
         returnObj['logged_in'] = True
         returnObj['user'] = request.user
@@ -49,6 +49,8 @@ def register(pagenum = None):
         returnObj['logged_in'] = False
         returnObj['page_number'] = pagenum
         returnObj['status'] = request.query.get('s')
+        returnObj['reason'] = request.query.get('reason')
+        returnObj['more'] = request.query.get('more')
         from datetime import date
         returnObj['curr_year'] = date.today().year
         

@@ -32,9 +32,9 @@ def do_register():
     from app.functions.auth import register_new_account
     result = register_new_account(db, request.forms, app.config)
     if result == True:
-        redirect(app.config['app_info.root_directory'] + 'register/3?s=registered')
+        redirect(app.config['app_info.root_directory'] + 'register/2?s=registered&more=' + request.forms.get('username'))
     else: 
-        return "<b>Error!</b><br>" + str(result)
+        redirect(app.config['app_info.root_directory'] + 'register/2?s=error&reason=' + result[0] + "&more=" + result[1])
    
 @app.route('/admin/do/filterlogs')
 def filterlogs():

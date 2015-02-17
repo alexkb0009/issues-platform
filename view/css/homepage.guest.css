@@ -182,7 +182,7 @@ div.main-body div.large-4 > h2 {
 
 div.main-body div.large-4 > .login-block > h6 {
   margin-bottom: 12px;
-  margin-top: 3px;
+  margin-top: 4px;
   border-bottom: 1px dotted #888;
   padding-bottom: 8px;
   color: #ddd;
@@ -199,6 +199,9 @@ div.main-body div.large-4 > .login-block .request-invite.button {
   border-bottom-color: #8C550C;
   background-color: #96CB2B;
   border-bottom-color: #5D8C0C;
+  padding-left: 14px;
+  padding-right: 14px;
+  font-weight: 400;
 }
 div.main-body div.large-4 > .login-block .request-invite.button:hover {
   background-color: #71A012;

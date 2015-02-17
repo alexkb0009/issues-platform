@@ -12,6 +12,10 @@
 ##     - Beaker 1.6.5
 ##          Session management
 ##     - wsgi-request-logger (Used 0.4.2)
+##     
+##     ## - pycrypto 2.6.1
+##     ##- beaker_mongodb (0.3)
+##     ##- beaker-extensions-0.2.0.dev0
 ##     - CherryPy 
 ##          WSGI-Compliant Multi-Threaded Webserver. May be replaced on production.
 ##
@@ -60,6 +64,7 @@ def application():
         mongo_url = os.environ.get('OPENSHIFT_MONGODB_DB_URL')
     else: # Testing
         mongo_url = globals.app.config['security.mongo_url']
+    memcached_url = os.environ.get('OPENSHIFT_MEMCACHED_DB_URL')
 
     globals.mongo_client = MongoClient(mongo_url)
     globals.db = globals.mongo_client[globals.app.config['security.mongo_db']]
@@ -67,8 +72,16 @@ def application():
     # Set Up Sessions
     from beaker.middleware import SessionMiddleware
     session_opts = {
-        'session.type': globals.app.config['security.sessions_type'],
+        'session.type': 'ext:memcached' if memcached_url != None else 'file',
+        #'session.auto' : True,
+        'session.url' : memcached_url,
+        #'session.url' : mongo_url + '/' + globals.app.config['security.mongo_db'] + '.sessions'
         'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
+        #'session.cookie_domain' : '.' + globals.app.config['app_info.site_domain'],
+        #'session.key' : globals.app.config['app_info.app_service_name'],
+        #'session.secret' : globals.app.config['security.cookies_secret'],
+        #'session.encrypt_key' : 'test12',
+        #'session.validate_key' : 'testMore'
         'session.data_dir': globals.app.config['security.sessions_dir']
     }
     globals.beakerMiddleware = SessionMiddleware(globals.app, session_opts)
