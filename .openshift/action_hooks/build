@@ -1,3 +1,5 @@
 source ~/python/virtenv/venv/bin/activate    
 # example uses pip but you could use setuptools/setup.py just as easily.  
-pip install --log $OPENSHIFT_DATA_DIR/inst.log git+git://github.com/didip/beaker_extensions.git
+# Below is working:
+#pip install --log $OPENSHIFT_DATA_DIR/inst.log git+git://github.com/didip/beaker_extensions.git
+pip install --log $OPENSHIFT_DATA_DIR/inst.log ~/app-root/runtime/repo/app/includes/beaker_sessions
