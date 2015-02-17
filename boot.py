@@ -83,6 +83,8 @@ def application():
         }
     # Redis
     elif globals.app.config['security.sessions_type'] == 'redis':
+        #sys.path.append(os.path.join(os.getenv("OPENSHIFT_REPO_DIR"), "libs"))
+        import app.includes.beaker_extensions
         session_opts = {
             'session.type': 'redis',
             'session.url' : globals.app.config['security.redis_url'],
