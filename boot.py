@@ -80,6 +80,8 @@ def application():
             'session.url' : globals.app.config['security.memcached_url'],
             'session.username' : globals.app.config['security.memcached_user'],
             'session.password' : globals.app.config['security.memcached_password'],
+            'session.timeout' : int(globals.app.config['security.sessions_duration']),
+            'session.cookie_expires': int(globals.app.config['security.sessions_duration'])
         }
     # Redis
     elif globals.app.config['security.sessions_type'] == 'redis':
@@ -89,14 +91,15 @@ def application():
             'session.type': 'redis',
             'session.url' : globals.app.config['security.redis_url'],
             'session.password' : globals.app.config['security.redis_password'],
-            'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
+            'session.timeout' : int(globals.app.config['security.sessions_duration']),
+            'session.cookie_expires': int(globals.app.config['security.sessions_duration']),
             'session.data_dir': globals.app.config['security.sessions_dir']
         }
     # Cookies
     elif globals.app.config['security.sessions_type'] == 'cookie':
         session_opts = {
             'session.type': 'cookie',
-            'session.cookie_expires': int(globals.app.config['security.cookies_max_age']),
+            'session.cookie_expires': int(globals.app.config['security.sessions_duration']),
             'session.key' : globals.app.config['app_info.app_service_name'],
             'session.secret' : globals.app.config['security.cookies_secret'],
             #'session.encrypt_key' : 'test12',
