@@ -71,41 +71,36 @@ def application():
 
     # Set Up Sessions
     from beaker.middleware import SessionMiddleware
-    session_opts = None
+    # Common 
+    session_opts = {
+        'session.timeout' : int(globals.app.config['security.sessions_duration']),
+        'session.cookie_expires': int(globals.app.config['security.sessions_duration']),
+        'session.expire': int(globals.app.config['security.sessions_duration']),
+        'session.data_dir': globals.app.config['security.sessions_dir'],
+        'session.serializer': 'json'
+    }
     
-    # Memcached
+    # If Memcached
     if globals.app.config['security.sessions_type'] == 'memcached': 
-        session_opts = {
-            'session.type': 'ext:memcached',
-            'session.url' : globals.app.config['security.memcached_url'],
-            'session.username' : globals.app.config['security.memcached_user'],
-            'session.password' : globals.app.config['security.memcached_password'],
-            'session.timeout' : int(globals.app.config['security.sessions_duration']),
-            'session.cookie_expires': int(globals.app.config['security.sessions_duration'])
-        }
-    # Redis
+        session_opts['session.type']     = 'ext:memcached'
+        session_opts['session.url']      = globals.app.config['security.memcached_url']
+        session_opts['session.username'] = globals.app.config['security.memcached_user']
+        session_opts['session.password'] = globals.app.config['security.memcached_password']
+        
+    # If Redis
     elif globals.app.config['security.sessions_type'] == 'redis':
-        #sys.path.append(os.path.join(os.getenv("OPENSHIFT_REPO_DIR"), "libs"))
         import app.includes.beaker_extensions
-        session_opts = {
-            'session.type': 'redis',
-            'session.url' : globals.app.config['security.redis_url'],
-            'session.password' : globals.app.config['security.redis_password'],
-            'session.timeout' : int(globals.app.config['security.sessions_duration']),
-            'session.cookie_expires': int(globals.app.config['security.sessions_duration']),
-            'session.data_dir': globals.app.config['security.sessions_dir']
-        }
-    # Cookies
+        session_opts['session.type']     = 'redis'
+        session_opts['session.url']      = globals.app.config['security.redis_url']
+        session_opts['session.password'] = globals.app.config['security.redis_password']
+
+    # If Cookies
     elif globals.app.config['security.sessions_type'] == 'cookie':
-        session_opts = {
-            'session.type': 'cookie',
-            'session.cookie_expires': int(globals.app.config['security.sessions_duration']),
-            'session.key' : globals.app.config['app_info.app_service_name'],
-            'session.secret' : globals.app.config['security.cookies_secret'],
-            #'session.encrypt_key' : 'test12',
-            'session.validate_key' : 'testMore',
-            'session.data_dir': globals.app.config['security.sessions_dir']
-        }
+        session_opts['session.type']         = 'cookie'
+        session_opts['session.key']          = globals.app.config['app_info.app_service_name']
+        session_opts['session.secret']       = globals.app.config['security.cookies_secret']
+        session_opts['session.validate_key'] = 'TESTMORE'
+        session_opts['session.serializer']   = 'pickle'
         
     globals.beakerMiddleware = SessionMiddleware(globals.app, session_opts)
 
