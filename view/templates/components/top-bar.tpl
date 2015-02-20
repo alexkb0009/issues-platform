@@ -6,8 +6,10 @@
     {% if route %}
       {% for crumb in route %}
       <li class="crumb">
-        {% if loop.last %}{{ crumb[0] }}{% else -%}
-        <a href="{{ crumb[1] }}" title="{{ crumb[2] }}">{{ crumb[0] }}</a>
+        {% if loop.last -%}
+          <span>{{ crumb[0] }}</span>
+        {%- else -%}
+          <a href="{{ root }}{{ crumb[1] }}" title="{{ crumb[2] }}">{{ crumb[0] }}</a>
         {%- endif %}
       </li>
       {% endfor %}

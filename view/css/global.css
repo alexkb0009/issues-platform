@@ -15,19 +15,6 @@ nav.top-bar ul li:not(.has-form):not(.active) a:not(.button):hover {
   background: #222 !important;
 }
 
-nav.top-bar ul.title-area li.crumb {
-  height: 2.8125rem;
-  line-height: 2.8125rem;
-  margin-left: 0;
-  color: #fff;
-}
-
-nav.top-bar ul.title-area li.crumb:before {
-  content: '>';
-  color: #bbb;
-  padding-right: 9px;
-}
-
 nav.top-bar ul.title-area li.name h1 a {
   font-weight: 700;
   font-size: 1.2em;
@@ -38,6 +25,38 @@ nav.top-bar ul.title-area li.name h1 a {
 nav.top-bar ul.title-area li.name h1 a span.lighter {
   font-size: inherit;
   font-weight: 300;
+}
+
+nav.top-bar ul.title-area li.name {
+  margin-right: -3px;
+}
+
+nav.top-bar ul.title-area li.crumb {
+  height: 2.8125rem;
+  line-height: 2.8125rem;
+  margin-left: 0;
+  color: #fff;
+}
+
+nav.top-bar ul.title-area li.crumb:before {
+  content: '>';
+  color: #bbb;
+  padding-left: 3px;
+}
+
+nav.top-bar ul.title-area li.crumb > a,
+nav.top-bar ul.title-area li.crumb > span {
+  display: inline-block;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+nav.top-bar ul.title-area li.crumb > a {
+  color: #ccc;
+}
+
+nav.top-bar ul.title-area li.crumb > a:hover {
+  color: #fff;
 }
 
 

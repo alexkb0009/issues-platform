@@ -55,6 +55,46 @@ def register(pagenum = None):
         returnObj['curr_year'] = date.today().year
         
     return returnObj
+    
+## About Us 
+    
+@app.route('/about')
+@view('content_pages/about.tpl')
+def about():
+    status = request.query.get('s')
+    returnObj = {
+      'route' : [('About', '', 'Return to homepage')]
+    }
+    
+    if session_auth():
+        returnObj['logged_in'] = True
+        returnObj['user'] = request.user
+    else:
+        returnObj['logged_in'] = False
+        
+    return returnObj
+    
+# Privacy Policy
+@app.route('/about/privacy-policy')
+@view('basic_page.tpl')
+def about():
+    status = request.query.get('s')
+    returnObj = {
+      'route' : [('About', 'about', 'About My Issues'), ('Privacy Policy', '', 'Read our privacy policy')],
+      'content' : """
+      <p>
+      All your submissions will be stored in our servers, in the "cloud". More information will become available as needed. 
+      </p>
+      """
+    }
+    
+    if session_auth():
+        returnObj['logged_in'] = True
+        returnObj['user'] = request.user
+    else:
+        returnObj['logged_in'] = False
+        
+    return returnObj
 
 ## Admin Panel
     
