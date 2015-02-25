@@ -63,6 +63,16 @@
         <input name="email" id="r_email_f" required pattern="email" type="email" placeholder="b.murray@yahoo.com" />
         <small class="error">Proper email address is required.</small>
       </div>
+      
+      <div class="large-12 columns email-field">
+        <div data-alert class="alert-box secondary radius" style="margin-top: 8px;">
+          <!--<h5 style="font-family: inherit; margin: 0;">-->
+            The following information is gathered for constituency authentication.
+            <a href="#" class="close">&times;</a>
+          <!--</h5>-->
+        </div>
+      </div>
+      
       <div class="large-12 columns">
         <label>Date of Birth <small>required</small></label>
       </div>
@@ -96,9 +106,30 @@
           {% endfor %}
         </select>
       </div>
+      
+      <div class="large-6 columns">
+        <label for="r_street_f">Street Address <small>required</small></label>
+        <input name="addr[street]" id="r_street_f" required type="text" placeholder="123 Real St. Unit #44" />
+        <small class="error">Address is required.</small>
+      </div>
+      
+      <div class="large-3 columns">
+        <label for="r_state_f">State <small>required</small></label>
+        <select id="r_state_f" name="addr[state]" required>
+        {% for state in states_list|dictsort(false, 'value') %} 
+           <option value="{{ state[0] }}">{{ state[1] }}</option>
+        {% endfor %}
+        </select>
+      </div>
+      <div class="large-3 columns">
+        <label for="r_zip_f">Zip Code <small>required</small></label>
+        <input name="addr[zip]" id="r_zip_f" required pattern="^\d{5}(-\d{4})?$" type="text" placeholder="01234" />
+        <small class="error">Proper zip code is required.</small>
+      </div>
+      
       <div class="large-12 columns">
         <label for="r_aboutme_f">About Me</label>
-        <textarea name="about" rows="3" id="r_aboutme_f" placeholder="Please write a little of anything about yourself. This will be included in your profile."></textarea>
+        <textarea name="about" rows="3" id="r_aboutme_f" placeholder="Please write a little of anything about yourself. This will be included in your profile. Your address, date of birth, and other information remains private."></textarea>
       </div>
       <div class="large-12 columns">
         <button type="submit" class="right">Next &nbsp;<i class="fa fa-chevron-right"></i></button>

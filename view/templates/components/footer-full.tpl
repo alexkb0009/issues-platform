@@ -2,7 +2,7 @@
   <div id="footerContent" class="large-6 columns">
     <ul class="inline-list">
       <li>
-        &copy; <a href="http://alexb.ddns.me/about/">Alexander Balashov</a>, 2015. All rights reserved.
+        &copy; <a href="http://akb.productions">Alexander Balashov</a>, 2015. All rights reserved.
       </li>
     </ul>
   </div>

@@ -125,15 +125,18 @@ def register_new_account(db, form, config):
         from datetime import date, datetime
         log(form.get('dob[year]'))
         db.users.insert({ 
-            'username': username,
-            'email' : form.get('email'),
-            'passhash' : generateHash(form.get('password'), config),
+            'username':   username,
+            'email' :     form.get('email'),
+            'passhash' :  generateHash(form.get('password'), config),
             'firstname' : form.get('firstname'),
-            'lastname' : form.get('lastname'),
-            'roles' : ['citizen'],
+            'lastname' :  form.get('lastname'),
+            'roles' :     ['citizen'],
             'meta' : {
               'date_registered' : datetime.now(),
-              'dob' : datetime(int(form.get('dob[year]')), int(form.get('dob[month]')), int(form.get('dob[day]')))
+              'dob'    : datetime(int(form.get('dob[year]')), int(form.get('dob[month]')), int(form.get('dob[day]'))),
+              'street' : form.get('addr[street]'),
+              'state'  : form.get('addr[state]'),
+              'zip'    : form.get('addr[zip]')
             },
             'profile' : {
               'about' : form.get('about'),

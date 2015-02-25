@@ -44,6 +44,7 @@ def register(pagenum = None):
     if session_auth():
         redirect(app.config['app_info.root_directory'] + '?s=logged_in')
         
+        
     else:
         returnObj['route'] = [('Registration', '', 'User Registration')]
         returnObj['logged_in'] = False
@@ -51,6 +52,9 @@ def register(pagenum = None):
         returnObj['status'] = request.query.get('s')
         returnObj['reason'] = request.query.get('reason')
         returnObj['more'] = request.query.get('more')
+        if pagenum == 1:
+            from app.utilities.generic_data import getStates
+            returnObj['states_list'] = getStates()
         from datetime import date
         returnObj['curr_year'] = date.today().year
         

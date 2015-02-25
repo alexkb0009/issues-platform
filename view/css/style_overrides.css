@@ -52,3 +52,13 @@ ul.inline-list > li > a {
 ul {
   font-size: 1em; /** Preserve parent elements' font size **/
 }
+
+/** Alerts **/
+
+.alert-box {
+  padding-bottom: 12px;
+}
+
+.alert-box .close {
+  margin-top: -0.4875rem;
+}

@@ -44,12 +44,26 @@ def bulk_file_download_import(config, urls_collections, db):
                     extraOpts = extraOpts + " --jsonArray "
         
         if 'data.path_to_mongoimport' in config:
-            connectOpts = " --host " + config['mongodb.host'] + ":" + config['mongodb.port'] + " --db " + config['mongodb.database'] + " --collection " + input_collection
-            if 'mongodb.username' in config:
-                connectOpts = connectOpts + " -u " + config['mongodb.username']
-                connectOpts = connectOpts + " -p " + config['mongodb.password']
+            from app.state import mongo_url
+            # Convert mongo_url to login credentials
+            mongo_host = mongo_url.replace('mongodb://', '').strip('/')
+            mongo_user = None
+            mongo_pass = None
+            if '@' in mongo_url:
+                mongo_vars = mongo_host.split('@') # Split user:pass@host
+                mongo_host = mongo_vars[1] 
+                mongo_vars = mongo_vars[0].split(':') # Split user:password
+                mongo_user = mongo_vars[0]
+                mongo_pass = mongo_vars[1]
+            
+            # Create executable shell command for mongoimport    
+            connectOpts = " --host " + mongo_host + " --db " + config['security.mongo_db'] + " --collection " + input_collection
+            if mongo_user is not None:
+                connectOpts = connectOpts + " -u " + mongo_user
+            if mongo_user is not None:
+                connectOpts = connectOpts + " -p " + mongo_pass
             completeCommand = config['data.path_to_mongoimport'] + connectOpts + extraOpts + " --file " + downloaded_file_name
-
+            # Run it
             subprocess.call(completeCommand)
             if index != None: 
                 db[input_collection].create_index(index, int(config['data.bulk_import_frequency']), **indexOpts)
