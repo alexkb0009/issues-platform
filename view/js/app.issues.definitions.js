@@ -2,13 +2,26 @@
 window.isApp = {
 
     /** "Classes" / Obj Types **/
-    Models : null,
-    Views: null,
-    Collections: null,
+    Models : {
+        User : null, 
+        Issue : null
+    },
+    Collections: {
+        Issues : null
+    },
+    Views : {
+        IssueView : null, 
+        IssuesView : null
+    },
     
     /** Objects **/
-    me: null, // Models.User --> Currently Logged In User
-    currentIssues: null // Collections.Issues of Models.Issue --> Currently Sorted/Browsable Issues
+    me: null,               // Models.User --> Currently Logged In User
+    currentIssues: null,    // Collections.Issues of Models.Issue --> Currently Sorted/Browsable Issues
+    myIssues: null,         // Collectioms.Issues of Models.Issue --> My Subscribed-to issues.
+    
+    other: {
+        e: null             // Cached other (e.g. UI) elements.
+    }
 }
 
 /** Object Classes Definitions **/
@@ -149,6 +162,10 @@ isApp.Views = {
                     descriptionBox.css('display', 'none');
                 }
             }
+        },
+        
+        subscribe: function(){
+        
         }
         
     }),

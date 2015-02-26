@@ -60,16 +60,35 @@
     {%- else -%}
     
       <div class="large-8 columns">
-        <h4 id="trending_issues_title" class="major section-header">Trending<span class="divider"> / </span><span class="ext">Nationwide</span></h4>
-        <div id="trending_issues">
-        {# Container element to be used by backbone #}
+        <h4 id="main_issues_title" class="major section-header noselect">
+          <a data-dropdown="main_issues_title_sorting_options" aria-controls="sorting_options" aria-expanded="false" id="sorted_by_title">
+            Trending
+          </a>
+          <span class="divider"> / </span>
+          <span class="ext">Nationwide</span>
+        </h4>
+        
+        <ul id="main_issues_title_sorting_options" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+          <li class="hidden"><a href="#" name="trending">Trending</a></li>
+          <li><a href="#" name="latest">Latest</a></li>
+          <li><a href="#" name="most-contributions">Most Contributions</a></li>
+          <li><a href="#" name="most-views">Most Views</a></li>
+          <li><a href="#" name="most-edits">Most Edits</a></li>
+        </ul>
+        
+        <div id="main_issues">
+          {# Container element to be used by backbone #}
         </div>
+        
       </div>
+      
       <div class="large-4 columns">
-        <h4 id="my_issues_title" class="major section-header">My Issues</h4>
+        <h4 id="my_issues_title" class="major section-header noselect">My Issues</h4>
+        
         <div id="my_issues">
-        {# Container element to be used by backbone #}
+          {# Container element to be used by backbone #}
         </div>
+        
       </div>
       
       

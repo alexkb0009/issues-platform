@@ -3,17 +3,8 @@ import json
 from app.includes.bottle import request, response
 from app.functions.auth import headers_key_auth
 
-## Trending Isssues:
-## Sorted by score, returns 20.
-
-@app.route('/' + app.config['app_info.api_request_path'] + 'issues/trending', method="GET") # = /api/issues/trending
-@app.route('/' + app.config['app_info.api_request_path'] + 'issues/trending/<page:int>', method="GET") # = /api/issues/trending
-def issues_list():
-    if not headers_key_auth(): return { 'message' : 'Not authenticated' } 
-
-    cursor = db.issues.find(limit = 20, sort = [('scoring.score', -1)])
+def getIssuesFromCursor(cursor):
     returnObj = []
-
     for issue in cursor:
         currentRevision = db.revisions.find_one({"_id": issue['current_revision']})
         currentRevisionAuthor = db.users.find_one({"username": currentRevision['author']}, {'username' : 1, 'firstname' : 1, 'lastname' : 1, '_id' : 0})
@@ -31,8 +22,36 @@ def issues_list():
             'am_subscribed' : True if issue['_id'] in request.user['subscribed_issues'] else False
           }
         })
-    
-    return json.dumps(returnObj)
+        
+    return returnObj
+
+## Trending Isssues:
+## Sorted by score, returns 20.
+
+@app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>', method="GET") # = /api/issues/trending
+@app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<page:int>', method="GET") # = /api/issues/trending
+def issues_list_scored(sorting):
+    if not headers_key_auth(): return { 'message' : 'Not authenticated' } 
+    cursor = None
+    if sorting == 'trending':
+        cursor = db.issues.find(limit = 20, sort = [('scoring.score', -1)])
+    if sorting == 'latest':
+        cursor = db.issues.find(limit = 20, sort = [('meta.created_date', -1)])
+    if sorting == 'most-views':
+        cursor = db.issues.find(limit = 20, sort = [('scoring.views', -1)])
+    if sorting == 'most-contributions':
+        cursor = db.issues.find(limit = 20, sort = [('scoring.contributions', -1)])
+    if sorting == 'most-edits':
+        cursorRevs = db.revisions.aggregate({ 
+            '$group' : {'_id' : '$parentIssue', 'count' : {'$sum' : 1}},
+            '$sort'  : { 'count' : -1 },
+            '$limit' : 20
+        })
+        print(cursorRevs);
+        #cursor = db.issues.find(limit = 20, sort = [('scoring.contributions', -1)])
+
+    return json.dumps(getIssuesFromCursor(cursor))
+
     
 ## My Subscribed Issues:
     

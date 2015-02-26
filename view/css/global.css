@@ -4,6 +4,15 @@ body {
   background: #DBDDE4;
 }
 
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 /** Top Menu **/
 
 nav.top-bar ul li a > i {
@@ -124,6 +133,39 @@ div.main-body > .main-content.row {
   font-weight: 100;
 }
 
+/** Title Select Dropdowns **/
+
+h4#main_issues_title a           { color: #222; }
+h4#main_issues_title a:hover { color: #000; }
+
+h4#main_issues_title a:after { 
+  font-family: FontAwesome;
+  content: " \f0dd"; 
+  padding: 0 3px;
+  font-size: .875em;
+}
+
+ul#main_issues_title_sorting_options.f-dropdown {
+  background: #333;
+  border-color: #222;
+  margin-top: 15px;
+}
+
+ul#main_issues_title_sorting_options.f-dropdown:before {
+  border-bottom-color: #333;
+}
+
+ul#main_issues_title_sorting_options.f-dropdown li a {
+  color: #eee;
+}
+
+ul#main_issues_title_sorting_options.f-dropdown li:hover{
+  background-color: #555;
+}
+
+ul#main_issues_title_sorting_options li.hidden {
+  display: none;
+}
 
 
 
