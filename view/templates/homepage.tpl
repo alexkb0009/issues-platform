@@ -7,7 +7,7 @@
     {% set sort = issue_sort_options(session['last_sort']|default('trending')) %}
     
     {# Current Scale of User, if set #}
-    {% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2)) %}
+    {% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2), user, True) %}
 {% endif %}
 
 
@@ -91,15 +91,15 @@
         
         <ul id="main_issues_title_sorting_options" class="f-dropdown issues-title-dropdown" data-dropdown-content aria-hidden="true" tabindex="1">
           {% for opt in issue_sort_options() %}
-            <li{% if sort['key'] == opt['key'] %} class="active"{% endif %}>
+            <li class="{% if current_scale['key'] == opt['key'] %} active{% endif %}">
               <a href="#" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
             </li>
           {% endfor %}
         </ul>
 
         <ul id="main_issues_title_scale_options" class="f-dropdown issues-title-dropdown" data-dropdown-content aria-hidden="true" tabindex="1">
-          {% for opt in issue_scale_options() %}
-            <li{% if current_scale['key'] == opt['key'] %} class="active"{% endif %}>
+          {% for opt in issue_scale_options(localizeUser = user) %}
+            <li class="{{ opt['class'] }}{% if current_scale['key'] == opt['key'] %} active{% endif %}">
               <a href="#" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
             </li>
           {% endfor %}

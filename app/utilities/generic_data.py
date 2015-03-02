@@ -1,5 +1,5 @@
-def getStates():
-    return {
+def getStates(byKey = False):
+    statesDict = {
         'AK': 'Alaska',
         'AL': 'Alabama',
         'AR': 'Arkansas',
@@ -57,3 +57,6 @@ def getStates():
         'WV': 'West Virginia',
         'WY': 'Wyoming'
     }
+    if byKey:
+        return statesDict[byKey]
+    return statesDict

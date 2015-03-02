@@ -6,6 +6,13 @@
  * and this "widget style" CSS, which builds on top of Foundation styles or depends on it.
  */
  
+ /** Layout **/
+ 
+ @media screen and (min-width: 1240px) {
+   .row {
+     max-width: 1200px;
+   }
+ }
  
  /** Fonts **/
  

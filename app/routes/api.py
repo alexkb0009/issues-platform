@@ -56,10 +56,10 @@ def issues_list_scored(sorting):
     
     scale = 2 # Nationwide is default, e.g. if no user.
     if hasattr(request, 'user'): 
-        if 'current_scale' in request.user['meta']: scale = int(request.user['meta']['current_scale'])
+        if 'current_scale' in request.user['meta']: scale = request.user['meta']['current_scale']
         else: scale = 0 # Anywhere is default for logged-in users.
         
-    iterable = getSortedIssuesIterableFromDB(sorting, 20, scale)
+    iterable = getSortedIssuesIterableFromDB(sorting, 20, float(scale))
     
     session['last_sort'] = sorting
     session.save();    
@@ -88,8 +88,8 @@ def issue_create_new():
 def set_scale():
     if not headers_key_auth(): return { 'message' : 'Not authenticated' } 
     from app.functions.sort import getIssuesScaleOptions
-    scale = getIssuesScaleOptions(int(request.forms.get('scale')))
-    if scale is False: return { 'message' : 'Scale not valid. Must be int 0-4.' } 
+    scale = getIssuesScaleOptions(float(request.forms.get('scale')), request.user, True)
+    if scale is False: return { 'message' : 'Scale not valid. Must be numerical.' } 
     db.users.update(
         {'_id' : request.user['_id']}, 
         {'$set' : {'meta.current_scale' : scale['key']} },

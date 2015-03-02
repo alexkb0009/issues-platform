@@ -33,8 +33,10 @@
       <script src="{{ root }}js/vendor/underscore-min.js"></script>
       <script src="{{ root }}js/vendor/backbone-min.js"></script>
       <script src="{{ root }}js/app.issues.definitions.js"></script>
+      <script src="{{ root }}js/app.issues.functions.js"></script>
       
       {# Initial Data, Settings #}
+      
       <script>
         isApp.me = new isApp.Models.User({{ user.jsonSerialized|safe }});
         isApp.me.set('current_scale', {{ user['meta']['current_scale'] }} || 0);

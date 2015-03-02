@@ -178,6 +178,28 @@ ul.issues-title-dropdown.f-dropdown li a {
   color: #eee;
 }
 
+ul.issues-title-dropdown.f-dropdown li.secondary a {
+  /* padding-left: 1rem; */
+  font-size: 0.875em;
+}
+
+ul.issues-title-dropdown.f-dropdown li.secondary a:before {
+  content: "+";
+  font-family: FontAwesome;
+  padding: 0 8px 0 16px;
+  font-size: 0.875em;
+}
+
+ul.issues-title-dropdown.f-dropdown li a > span.light {
+  opacity: 0.45;
+}
+
+ul.issues-title-dropdown.f-dropdown li a > i.fa {
+  margin-right: 8px;
+  font-size: 0.95em;
+  font-size: 0.875em;
+}
+
 ul.issues-title-dropdown.f-dropdown li:hover{
   background-color: #555;
 }
