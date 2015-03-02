@@ -129,42 +129,69 @@ div.main-body > .main-content.row {
   padding-bottom: 2px;
 }
 
-.section-header > span.ext {
+.section-header > .ext {
   font-weight: 100;
+}
+
+/* responsive edits */
+@media screen and (max-width: 1025px){
+  div.main-body > div.main-content.row div.columns:not(:first-child) > .section-header {
+    margin-top: 11px;
+  }
 }
 
 /** Title Select Dropdowns **/
 
-h4#main_issues_title a           { color: #222; }
-h4#main_issues_title a:hover { color: #000; }
+h4#main_issues_title a#sorted_by_title ,
+h4#main_issues_title a#scale_title  { 
+  color: #222; 
+}
+h4#main_issues_title a#sorted_by_title:hover,
+h4#main_issues_title a#scale_title:hover  { 
+  color: #000; 
+}
 
-h4#main_issues_title a:after { 
+h4#main_issues_title a#sorted_by_title:after,
+h4#main_issues_title a#scale_title:after  { 
   font-family: FontAwesome;
   content: " \f0dd"; 
   padding: 0 3px;
   font-size: .875em;
 }
 
-ul#main_issues_title_sorting_options.f-dropdown {
+h4#main_issues_title a#sorted_by_title:hover,
+h4#main_issues_title a#scale_title:hover  { 
+  opacity: 0.5;
+}
+
+ul.issues-title-dropdown.f-dropdown {
   background: #333;
   border-color: #222;
   margin-top: 15px;
 }
 
-ul#main_issues_title_sorting_options.f-dropdown:before {
+ul.issues-title-dropdown.f-dropdown:before {
   border-bottom-color: #333;
 }
 
-ul#main_issues_title_sorting_options.f-dropdown li a {
+ul.issues-title-dropdown.f-dropdown li a {
   color: #eee;
 }
 
-ul#main_issues_title_sorting_options.f-dropdown li:hover{
+ul.issues-title-dropdown.f-dropdown li:hover{
   background-color: #555;
 }
 
-ul#main_issues_title_sorting_options li.hidden {
-  display: none;
+ul.issues-title-dropdown li.active {
+  background-color: #2a2a2a;
+}
+
+ul.issues-title-dropdown li.active a:after  { 
+  font-family: FontAwesome;
+  content: " \f00c"; 
+  padding: 0 3px;
+  font-size: .875em;
+  float: right;
 }
 
 

@@ -2,10 +2,26 @@
 
 {% block title %}{{ site_name }} > Home{% endblock %} 
 
+{% if logged_in %}
+    {# Set Sorting #}
+    {% set sort = issue_sort_options(session['last_sort']|default('trending')) %}
+    
+    {# Current Scale of User, if set #}
+    {% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2)) %}
+{% endif %}
+
+
 {% block additionalheader -%}
   <link rel="stylesheet" href="{{ root }}css/homepage.css">
   {%- if not logged_in -%}
     <link rel="stylesheet" href="{{ root }}css/homepage.guest.css">
+  {% else %}
+    <script>
+        window.session = {
+            sort: {{ sort }}
+        };
+        isApp.me.set('current_sort', {{ sort }});
+    </script>
   {%- endif -%}
 {%- endblock %} 
 
@@ -15,6 +31,7 @@
 {%- endblock %}
   
 {% block sub_menu_block -%}
+
   {%- if user -%}
     <div class="intro main-subheader">
       <span class="inline">Welcome, {{ user.firstname }}!</span>
@@ -61,19 +78,31 @@
     
       <div class="large-8 columns">
         <h4 id="main_issues_title" class="major section-header noselect">
-          <a data-dropdown="main_issues_title_sorting_options" aria-controls="sorting_options" aria-expanded="false" id="sorted_by_title">
-            Trending
+          <a href="#" data-dropdown="main_issues_title_sorting_options" aria-controls="main_issues_title_sorting_options" aria-expanded="false" id="sorted_by_title">
+            {{ sort['title'] }}
           </a>
+          
           <span class="divider"> / </span>
-          <span class="ext">Nationwide</span>
+          
+          <a href="#" data-dropdown="main_issues_title_scale_options" aria-controls="main_issues_title_scale_options" aria-expanded="false" id="scale_title" class="ext">
+            {{ current_scale['title'] }}
+          </a>
         </h4>
         
-        <ul id="main_issues_title_sorting_options" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-          <li class="hidden"><a href="#" name="trending">Trending</a></li>
-          <li><a href="#" name="latest">Latest</a></li>
-          <li><a href="#" name="most-contributions">Most Contributions</a></li>
-          <li><a href="#" name="most-views">Most Views</a></li>
-          <li><a href="#" name="most-edits">Most Edits</a></li>
+        <ul id="main_issues_title_sorting_options" class="f-dropdown issues-title-dropdown" data-dropdown-content aria-hidden="true" tabindex="1">
+          {% for opt in issue_sort_options() %}
+            <li{% if sort['key'] == opt['key'] %} class="active"{% endif %}>
+              <a href="#" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <ul id="main_issues_title_scale_options" class="f-dropdown issues-title-dropdown" data-dropdown-content aria-hidden="true" tabindex="1">
+          {% for opt in issue_scale_options() %}
+            <li{% if current_scale['key'] == opt['key'] %} class="active"{% endif %}>
+              <a href="#" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
+            </li>
+          {% endfor %}
         </ul>
         
         <div id="main_issues">

@@ -3,83 +3,91 @@ import json
 from app.includes.bottle import request, response
 from app.functions.auth import headers_key_auth
 
-def getIssuesFromCursor(cursor):
+def getIssuesFromCursor(cursor, redactFields = []):
+    if cursor is None: return False 
+    
     returnObj = []
     for issue in cursor:
+        if 'curent_revision' not in issue: 
+            issue.update(db.issues.find_one({"_id": issue['_id']}, {"_id" : 0}))
         currentRevision = db.revisions.find_one({"_id": issue['current_revision']})
         currentRevisionAuthor = db.users.find_one({"username": currentRevision['author']}, {'username' : 1, 'firstname' : 1, 'lastname' : 1, '_id' : 0})
 
         # Add "well-formed" (post-relational) JSONified Issue to output list.
-        returnObj.append({
+        issueWellFormed = {
           'title' : currentRevision['title'],
           'description' : currentRevision['description'],
           'scoring' : issue['scoring'],
           'meta' : {
             'revision_date' : currentRevision['date'].isoformat(),
             'revision_author' : currentRevisionAuthor,
-            'revisions_count' : len(issue['revisions']),
+            'revisions_count' : issue['revisions_count'] if 'revisions_count' in issue else None,
             'initial_author' : issue['meta']['initial_author'],
-            'am_subscribed' : True if issue['_id'] in request.user['subscribed_issues'] else False
+            'scales' : issue['meta']['scales']
           }
-        })
+        }
+        
+        if hasattr(request, 'user'):
+            issueWellFormed['meta']['am_subscribed'] = True if issue['_id'] in request.user['subscribed_issues'] else False
+        
+        for field in redactFields:
+            fieldParts = field.split('.')
+            if len(fieldParts) == 3: del issueWellFormed[fieldParts[0]][fieldParts[1]][fieldParts[2]]
+            elif len(fieldParts) == 2: del issueWellFormed[fieldParts[0]][fieldParts[1]]
+            elif len(fieldParts) == 1: del issueWellFormed[fieldParts[0]]
+        
+        returnObj.append(issueWellFormed)
         
     return returnObj
 
-## Trending Isssues:
+
 ## Sorted by score, returns 20.
 
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>', method="GET") # = /api/issues/trending
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<page:int>', method="GET") # = /api/issues/trending
 def issues_list_scored(sorting):
-    if not headers_key_auth(): return { 'message' : 'Not authenticated' } 
-    cursor = None
-    if sorting == 'trending':
-        cursor = db.issues.find(limit = 20, sort = [('scoring.score', -1)])
-    if sorting == 'latest':
-        cursor = db.issues.find(limit = 20, sort = [('meta.created_date', -1)])
-    if sorting == 'most-views':
-        cursor = db.issues.find(limit = 20, sort = [('scoring.views', -1)])
-    if sorting == 'most-contributions':
-        cursor = db.issues.find(limit = 20, sort = [('scoring.contributions', -1)])
-    if sorting == 'most-edits':
-        cursorRevs = db.revisions.aggregate({ 
-            '$group' : {'_id' : '$parentIssue', 'count' : {'$sum' : 1}},
-            '$sort'  : { 'count' : -1 },
-            '$limit' : 20
-        })
-        print(cursorRevs);
-        #cursor = db.issues.find(limit = 20, sort = [('scoring.contributions', -1)])
-
-    return json.dumps(getIssuesFromCursor(cursor))
+    from app.includes.bottle import request
+    from app.functions.sort import getIssuesSortOptions, getSortedIssuesIterableFromDB
+    session = request.environ['beaker.session']
+    
+    headers_key_auth() # So we have request.users if/when needed
+    
+    scale = 2 # Nationwide is default, e.g. if no user.
+    if hasattr(request, 'user'): 
+        if 'current_scale' in request.user['meta']: scale = int(request.user['meta']['current_scale'])
+        else: scale = 0 # Anywhere is default for logged-in users.
+        
+    iterable = getSortedIssuesIterableFromDB(sorting, 20, scale)
+    
+    session['last_sort'] = sorting
+    session.save();    
+        
+    return json.dumps(getIssuesFromCursor(iterable))
 
     
 ## My Subscribed Issues:
     
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/subscribed', method="GET") # = /api/issues/subscribed
 def issues_list_subscribed():
+
+    if not headers_key_auth(): return { 'message' : 'Not authenticated' }   
+    subscribedIssues = map(lambda objId: {'_id' : objId }, request.user['subscribed_issues'])
+    return json.dumps(getIssuesFromCursor(subscribedIssues, ['meta.am_subscribed']))
+    
+    
+## Set Scale 
+@app.route('/' + app.config['app_info.api_request_path'] + 'user/scale', method="PUT")
+def set_scale():
     if not headers_key_auth(): return { 'message' : 'Not authenticated' } 
-
-    returnObj = []
-    
-    for issue_id in request.user['subscribed_issues']:
-        issue = db.issues.find_one({'_id' : issue_id})
-        currentRevision = db.revisions.find_one({"_id": issue['current_revision']})
-        currentRevisionAuthor = db.users.find_one({"username": currentRevision['author']}, {'username' : 1, 'firstname' : 1, 'lastname' : 1, '_id' : 0})
-
-        # Add "well-formed" (post-relational) JSONified Issue to output list.
-        returnObj.append({
-          'title' : currentRevision['title'],
-          'description' : currentRevision['description'],
-          'scoring' : issue['scoring'],
-          'meta' : {
-            'revision_date' : currentRevision['date'].isoformat(),
-            'revision_author' : currentRevisionAuthor,
-            'revisions_count' : len(issue['revisions']),
-            'initial_author' : issue['meta']['initial_author']
-          }
-        })
-    
-    return json.dumps(returnObj)
+    from app.functions.sort import getIssuesScaleOptions
+    scale = getIssuesScaleOptions(int(request.forms.get('scale')))
+    if scale is False: return { 'message' : 'Scale not valid. Must be int 0-4.' } 
+    db.users.update(
+        {'_id' : request.user['_id']}, 
+        {'$set' : {'meta.current_scale' : scale['key']} },
+        multi=False
+    )
+    return { 'message' : 'Success', 'new_scale' : scale }
   
   
 ## Auth Token    

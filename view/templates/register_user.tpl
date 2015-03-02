@@ -4,7 +4,7 @@
 {% block title %}{{ site_name }} > Register{% endblock %} 
 
 {% block additionalheader -%}
-
+  <script src='https://www.google.com/recaptcha/api.js'></script>
 {%- endblock %} 
 
 {% block sub_menu_block -%}
@@ -131,8 +131,11 @@
         <label for="r_aboutme_f">About Me</label>
         <textarea name="about" rows="3" id="r_aboutme_f" placeholder="Please write a little of anything about yourself. This will be included in your profile. Your address, date of birth, and other information remains private."></textarea>
       </div>
-      <div class="large-12 columns">
-        <button type="submit" class="right">Next &nbsp;<i class="fa fa-chevron-right"></i></button>
+      <div class="large-6 columns">
+        <div class="g-recaptcha" data-sitekey="6LcF1wITAAAAAFQk9BZziQ8imAdaYjVe0wbyfUvP"></div>
+      </div>
+      <div class="large-6 columns">
+        <button type="submit" class="right expand">Next &nbsp;<i class="fa fa-chevron-right"></i></button>
       </div>
     </form>
   {% elif page_number == 2 %}
@@ -148,6 +151,10 @@
       <h2>Sorry, username {{ more }} already exists.</h2>
       <p>Please try again using a different username.</p>
       <a class="button radius" href="{{ root }}register/1">Back to Registration</a>
+    {% elif status == 'error' and reason == 'failed_captcha' %}
+      <br>
+      <h2>Unable to complete registration.</h2>
+      <p>Please go back and check the "captcha" box.</p>
     {% endif %}
   {% endif %}
   </div>

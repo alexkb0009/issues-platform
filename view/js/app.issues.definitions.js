@@ -4,7 +4,9 @@ window.isApp = {
     /** "Classes" / Obj Types **/
     Models : {
         User : null, 
-        Issue : null
+        Issue : null,
+        IssueScore: null,   // Used as Issue.scoring
+        IssueMeta: null     // Used as Issue.meta        
     },
     Collections: {
         Issues : null
@@ -19,9 +21,7 @@ window.isApp = {
     currentIssues: null,    // Collections.Issues of Models.Issue --> Currently Sorted/Browsable Issues
     myIssues: null,         // Collectioms.Issues of Models.Issue --> My Subscribed-to issues.
     
-    other: {
-        e: null             // Cached other (e.g. UI) elements.
-    }
+    u: {}                   // Utility functions, perhaps defined elsewhere.
 }
 
 /** Object Classes Definitions **/
@@ -64,20 +64,36 @@ isApp.Models = {
             title: "<div style='display: inline-block; height: 10px; background-color: #e9e9e9; width: 75%; margin: 8px 0 12px;'></div>",
             description: "<div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 50%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 75%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 60%; margin: 8px 0 12px;'></div>",
             revision: 'NoneYet',
-            scoring: {
-                views: 1,
-                score: 1
-            },
-            meta: {
-                last_edit: new Date(),
-                initial_author: "billyg123"
-            }
+            scoring: null,
+            meta: null
+        },
+        
+        initialize: function(item, options){
+            this.set('scoring', new isApp.Models.IssueScore(item.scoring))
+            this.set('meta', new isApp.Models.IssueScore(item.meta))
         },
         
         validate : function(attributes){
             if (!attributes.title) return "Title cannot be blank.";
         }
     
+    }),
+    
+    IssueScore : Backbone.Model.extend({
+        defaults: {
+            views: 1,
+            score: 1,
+            contributions: 1
+        }
+    }),
+    
+    IssueMeta : Backbone.Model.extend({
+        defaults: {
+            last_edit: new Date(),
+            am_subscribed: false,
+            scales: [2,3,4,5],
+            initial_author: "billyg123"
+        }
     })
 
 }
@@ -115,7 +131,7 @@ isApp.Views = {
         render: function(){
             this.$el.html(this.template( this.model.toJSON() ));
             
-            if (this.$el.hasClass('min')){
+            if (this.$el.hasClass('min') || window.innerWidth <= 600){ // Make smaller if it is of smaller-priority issue category or screen is small
               this.toggleDescriptionOpen(null, false); // evt = null, transition = false
             }
 
@@ -124,7 +140,7 @@ isApp.Views = {
             var subscribe_icon = this.$el.find('.subscribe-icon');
             if (subscribe_icon.length > 0){
                 this.tooltips.subscribe = new Opentip(this.$el.find('.subscribe-icon'));
-                if (this.model.get('meta').am_subscribed){
+                if (this.model.get('meta').get('am_subscribed')){
                     this.tooltips.subscribe.setContent("Un-subscribe from issue");
                 } else {
                     this.tooltips.subscribe.setContent("Subscribe to updates in this issue");

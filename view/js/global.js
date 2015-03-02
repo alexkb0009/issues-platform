@@ -39,11 +39,11 @@ $(window).load(function(){
 
 function resizeBody(){
   app.cd.innerBodyMinHeight = Math.max(window.innerHeight - app.ce.footer.outerHeight() - app.ce.topBar.outerHeight(), 360 + (app.ce.mainBody.children('div.main-subheader').outerHeight() || 0));
-  if (app.ce.body.width() > 1025) {
+  //if (app.ce.body.width() > 1025) {
     app.ce.mainBody.css('min-height', app.cd.innerBodyMinHeight);
-  } else {
-    app.ce.mainBody.css('min-height', '');
-  }
+  //} else {
+  //  app.ce.mainBody.css('min-height', '');
+  //}
 }
 
 $(window).resize(function(){
@@ -62,4 +62,11 @@ function verticalCenterOffset(parentHeight, childHeight){
   if (typeof parentHeight != 'Number') parentHeight = parseInt(parentHeight);
   if (typeof childHeight != 'Number') childHeight = parseInt(childHeight);
   return parseInt((parentHeight - childHeight) / 2);
+}
+
+
+window.u = {
+  setLoaderInElem : function(element){
+    element.innerHTML = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>';
+  }
 }

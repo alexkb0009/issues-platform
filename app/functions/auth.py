@@ -66,7 +66,9 @@ def session_auth():
             from bson import json_util
             request.user = authd_user
             request.user['auth_key'] = request.session['auth_key']
-            request.user['jsonSerialized'] = json_util.dumps({field:authd_user[field] for field in authd_user if field not in ["_id", "passhash", "roles", "meta"]})
+            # Output only certain fields, for security/privacy.
+            outputUserDict = {field:authd_user[field] for field in authd_user if field not in ["_id", "passhash", "roles", "meta"]}
+            request.user['jsonSerialized'] = json_util.dumps(outputUserDict)
     return True if request.user != None else False
     
 def headers_key_auth():
@@ -113,7 +115,7 @@ def check_login(db, username, password, ip):
     
     
 def register_new_account(db, form, config):
-
+    from app.includes.bottle import request
     username = str(form.get('username'))
 
     if db.users.find_one({ 'username': username }):
@@ -123,7 +125,31 @@ def register_new_account(db, form, config):
         
     else: 
         from datetime import date, datetime
-        log(form.get('dob[year]'))
+        # Morph zipcode into 
+        import requests
+        city = None
+        
+        # Get some 3rd party data - Zip Codes, Captcha, etc.
+        try:    
+            zip_response = requests.get('http://ZiptasticAPI.com/' + form.get('addr[zip]'))
+            decodedResponse = zip_response.json()
+            if zip_response.status_code == 200:
+                city = decodedResponse['city']
+            
+            captcha_response = (requests.post('https://www.google.com/recaptcha/api/siteverify', params={
+                'secret' : '6LcF1wITAAAAAD5rd8M3aXFf7BNTrTGpPaZhsfWN',
+                'response' : form.get('g-recaptcha-response'),
+                'remoteip' : request['REMOTE_ADDR']
+            })).json()
+            
+            if captcha_response['success'] != True: 
+                return ('failed_captcha', captcha_response['error-codes'][0])
+            
+        except:
+            import sys
+            city = None
+            log(sys.exc_info())
+            
         db.users.insert({ 
             'username':   username,
             'email' :     form.get('email'),
@@ -135,6 +161,8 @@ def register_new_account(db, form, config):
               'date_registered' : datetime.now(),
               'dob'    : datetime(int(form.get('dob[year]')), int(form.get('dob[month]')), int(form.get('dob[day]'))),
               'street' : form.get('addr[street]'),
+              'current_scale' : 0,
+              'city'   : city,
               'state'  : form.get('addr[state]'),
               'zip'    : form.get('addr[zip]')
             },

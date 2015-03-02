@@ -2,9 +2,9 @@
     <h5 class="issue-title">
       <%= title %>
       <i class="open-icon fa fa-angle-up" title="Show/hide description"></i>
-      <% if (meta.am_subscribed){ %>
+      <% if (meta.get('am_subscribed')){ %>
         <i class="subscribe-icon subscribed fa fa-star"></i>
-      <% } else if (meta.am_subscribed == false) { %>
+      <% } else if (meta.get('am_subscribed') == false) { %>
         <i class="subscribe-icon fa fa-star-o"></i>
       <% } %>
     </h5>

@@ -14,6 +14,7 @@ print = logMachine.log # Debug stuff better
 @app.route('/')
 @view('homepage.tpl')
 def index():
+    from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions
     status = request.query.get('s')
     returnObj = {}
 
@@ -21,6 +22,7 @@ def index():
         returnObj['logged_in'] = True
         returnObj['user'] = request.user
         returnObj['route'] = [('Home', '', 'Return to homepage')]
+        returnObj['session'] = request.environ['beaker.session']
         
     else:
         returnObj['logged_in'] = False
@@ -122,6 +124,12 @@ def admin():
 def test_errors():
     asouFHasduifg
     return "No Error"
+    
+@app.route('/test_zip/<zipcode>')
+def test_zip(zipcode):
+    import requests
+    r = requests.get('http://ZiptasticAPI.com/' + zipcode)
+    return r
     
     
 ## Error Handling

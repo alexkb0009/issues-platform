@@ -46,17 +46,13 @@ def application():
         sys.stderr = globals.logMachine.errorLog
 
     # Setup Bottle
-    from app.includes.bottle import Bottle, run, TEMPLATE_PATH, Jinja2Template, url, response, request, app as s_bottle_app
+    from app.includes.bottle import Bottle, run, TEMPLATE_PATH, url, response, request, app as s_bottle_app
     globals.app = Bottle()
     globals.app.config.load_config('./settings.ini') # Read config/settings, e.g. for MongoDB connection
 
     # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
     TEMPLATE_PATH.insert(0, './view/templates/')
-    Jinja2Template.defaults = {
-        'url' : url,
-        'site_name' : globals.app.config['app_info.site_name'],
-        'root' : globals.app.config['app_info.root_directory']
-    }
+    import app.template_setup
 
     # Connect to MongoDB Instance
     from pymongo import MongoClient
