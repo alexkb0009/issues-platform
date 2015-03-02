@@ -33,7 +33,7 @@ def getIssuesScaleOptions(key = False):
         return scaleMap
         
  
-def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2):
+def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2, page = 1):
     from app.state import db, logMachine
     print = logMachine.log # Debug stuff better
     cursor = None
@@ -47,30 +47,42 @@ def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2):
     if sorting == 'most-contributions': sortSet = [('scoring.contributions', -1)]
     if sorting == 'most-edits':         sortSet = [('meta.revisions', -1)]
     
-    cursor = db.issues.find({'meta.scales' : scale }, limit = limit, sort = sortSet)
+    cursor = db.issues.find({'meta.scales' : scale }, skip = ((page - 1) * limit), limit = limit, sort = sortSet)
     
     ## Only for logged-in users.
     from app.includes.bottle import request
     if scale > 2:
         filtered_issues = []
-        for issue in cursor:
-            orig_author = db.users.find_one({'username' : issue['meta']['initial_author']});
-            if orig_author is None:
-                continue
-            
-            # State
-            if scale == 3 and orig_author['meta']['state'] == request.user['meta']['state']:
-                filtered_issues.append(issue)
-            
-            # City
-            if scale == 4 and orig_author['meta']['city'] == request.user['meta']['city']:
-                filtered_issues.append(issue)
-            
-            # District / Zip
-            if scale == 5 and orig_author['meta']['zip'] == request.user['meta']['zip']:
-                filtered_issues.append(issue)
+        def filterIssuesByScale(cursor, outputArray):
+            for issue in cursor:
+                orig_author = db.users.find_one({'username' : issue['meta']['initial_author']});
+                if orig_author is None:
+                    continue
                 
-        print(filtered_issues)
+                # State
+                if scale == 3 and orig_author['meta']['state'] == request.user['meta']['state']:
+                    outputArray.append(issue)
+                
+                # City
+                if scale == 4 and orig_author['meta']['city'] == request.user['meta']['city']:
+                    outputArray.append(issue)
+                
+                # District / Zip
+                if scale == 5 and orig_author['meta']['zip'] == request.user['meta']['zip']:
+                    outputArray.append(issue)
+                    
+            return outputArray
+                
+        
+        filterIssuesByScale(cursor, filtered_issues) 
+        itrtr = 1
+        while len(filtered_issues) < limit:
+            cursor = db.issues.find({'meta.scales' : scale }, skip = ((page - 1 + itrtr) * limit), limit = limit, sort = sortSet)
+            itrtr = itrtr + 1
+            if cursor is None or cursor.count(True) == 0: break
+            filterIssuesByScale(cursor, filtered_issues)
+            
+        cursor.close()
         return filtered_issues
             
         

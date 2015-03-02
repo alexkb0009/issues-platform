@@ -68,9 +68,18 @@ isApp.Models = {
             meta: null
         },
         
+        urlRoot: app.settings.root + 'api/issue',
+        
+        constructor: function(item, options){
+            //this.set('scoring', new isApp.Models.IssueScore(item.scoring));
+            //this.set('meta', new isApp.Models.IssueScore(item.meta));
+            Backbone.Model.apply(this, arguments);
+        },
+        
         initialize: function(item, options){
-            this.set('scoring', new isApp.Models.IssueScore(item.scoring))
-            this.set('meta', new isApp.Models.IssueScore(item.meta))
+            this.set('scoring', new isApp.Models.IssueScore(item.scoring));
+            this.set('meta', new isApp.Models.IssueScore(item.meta));
+            this.set('id', item['_id']);
         },
         
         validate : function(attributes){
@@ -200,7 +209,6 @@ isApp.Views = {
         },
         
         initialize: function(options){
-  
             if (typeof options != 'undefined'){
               this.childTemplateID = options.childTemplateID;
               this.childClassName = options.childClassName;

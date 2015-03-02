@@ -15,6 +15,7 @@ def getIssuesFromCursor(cursor, redactFields = []):
 
         # Add "well-formed" (post-relational) JSONified Issue to output list.
         issueWellFormed = {
+          '_id' : str(issue['_id']),
           'title' : currentRevision['title'],
           'description' : currentRevision['description'],
           'scoring' : issue['scoring'],
@@ -30,11 +31,12 @@ def getIssuesFromCursor(cursor, redactFields = []):
         if hasattr(request, 'user'):
             issueWellFormed['meta']['am_subscribed'] = True if issue['_id'] in request.user['subscribed_issues'] else False
         
-        for field in redactFields:
-            fieldParts = field.split('.')
-            if len(fieldParts) == 3: del issueWellFormed[fieldParts[0]][fieldParts[1]][fieldParts[2]]
-            elif len(fieldParts) == 2: del issueWellFormed[fieldParts[0]][fieldParts[1]]
-            elif len(fieldParts) == 1: del issueWellFormed[fieldParts[0]]
+        if len(redactFields) > 0:
+            for field in redactFields:
+                fieldParts = field.split('.')
+                if len(fieldParts) == 3: del issueWellFormed[fieldParts[0]][fieldParts[1]][fieldParts[2]]
+                elif len(fieldParts) == 2: del issueWellFormed[fieldParts[0]][fieldParts[1]]
+                elif len(fieldParts) == 1: del issueWellFormed[fieldParts[0]]
         
         returnObj.append(issueWellFormed)
         
@@ -74,6 +76,12 @@ def issues_list_subscribed():
     subscribedIssues = map(lambda objId: {'_id' : objId }, request.user['subscribed_issues'])
     return json.dumps(getIssuesFromCursor(subscribedIssues, ['meta.am_subscribed']))
     
+    
+    
+## Create new Issue
+@app.route('/' + app.config['app_info.api_request_path'] + 'issue/new', method="GET") # = /api/issue/new
+def issue_create_new():
+    pass
     
 ## Set Scale 
 @app.route('/' + app.config['app_info.api_request_path'] + 'user/scale', method="PUT")

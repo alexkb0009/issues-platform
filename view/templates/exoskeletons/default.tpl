@@ -21,6 +21,13 @@
     {% block js_templates %}{% endblock %}
     {%- if logged_in -%} 
       {# We don't need these for guests, who get the marketing version. #}
+      <script>
+        {# Some settings needed pre- BackBone models #}
+        if (typeof window.app == 'undefined') window.app = {} 
+        app.settings = {
+          root: "{{ root }}"
+        }
+      </script>
       <link rel="stylesheet" href="{{ root }}css/vendor/opentip.css">
       <script src="{{ root }}js/vendor/opentip-jquery-excanvas.min.js"></script>
       <script src="{{ root }}js/vendor/underscore-min.js"></script>
@@ -31,9 +38,6 @@
       <script>
         isApp.me = new isApp.Models.User({{ user.jsonSerialized|safe }});
         isApp.me.set('current_scale', {{ user['meta']['current_scale'] }} || 0);
-        isApp.settings = {
-          root: "{{ root }}"
-        }
       </script>
     {%- endif -%}
     
