@@ -2,7 +2,7 @@
 isApp.currentIssues = new isApp.Collections.Issues([{},{},{}]);
 isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL;
 isApp.currentIssues.fetch();
-isApp.currentIssuesView = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues });
+isApp.currentIssuesView = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger' });
 
 isApp.myIssues = new isApp.Collections.Issues([{},{},{}]);
 isApp.myIssues.url = app.settings.root + 'api/issues/subscribed';
@@ -28,6 +28,7 @@ app.ce.currentIssuesTitle.next('#main_issues_title_sorting_options').find('a').c
         app.ce.currentIssuesTitle.children('#sorted_by_title').html(clickedLink.html());
         clickedLink.parent().parent().children().removeClass('active');
         clickedLink.parent().addClass('active');
+        this.trigger('changeSet');
     }).fetch();
 });
 
@@ -60,6 +61,7 @@ $('#main_issues_title_scale_options').find('a').click(function(){
             title.html(data.new_scale['title']);
             clickedLink.parent().parent().children().removeClass('active');
             clickedLink.parent().addClass('active');
+            this.trigger('changeSet');
           }).fetch();
 
         }

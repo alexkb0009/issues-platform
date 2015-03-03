@@ -1,3 +1,6 @@
+
+## Options for how issues may be sorted
+
 def getIssuesSortOptions(key = False):
     sortMap = [
         {'key' : 'trending', 'title' : "Trending"},
@@ -16,17 +19,21 @@ def getIssuesSortOptions(key = False):
         
         
 def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
-    from app.utilities.generic_data import getStates
+
+    # Localize to user's geographic regions, if defined.
+    # Some defaults to fall back on first.
     city = "City"
     state = "State"
     zip = "District"
     if localizeUser:
+        from app.utilities.generic_data import getStates
         city = localizeUser['meta']['city'].title()
         zip = localizeUser['meta']['zip']
         state = getStates(localizeUser['meta']['state'])
     
+    # The map of options. Maybe convert to YAML file or something in time.
     scaleMap = [
-        {'key' : 0, 'title' : "Anywhere", 'class' : 'primary'},
+        {'key' : 0, 'title' : "<i class='fa fa-fw fa-globe'></i>Anywhere", 'class' : 'primary'},
         #{'key' : 1, 'title' : "Worldwide"},
         {'key' : 2, 'title' : "<i class='fa fa-fw fa-plane'></i>National <span class='light'>Issues</span>", 'class' : 'primary'},
         {'key' : 2.5, 'title' : "Nationwide <span class='light'>State Issues</span>", 'class' : 'secondary'},
@@ -46,6 +53,10 @@ def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
                 return item
         return False
     else:
+        if striptags:
+            from lxml import html
+            for item in scaleMap: 
+                item['title'] = html.fromstring(item['title']).text_content()
         return scaleMap
         
  
@@ -68,56 +79,16 @@ def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
     
     if not scale.is_integer():
         matchQuery = {'meta.scales' : { '$elemMatch' : {'$gt' : scale, '$lt' : (scale + 1) } } }
-    
-    cursor = db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit, sort = sortSet)
-    
-    ## Only for logged-in users.
-    from app.includes.bottle import request
+        
     if scale > 2.5:
-        filtered_issues = []
-        def filterIssuesByScale(cursor, outputArray):
-            for issue in cursor:
-                orig_author = db.users.find_one({'username' : issue['meta']['initial_author']});
-                if orig_author is None:
-                    continue
-                    
-                # State
-                if scale in [3, 3.5] and orig_author['meta']['state'] == request.user['meta']['state']:
-                    outputArray.append(issue)
-                
-                # City
-                if scale in [4, 4.5] and orig_author['meta']['city'] == request.user['meta']['city']:
-                    outputArray.append(issue)
-                
-                # District / Zip
-                if scale in [5] and orig_author['meta']['zip'] == request.user['meta']['zip']:
-                    outputArray.append(issue)
-                    
-            return outputArray
-                
+        from app.includes.bottle import request
+        # State
+        if scale in [3, 3.5]: matchQuery['meta.state'] = request.user['meta']['state']
+        # City
+        if scale in [4, 4.5]: matchQuery['meta.city']  = request.user['meta']['city']
+        # District
+        if scale in [5]:      matchQuery['meta.zip']   = request.user['meta']['zip']
         
-        filterIssuesByScale(cursor, filtered_issues) 
-        itrtr = 1
-        while len(filtered_issues) < limit:
-            cursor = db.issues.find({'meta.scales' : scale }, skip = ((page - 1 + itrtr) * limit), limit = limit, sort = sortSet)
-            itrtr = itrtr + 1
-            if cursor is None or cursor.count(True) == 0: break
-            filterIssuesByScale(cursor, filtered_issues)
-            
-        cursor.close()
-        return filtered_issues
-            
-        
-        #res = db.revisions.aggregate([
-        #    { '$match' : {'parentIssue.meta.scales' : scale} },
-        #    { '$group' : {'_id' : '$parentIssue', 'revisions_count' : {'$sum' : 1}} },
-        #    { '$sort'  : { 'count' : -1 }},
-        #    { '$limit' : limit }
-        #])
-        #cursor = res['result'] 
-        # cursor is now list of 20 {'count' : <int>, '_id': <ObjectID>} objects. 
-        # Need to fill w/ remaining data later.
-        
-    return cursor
+    return db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit, sort = sortSet)
         
     

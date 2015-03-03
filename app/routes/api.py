@@ -13,10 +13,19 @@ def getIssuesFromCursor(cursor, redactFields = []):
         currentRevision = db.revisions.find_one({"_id": issue['current_revision']})
         currentRevisionAuthor = db.users.find_one({"username": currentRevision['author']}, {'username' : 1, 'firstname' : 1, 'lastname' : 1, '_id' : 0})
 
+        # Double check that titles align, fix if not:
+        if currentRevision['title'] != issue['title']:
+            db.issues.update(
+                {'_id' : issue['_id']}, 
+                {'$set' : {'title' : currentRevision['title']} },
+                multi=False
+            )
+            issue['title'] = currentRevision['title']
+        
         # Add "well-formed" (post-relational) JSONified Issue to output list.
         issueWellFormed = {
           '_id' : str(issue['_id']),
-          'title' : currentRevision['title'],
+          'title' : issue['title'],
           'description' : currentRevision['description'],
           'scoring' : issue['scoring'],
           'meta' : {
@@ -34,6 +43,7 @@ def getIssuesFromCursor(cursor, redactFields = []):
         if len(redactFields) > 0:
             for field in redactFields:
                 fieldParts = field.split('.')
+                # Support up to 3 levels in object.property.deeperProperty notation.
                 if len(fieldParts) == 3: del issueWellFormed[fieldParts[0]][fieldParts[1]][fieldParts[2]]
                 elif len(fieldParts) == 2: del issueWellFormed[fieldParts[0]][fieldParts[1]]
                 elif len(fieldParts) == 1: del issueWellFormed[fieldParts[0]]
@@ -96,6 +106,64 @@ def set_scale():
         multi=False
     )
     return { 'message' : 'Success', 'new_scale' : scale }
+
+
+## Search Issues
+@app.route('/' + app.config['app_info.api_request_path'] + 'search/issues', method="POST")
+def search_issues():
+    scale = float(request.forms.get('scale'))
+    query = request.forms.get('query')
+    print(query) # test
+    if scale > 2.5:
+        if not headers_key_auth(): return { 'message' : 'Need to be authenticated for this scale type.' } 
+    
+    
+    
+    
+    from app.functions.sort import getIssuesScaleOptions
+    scale = getIssuesScaleOptions(float(request.forms.get('scale')), request.user, True)
+    if scale is False: return { 'message' : 'Scale not valid. Must be numerical.' } 
+    db.users.update(
+        {'_id' : request.user['_id']}, 
+        {'$set' : {'meta.current_scale' : scale['key']} },
+        multi=False
+    )
+    return { 'message' : 'Success', 'new_scale' : scale }
+    
+
+@app.route('/' + app.config['app_info.api_request_path'] + 'issue/<issue_id>', method='PATCH') # = /api/do/login
+def patch_issue(issue_id):
+    #print(request.json)
+    if not headers_key_auth(): 
+        response.status = 401
+        return { 'message' : 'Need to be authenticated.' }
+        
+    issue = db.issues.find_one({"_id": issue_id})
+    if not issue:
+        from bson.objectid import ObjectId
+        issue = db.issues.find_one({"_id": ObjectId(issue_id)})
+    if not issue: # Finally, cancel
+        response.status = 404
+        return { 'message' : 'No such issue exists.' }
+        
+    meta = request.json.get('meta')
+    print(meta)
+    if 'am_subscribed' in meta:
+        if meta['am_subscribed']:
+            db.users.update(
+                {'_id' : request.user['_id']}, 
+                {'$addToSet' : {'subscribed_issues' : issue['_id']} },
+                multi=False
+            )
+        else:
+            db.users.update(
+                {'_id' : request.user['_id']}, 
+                {'$pull' : {'subscribed_issues' : issue['_id']} },
+                multi=False
+            )
+
+    
+    return { 'status' : 200, 'statusText' : 'OK' }
   
   
 ## Auth Token    

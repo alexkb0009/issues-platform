@@ -3,7 +3,6 @@ log = logMachine.log
 
 
 # Checks a given authorization key to see if it conforms to what is stored in database.
-#
 # If returnUser is set to true, will return user object instead of "True" to minimize DB queries.
 
 def check_sent_auth_info(key, returnUser = False):
@@ -46,8 +45,6 @@ def login_user():
         session['username'] = authd_user['username']
         session['auth_key'] = authd_user['auth_key']
         session.save()
-        #response.set_cookie('auth_key', authd_user['auth_key'])
-        #print(session)
         
     return authd_user
     
@@ -112,7 +109,7 @@ def check_login(db, username, password, ip):
     
     return result
     
-    
+## Used by route /do/login 
     
 def register_new_account(db, form, config):
     from app.includes.bottle import request

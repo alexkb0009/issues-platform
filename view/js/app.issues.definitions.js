@@ -24,88 +24,128 @@ window.isApp = {
     u: {}                   // Utility functions, perhaps defined elsewhere.
 }
 
+
+
+
+/********************************/
 /** Object Classes Definitions **/
+/********************************/
 
-isApp.Models = {
-
-    /** User **/
     
-    User : Backbone.Model.extend({
+isApp.Models.User = Backbone.Model.extend({
     
-        defaults: {
-            firstname: 'Bill',
-            lastname: 'Murray',
-            username: 'billyg123'
-        },
+    defaults: {
+        firstname: 'Bill',
+        lastname: 'Murray',
+        username: 'billyg123'
+    },
+    
+    validate: function(attributes){
         
-        validate: function(attributes){
-            
-            if (!attributes.firstname || attributes.firstname.length < 1){
-              return "First name cannot be blank.";
+        if (!attributes.firstname || attributes.firstname.length < 1){
+          return "First name cannot be blank.";
+        }
+        
+        if (!attributes.lastname){
+          return "Last name cannot be blank.";
+        }
+        
+    },
+    
+    fullName: function(){
+        return this.get('firstname') + ' ' + this.get('lastname'); 
+    }
+
+});
+    
+    
+/** Issue **/
+    
+/** Issue Extended Property Containers **/
+    
+isApp.Models.IssueScoring = Backbone.Model.extend({
+    defaults: {
+        views: 1,
+        score: 1,
+        contributions: 1
+    }
+});
+    
+isApp.Models.IssueMeta = Backbone.Model.extend({
+    defaults: {
+        last_edit: new Date(),
+        scales: [2,3,4,5],
+        initial_author: "billyg123"
+    },
+    
+    parse: function(response, options){
+        if (_.has(options, 'parent')){
+            this.parent = options['parent'];
+            this.urlRoot = this.parent.urlRoot;
+            this.set('id', this.parent.get('id'));
+        }
+        return response;
+    },
+    
+    initialize: function(item, options){
+
+    }
+    /*
+    save: function(attributes, options){
+        var newAttributes = {};
+        _.mapObject(attributes, function(val, key){
+            newAttributes['meta.' + key] = val;
+        });
+        return Backbone.Model.prototype.save.call(this, newAttributes, options);
+    }
+    */
+});
+    
+    
+/** Issue itself **/
+    
+isApp.Models.Issue = Backbone.Model.extend({
+    
+    model: {
+        scoring: isApp.Models.IssueScoring,
+        meta: isApp.Models.IssueMeta
+    },
+    
+    defaults: {
+        title: "<div style='display: inline-block; height: 10px; background-color: #e9e9e9; width: 75%; margin: 8px 0 12px;'></div>",
+        description: "<div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 50%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 75%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 60%; margin: 8px 0 12px;'></div>",
+        revision: 'NoneYet',
+        scoring: new isApp.Models.IssueScoring({'scoring': 1}),
+        meta: new isApp.Models.IssueMeta({})
+    },
+    
+    urlRoot: app.settings.root + 'api/issue',
+    
+    constructor: function(item, options){
+        Backbone.Model.apply(this, arguments);
+    },
+    
+    parse: function(response){
+        for (var key in this.model){
+            var embeddedClass = this.model[key];
+            var embeddedData = response[key];
+            if (typeof embeddedData != 'undefined'){
+                response[key] = new embeddedClass(embeddedData, {parse: true, parent: this});
             }
-            
-            if (!attributes.lastname){
-              return "Last name cannot be blank.";
-            }
-            
-        },
-        
-        fullName: function(){
-            return this.get('firstname') + ' ' + this.get('lastname'); 
         }
+        return response;
+    },
     
-    }),
+    initialize: function(item, options){
+        this.set('id', item['_id']);
+    },
     
-    /** Issue **/
-    
-    Issue : Backbone.Model.extend({
-    
-        defaults: {
-            title: "<div style='display: inline-block; height: 10px; background-color: #e9e9e9; width: 75%; margin: 8px 0 12px;'></div>",
-            description: "<div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 50%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 75%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 60%; margin: 8px 0 12px;'></div>",
-            revision: 'NoneYet',
-            scoring: null,
-            meta: null
-        },
-        
-        urlRoot: app.settings.root + 'api/issue',
-        
-        constructor: function(item, options){
-            //this.set('scoring', new isApp.Models.IssueScore(item.scoring));
-            //this.set('meta', new isApp.Models.IssueScore(item.meta));
-            Backbone.Model.apply(this, arguments);
-        },
-        
-        initialize: function(item, options){
-            this.set('scoring', new isApp.Models.IssueScore(item.scoring));
-            this.set('meta', new isApp.Models.IssueScore(item.meta));
-            this.set('id', item['_id']);
-        },
-        
-        validate : function(attributes){
-            if (!attributes.title) return "Title cannot be blank.";
-        }
-    
-    }),
-    
-    IssueScore : Backbone.Model.extend({
-        defaults: {
-            views: 1,
-            score: 1,
-            contributions: 1
-        }
-    }),
-    
-    IssueMeta : Backbone.Model.extend({
-        defaults: {
-            last_edit: new Date(),
-            am_subscribed: false,
-            scales: [2,3,4,5],
-            initial_author: "billyg123"
-        }
-    })
+    validate : function(attributes){
+        if (!attributes.title) return "Title cannot be blank.";
+    }
 
-}
+});
+
 
 isApp.Collections = {
 
@@ -120,7 +160,9 @@ isApp.Collections = {
 
 }
 
-/** Views Definitions **/
+/********************************/
+/**      Views Definitions     **/
+/********************************/
 
 isApp.Views = {
 
@@ -130,12 +172,14 @@ isApp.Views = {
         
         events: {
             "click .open-icon" :        "toggleDescriptionOpen",
-            "click .subscribe-icon" :   ""
+            "click .subscribe-icon" :   "subscribe"
         },
         
+        // Save any tooltips here
         tooltips: {},
-    
-        template: _.template($('#backbone_issue_template').html()), /* dependency: issue.bb.tpl ; Default Template */
+        
+        // Default template
+        template: _.template($('#backbone_issue_template').html()), /* dependency: issue.bb.tpl (loaded in homepage.tpl) */
         
         render: function(){
             this.$el.html(this.template( this.model.toJSON() ));
@@ -144,17 +188,7 @@ isApp.Views = {
               this.toggleDescriptionOpen(null, false); // evt = null, transition = false
             }
 
-            /* Create Button Tooltips */
-            //this.tooltips.descriptionToggle = new Opentip(this.$el.find('.open-icon'), "Show/hide expanded description");
-            var subscribe_icon = this.$el.find('.subscribe-icon');
-            if (subscribe_icon.length > 0){
-                this.tooltips.subscribe = new Opentip(this.$el.find('.subscribe-icon'));
-                if (this.model.get('meta').get('am_subscribed')){
-                    this.tooltips.subscribe.setContent("Un-subscribe from issue");
-                } else {
-                    this.tooltips.subscribe.setContent("Subscribe to updates in this issue");
-                }
-            }
+            this.generateToolTips();
         },
         
         initialize: function(options){
@@ -163,15 +197,18 @@ isApp.Views = {
             }
 
             this.render();
+            this.model.on('sync', this.render, this);
         },
         
-        // UI Functions
+        /* -- --                    -- -- */
+        /*          UI Functions          */
+        /* -- --                    -- -- */
         
         toggleDescriptionOpen: function(evt, transition){
             if (typeof transition == 'undefined') transition = true;
-            var descriptionBox = this.$el.children('.description');
+            var descriptionBox = this.$el.find('.description');
             if (descriptionBox.hasClass('closed')){
-                this.$el.children('.issue-title').children('.open-icon').addClass('fa-angle-up').removeClass('fa-angle-down');
+                this.$el.find('.open-icon').addClass('fa-angle-up').removeClass('fa-angle-down');
                 descriptionBox.removeClass('closed');
                 if (transition) { 
                     descriptionBox.slideDown();
@@ -179,7 +216,7 @@ isApp.Views = {
                     descriptionBox.css('display', 'block');
                 }
             } else {
-                this.$el.children('.issue-title').children('.open-icon').addClass('fa-angle-down').removeClass('fa-angle-up');
+                this.$el.find('.open-icon').addClass('fa-angle-down').removeClass('fa-angle-up');
                 descriptionBox.addClass('closed');
                 if (transition) { 
                     descriptionBox.slideUp();
@@ -189,8 +226,34 @@ isApp.Views = {
             }
         },
         
-        subscribe: function(){
+        /* Create Button Tooltips */
+        generateToolTips: function(){
+            /* Subscribe Icon */
+            var subscribe_icon = this.$el.find('.subscribe-icon');
+            if (subscribe_icon.length > 0){
+                this.tooltips.subscribe = new Opentip(subscribe_icon);
+                if (this.model.get('meta').get('am_subscribed')){
+                    this.tooltips.subscribe.setContent("Un-subscribe from issue");
+                } else {
+                    this.tooltips.subscribe.setContent("Subscribe to updates in this issue");
+                }
+            }
+        },
         
+        subscribe: function(){
+            this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
+            this.model.save({'meta': (this.model.get('meta'))}, { patch: true, wait: true, success: function(){
+                if (isApp.myIssues != null){
+                    isApp.myIssues.reset();
+                    isApp.myIssues.once('sync', isApp.myIssuesView.render, isApp.myIssuesView);
+                    isApp.myIssues.fetch();
+                }
+            }, error: function(issue){
+                issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
+                /* */
+            } });
+            
+            //this.model.save({meta: 'test' }, {patch: true});
         }
         
     }),
@@ -217,7 +280,7 @@ isApp.Views = {
             this.render();
             
             /* Bind some events */
-            this.collection.on('sync', this.render, this);
+            this.collection.once('sync', this.render, this).on('changeSet', this.render, this);
         }
     
     })

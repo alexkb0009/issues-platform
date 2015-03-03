@@ -25,8 +25,8 @@ def images(filename, path = ""):
     return static_file(filename, root='view/images' + path)
 
 # WebFonts
-@app.route('/font/<filename:re:.*\.(ttf|eot|svg|woff|otf|css)>')
-@app.route('/font/<path:path>/<filename:re:.*\.(ttf|eot|svg|woff|otf|css)>')
+@app.route('/font/<filename:re:.*\.(ttf|eot|svg|woff|otf|css|woff2)>')
+@app.route('/font/<path:path>/<filename:re:.*\.(ttf|eot|svg|woff|otf|css|woff2)>')
 def images(filename, path = ""):
     if path != "": path = "/" + path
     return static_file(filename, root='view/webfonts' + path)  
