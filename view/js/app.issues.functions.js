@@ -10,13 +10,24 @@ isApp.u.getCurrentIssuesEndpointURL = function(){
     return url;
 }
 
-isApp.u.setLoaderInElem = function(element){
+isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle){
+    if (typeof replace == 'undefined') replace = false;
+    if (typeof color == 'undefined') color = 'inherit';
+    if (typeof extraClassName == 'undefined') extraClassName = '';
     var rawElement;
     if (element instanceof jQuery) {
         rawElement = element[0]
     } else {
         rawElement = element;
     }
-    rawElement.innerHTML = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>';
+    var loadElem = document.createElement('i');
+    loadElem.style.cssText = extraStyle;
+    loadElem.className = extraClassName + " fa fa-circle-o-notch fa-spin fa-fw";
+    //var newHTML = '<i class="fa fa-circle-o-notch fa-spin fa-fw" style="color: ' + color + ';"></i>';
+    if (replace) rawElement.parentNode.replaceChild(loadElem, rawElement);
+    else {
+        rawElement.innerHTML = '';
+        rawElement.appendChild(loadElem);
+    }
     return element;
 }

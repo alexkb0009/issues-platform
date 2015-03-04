@@ -21,12 +21,12 @@
 
     <% this.$el.addClass('row') %>
 
-    <div class="large-1 columns">
+    <div class="large-1 small-2 columns">
       <h5 class="score text-center">
         <%= scoring.get('score') %>
       </h5>
     </div>
-    <div class="large-11 columns content-container">
+    <div class="large-11 small-10 columns content-container">
       <h5 class="issue-title">
       <%= title %>
           <i class="open-icon fa fa-angle-up" title="Show/hide description"></i>

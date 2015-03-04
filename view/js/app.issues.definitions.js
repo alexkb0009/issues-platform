@@ -242,6 +242,7 @@ isApp.Views = {
         
         subscribe: function(){
             this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
+            isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #222; margin: -1px 9px 0; line-height: inherit;');
             this.model.save({'meta': (this.model.get('meta'))}, { patch: true, wait: true, success: function(){
                 if (isApp.myIssues != null){
                     isApp.myIssues.reset();
