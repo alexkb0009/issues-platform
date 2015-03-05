@@ -13,7 +13,7 @@ isApp.myIssuesView = new isApp.Views.IssuesView({ el: $("#my_issues"), collectio
 app.ce.currentIssuesTitle = $('#main_issues_title');
 
 // Selecting new sort
-app.ce.currentIssuesTitle.next('#main_issues_title_sorting_options').find('a').click(function(){
+isApp.ex.titleScaleLink = app.ce.currentIssuesTitle.next('#main_issues_title_sorting_options').find('a').click(function(){
 
     var clickedLink = $(this);
     isApp.u.setLoaderInElem(app.ce.currentIssuesTitle.children('#sorted_by_title'));
@@ -34,7 +34,7 @@ app.ce.currentIssuesTitle.next('#main_issues_title_sorting_options').find('a').c
 
 
 // Selecting new scale
-$('#main_issues_title_scale_options').find('a').click(function(){
+isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(function(){
 
     var clickedLink = $(this);
     var title = app.ce.currentIssuesTitle.children('#scale_title');
@@ -68,5 +68,41 @@ $('#main_issues_title_scale_options').find('a').click(function(){
       }
     });
     
-    
 });
+
+isApp.searchBar = new isApp.Models.SearchBar({results: new isApp.Collections.Issues()}, {input : $('#search_issues_row form input'), container : $('#search_issues_row')});
+new isApp.Views.IssuesView({ el: $("#search_issues_row .search-results"), collection: isApp.searchBar.get('results'), childTemplateID: 'backbone_issue_template' });
+
+isApp.ex.search = {
+  time  : null,
+  input : $('#search_issues_row form input'),
+  find  : function(query, callback){
+    $.ajax({
+      url: app.settings.root + 'api/search/issues',
+      type: 'POST',
+      headers : {
+        'Authorization': isApp.me.get('auth_key')
+      },
+      dataType: 'json',
+      data: {search: query, sort: session.sort},
+      success: function(data, textStatus, xhr){
+        callback(data);
+      }
+    });
+  }
+}
+/*
+// Initialize & Bind Search
+if (isApp.ex.search.input.length > 0){
+
+    isApp.ex.search.input.on('keyup', function(){
+        clearTimeout(isApp.ex.search.time);
+        isApp.ex.search.time = setTimeout(function(){
+            isApp.ex.search.find(isApp.ex.search.input.val(), function(issues){
+                console.log(issues)
+            });
+        }, 500);
+    });
+    
+}
+*/

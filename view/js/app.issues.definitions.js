@@ -19,9 +19,23 @@ window.isApp = {
     /** Objects **/
     me: null,               // Models.User --> Currently Logged In User
     currentIssues: null,    // Collections.Issues of Models.Issue --> Currently Sorted/Browsable Issues
+    currentIssuesView: null,
     myIssues: null,         // Collectioms.Issues of Models.Issue --> My Subscribed-to issues.
+    myIssuesView: null,
+    searchBar: null,        // Models.SearchBar
+    searchResults: null,    // Collections.Issues of Models.Issue --> Search Results
     
-    u: {}                   // Utility functions, perhaps defined elsewhere.
+    // Utility functions
+    u: {
+        getCurrentIssuesEndpointURL : null,
+        setLoaderInElem : null
+    },
+    
+    // Extra non-model objects/elements.
+    ex: {
+        
+    }
+    
 }
 
 
@@ -146,6 +160,64 @@ isApp.Models.Issue = Backbone.Model.extend({
 
 });
 
+isApp.Models.SearchBar = Backbone.Model.extend({
+    defaults: {
+        query: null,
+        time: null,
+        results: null,
+        resultsView: null
+    },
+    
+    url: function (){
+        return (app.settings.root || '/') + 'api/search/issues'
+    },
+    /*
+    find : function(){
+        this.once('sync', function(){
+            //this.set('results', )
+        });
+        this.sync('read', this.get('query'));
+    },
+    */
+    initialize: function(attributes, options){
+        this.input = options.input;
+        this.container = options.container;
+        this.input.on('keyup', $.proxy(function(e){
+            clearTimeout(this.get('time'));
+            this.time = setTimeout(function(m){
+                m.find(m.input.val());
+            }, 500, this);
+        }, this));
+    },
+    
+    find : function(query){
+        $.ajax({
+            url: this.url() || this.url,
+            type: 'POST',
+            headers : {
+                'Authorization': isApp.me.get('auth_key')
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({search: query, sort: session.sort}),
+            success: $.proxy(function(data, textStatus, xhr){
+                this.get('results').reset(data['results'], {parse: true});
+                this.get('results').trigger('changeSet');
+                this.container.removeClass('no-results');
+            }, this),
+            error: $.proxy(function(jqXHR, textStatus, error){
+                this.get('results').reset();
+                this.get('results').trigger('changeSet');
+                this.container.addClass('no-results');
+            }, this)
+        });
+    }
+
+});
+
+
+/** Collections **/
+
 
 isApp.Collections = {
 
@@ -242,7 +314,7 @@ isApp.Views = {
         
         subscribe: function(){
             this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
-            isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #222; margin: -1px 9px 0; line-height: inherit;');
+            isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; margin: -1px 2px 0; line-height: inherit;');
             this.model.save({'meta': (this.model.get('meta'))}, { patch: true, wait: true, success: function(){
                 if (isApp.myIssues != null){
                     isApp.myIssues.reset();
@@ -270,6 +342,11 @@ isApp.Views = {
                 var issueView = new isApp.Views.IssueView(optsObj);
                 this.$el.append(issueView.el);
             },this);
+            if (this.collection.length == 0){
+                this.$el.addClass('empty');
+            } else {
+                this.$el.removeClass('empty');
+            }
         },
         
         initialize: function(options){

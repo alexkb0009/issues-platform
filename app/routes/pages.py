@@ -1,5 +1,5 @@
 from app.state import app, logMachine
-from app.includes.bottle import request, response, redirect, static_file, jinja2_view as view
+from app.includes.bottle import request, response, redirect, static_file, jinja2_view as view, jinja2_template as template
 from app.functions.auth import session_auth
 
 # Setup
@@ -12,24 +12,25 @@ print = logMachine.log # Debug stuff better
 ## Primary Pages
 
 @app.route('/')
-@view('homepage.tpl')
+#@view('homepage.tpl')
 def index():
     from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions
     status = request.query.get('s')
-    returnObj = {}
 
     if session_auth():
-        returnObj['logged_in'] = True
-        returnObj['user'] = request.user
-        returnObj['route'] = [('Home', '', 'Return to homepage')]
-        returnObj['session'] = request.environ['beaker.session']
+        return template('homepage.member.tpl', {
+          'logged_in' : True,
+          'user' : request.user,
+          'route' : [('Home', '', 'Return to homepage')],
+          'session' : request.environ['beaker.session']
+        })
         
     else:
+        returnObj = {}
         returnObj['logged_in'] = False
         if status in ['login_failed', 'logged_out']:
             returnObj['subheader_message'] = status
-        
-    return returnObj
+        return template('homepage.guest.tpl', returnObj)
     
     
 @app.route('/register')

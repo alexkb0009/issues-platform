@@ -1,7 +1,7 @@
 
 ## Options for how issues may be sorted
 
-def getIssuesSortOptions(key = False):
+def getIssuesSortOptions(key = False, includeMongoSort = False):
     sortMap = [
         {'key' : 'trending', 'title' : "Trending"},
         {'key' : 'latest', 'title' : "Latest"},
@@ -12,6 +12,12 @@ def getIssuesSortOptions(key = False):
     if key:
         for item in sortMap:
             if item['key'] == key:
+                if includeMongoSort:
+                    if key == 'trending':           item['func'] = [('scoring.score', -1)]
+                    if key == 'latest':             item['func'] = [('meta.created_date', -1)]
+                    if key == 'most-views':         item['func'] = [('scoring.views', -1)]
+                    if key == 'most-contributions': item['func'] = [('scoring.contributions', -1)]
+                    if key == 'most-edits':         item['func'] = [('meta.revisions', -1)]
                 return item
         return False
     else:
@@ -68,11 +74,7 @@ def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
     print("Getting " + sorting + " issues @ scale " + str(scale))
     
     # Config proper sort
-    if sorting == 'trending':           sortSet = [('scoring.score', -1)]
-    if sorting == 'latest':             sortSet = [('meta.created_date', -1)]
-    if sorting == 'most-views':         sortSet = [('scoring.views', -1)]
-    if sorting == 'most-contributions': sortSet = [('scoring.contributions', -1)]
-    if sorting == 'most-edits':         sortSet = [('meta.revisions', -1)]
+    sortSet = getIssuesSortOptions(sorting, True)['func']
     
     # Default, to get issues @ certain scale only.
     matchQuery = {'meta.scales' : scale }

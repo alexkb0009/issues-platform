@@ -111,25 +111,25 @@ def set_scale():
 ## Search Issues
 @app.route('/' + app.config['app_info.api_request_path'] + 'search/issues', method="POST")
 def search_issues():
-    scale = float(request.forms.get('scale'))
-    query = request.forms.get('query')
-    print(query) # test
-    if scale > 2.5:
-        if not headers_key_auth(): return { 'message' : 'Need to be authenticated for this scale type.' } 
+    from app.functions.sort import getIssuesSortOptions
+    query = request.json.get('search')
+    if query:
+        #sort = getIssuesSortOptions(request.json.get('sort').get('key'), True)
+        #if sort == False: sort = { 'func' : [('scoring.score', -1)] }
+        issues = db.command('text', 'issues', search = query, limit = 10)
+        if len(issues['results']) > 0:
+            headers_key_auth()
+            issues['results'] = getIssuesFromCursor(map(lambda r: r['obj'], issues['results']))
+            return json.dumps(issues)
+            
+    response.status = 404
+    return {'message' : 'No Results'}
     
     
+
     
-    
-    from app.functions.sort import getIssuesScaleOptions
-    scale = getIssuesScaleOptions(float(request.forms.get('scale')), request.user, True)
-    if scale is False: return { 'message' : 'Scale not valid. Must be numerical.' } 
-    db.users.update(
-        {'_id' : request.user['_id']}, 
-        {'$set' : {'meta.current_scale' : scale['key']} },
-        multi=False
-    )
-    return { 'message' : 'Success', 'new_scale' : scale }
-    
+## PATCH (Individual Update) Issue Properties. 
+## Used most for meta or scoring.
 
 @app.route('/' + app.config['app_info.api_request_path'] + 'issue/<issue_id>', method='PATCH') # = /api/do/login
 def patch_issue(issue_id):
@@ -145,9 +145,10 @@ def patch_issue(issue_id):
     if not issue: # Finally, cancel
         response.status = 404
         return { 'message' : 'No such issue exists.' }
-        
+    
+    # Get into mappin n updating
+    
     meta = request.json.get('meta')
-    print(meta)
     if 'am_subscribed' in meta:
         if meta['am_subscribed']:
             db.users.update(
@@ -162,7 +163,6 @@ def patch_issue(issue_id):
                 multi=False
             )
 
-    
     return { 'status' : 200, 'statusText' : 'OK' }
   
   

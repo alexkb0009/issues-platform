@@ -4,11 +4,11 @@
 
     <h5 class="issue-title">
     <%= title %>
-        <i class="open-icon fa fa-angle-up" title="Show/hide description"></i>
+        <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
     <% if (meta.get('am_subscribed')){ %>
-        <i class="subscribe-icon subscribed fa fa-star"></i>
+        <i class="subscribe-icon subscribed fa fa-fw fa-star"></i>
     <% } else if (meta.get('am_subscribed') == false) { %>
-        <i class="subscribe-icon fa fa-star-o"></i>
+        <i class="subscribe-icon fa fa-fw fa-star-o"></i>
     <% } %>
     </h5>
     <div class="description">
@@ -26,18 +26,20 @@
         <%= scoring.get('score') %>
       </h5>
     </div>
-    <div class="large-11 small-10 columns content-container">
-      <h5 class="issue-title">
-      <%= title %>
-          <i class="open-icon fa fa-angle-up" title="Show/hide description"></i>
-      <% if (meta.get('am_subscribed')){ %>
-          <i class="subscribe-icon subscribed fa fa-star"></i>
-      <% } else if (meta.get('am_subscribed') == false) { %>
-          <i class="subscribe-icon fa fa-star-o"></i>
-      <% } %>
-      </h5>
-      <div class="description">
-          <%= description %>       
+    <div class="large-11 small-10 columns">
+      <div class="content-container">
+        <h5 class="issue-title">
+        <%= title %>
+            <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
+        <% if (meta.get('am_subscribed')){ %>
+            <i class="subscribe-icon subscribed fa-fw fa fa-star"></i>
+        <% } else if (meta.get('am_subscribed') == false) { %>
+            <i class="subscribe-icon fa fa-fw fa-star-o"></i>
+        <% } %>
+        </h5>
+        <div class="description">
+            <%= description %>       
+        </div>
       </div>
     </div>
 </script>

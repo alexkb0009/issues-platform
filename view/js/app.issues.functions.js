@@ -23,7 +23,6 @@ isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle)
     var loadElem = document.createElement('i');
     loadElem.style.cssText = extraStyle;
     loadElem.className = extraClassName + " fa fa-circle-o-notch fa-spin fa-fw";
-    //var newHTML = '<i class="fa fa-circle-o-notch fa-spin fa-fw" style="color: ' + color + ';"></i>';
     if (replace) rawElement.parentNode.replaceChild(loadElem, rawElement);
     else {
         rawElement.innerHTML = '';
