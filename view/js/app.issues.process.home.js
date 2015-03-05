@@ -2,15 +2,15 @@
 isApp.currentIssues = new isApp.Collections.Issues([{},{},{}]);
 isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL;
 isApp.currentIssues.fetch();
-isApp.currentIssuesView = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger' });
+isApp.currentIssues.view = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger' });
 
 isApp.myIssues = new isApp.Collections.Issues([{},{},{}]);
 isApp.myIssues.url = app.settings.root + 'api/issues/subscribed';
 isApp.myIssues.fetch();
-isApp.myIssuesView = new isApp.Views.IssuesView({ el: $("#my_issues"), collection: isApp.myIssues, childClassName: 'issue listview min' });
+isApp.myIssues.view = new isApp.Views.IssuesView({ el: $("#my_issues"), collection: isApp.myIssues, childClassName: 'issue listview min' });
 
 isApp.searchBar = new isApp.Models.SearchBar({results: new isApp.Collections.Issues()}, {input : $('#search_issues_row form input'), container : $('#search_issues_row')});
-new isApp.Views.IssuesView({ el: $("#search_issues_row .search-results"), collection: isApp.searchBar.get('results'), childTemplateID: 'backbone_issue_template' });
+isApp.searchBar.get('results').view = new isApp.Views.IssuesView({ el: $("#search_issues_row .search-results"), collection: isApp.searchBar.get('results'), childTemplateID: 'backbone_issue_template' });
 
 
 

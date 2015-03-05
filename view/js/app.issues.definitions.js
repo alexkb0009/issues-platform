@@ -19,9 +19,7 @@ window.isApp = {
     /** Objects **/
     me: null,               // Models.User --> Currently Logged In User
     currentIssues: null,    // Collections.Issues of Models.Issue --> Currently Sorted/Browsable Issues
-    currentIssuesView: null,
     myIssues: null,         // Collectioms.Issues of Models.Issue --> My Subscribed-to issues.
-    myIssuesView: null,
     searchBar: null,        // Models.SearchBar
     searchResults: null,    // Collections.Issues of Models.Issue --> Search Results
     
@@ -161,27 +159,20 @@ isApp.Models.Issue = Backbone.Model.extend({
 });
 
 isApp.Models.SearchBar = Backbone.Model.extend({
+
     defaults: {
         query: null,
         time: null,
-        results: null,
-        resultsView: null
+        results: null
     },
     
     url: function (){
         return (app.settings.root || '/') + 'api/search/issues'
     },
-    /*
-    find : function(){
-        this.once('sync', function(){
-            //this.set('results', )
-        });
-        this.sync('read', this.get('query'));
-    },
-    */
+    
     initialize: function(attributes, options){
         this.input = options.input;
-        this.container = options.container;
+        this.container = options.container; // Must be jQuery object.
         
         /* Bind Key Press to Search */
         
@@ -192,6 +183,19 @@ isApp.Models.SearchBar = Backbone.Model.extend({
                 m.find();
             }, 750, this);
         }, this));
+        
+        /* Bind clear button to clear function */
+        
+        var clearButton = this.container.find('.clear-search.button');
+        if (clearButton.length > 0){
+            clearButton.on('click', $.proxy(this.clear, this));
+            /* Create Button Tooltips */
+            this.set('tooltips', {
+                clear_button : new Opentip(clearButton)
+            });
+            this.get('tooltips').clear_button.setContent('Clear search box and results');
+        }
+        
     },
     
     clear : function(){
@@ -229,11 +233,11 @@ isApp.Models.SearchBar = Backbone.Model.extend({
             success: $.proxy(function(data, textStatus, xhr){
                 this.get('results').reset(data['results'], {parse: true});
                 this.get('results').trigger('changeSet');
-                if (data['results'].length > 0){
-                    this.container.removeClass('no-results');
-                } else {
-                    this.container.addClass('no-results');
+                if (data['results'].length == 0){
+                    this.get('results').view.el.innerHTML = '<h6 class="error"><i class="fa fa-fw fa-angle-right"></i>' + data['message'] + '</h6>';
+                    this.get('results').view.el.innerHTML += '<div>Why not create one?</div>'
                 }
+                this.container.removeClass('no-results');
             }, this),
             error: $.proxy(function(jqXHR, textStatus, error){
                 this.emptyResults();
@@ -346,7 +350,7 @@ isApp.Views = {
             this.model.save({'meta': (this.model.get('meta'))}, { patch: true, wait: true, success: function(){
                 if (isApp.myIssues != null){
                     isApp.myIssues.reset();
-                    isApp.myIssues.once('sync', isApp.myIssuesView.render, isApp.myIssuesView);
+                    isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
                     isApp.myIssues.fetch();
                 }
             }, error: function(issue){

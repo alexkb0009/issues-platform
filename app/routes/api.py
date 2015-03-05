@@ -126,7 +126,7 @@ def search_issues():
             issues['results'] = getIssuesFromCursor(map(lambda r: r['obj'], issues['results']))
             return json.dumps(issues)
             
-    return {'message' : 'No Results', 'results' : []}
+    return {'message' : 'No issues found matching "' + query + '"', 'results' : []}
     
     
 

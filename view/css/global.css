@@ -228,6 +228,10 @@ div.large-1 {
   margin: 0.75rem 0;
 }
 
+#search_issues_row form a.button {
+  margin: 0;
+}
+
 #search_issues_row .search-icon-container i {
   font-size: 24px;
   padding-top: 5px;
@@ -242,6 +246,10 @@ div.large-1 {
 #search_issues_row .search-results.container {
   border-bottom: 1px dotted #888;
   padding-bottom: 8px;
+}
+
+#search_issues_row .search-results.container h6.error {
+
 }
 
 #search_issues_row.no-results .result-title,

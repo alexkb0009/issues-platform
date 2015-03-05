@@ -93,11 +93,20 @@
                 </div>
                 <div class="large-11 small-10 columns">
                     <form id="search_issues">
-                        <input type="text" name="search" placeholder="rising cost of wheat">
+                        <div class="row collapse postfix-radius">
+                            <div class="large-11 small-10 columns">
+                                <input type="text" name="search" placeholder="rising cost of wheat" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
+                            </div>
+                            <div class="large-1 small-2 columns">
+                                <a href="#" class="button postfix radius clear-search">
+                                    &nbsp;<i class="fa fa-times"></i>&nbsp;
+                                </a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
-            <h6 class="result-title">Search Results</h6>
+            <h5 class="result-title">Search Results</h5>
             <div class="search-results container">
             
             </div>
