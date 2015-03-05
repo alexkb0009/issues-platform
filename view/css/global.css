@@ -234,7 +234,9 @@ div.large-1 {
 }
 
 #search_issues_row .result-title {
-  margin: 18px 0 0;
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px dotted #888;
 }
 
 #search_issues_row .search-results.container {

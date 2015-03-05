@@ -97,7 +97,7 @@
                     </form>
                 </div>
             </div>
-            <h6 class="result-title">Results</h6>
+            <h6 class="result-title">Search Results</h6>
             <div class="search-results container">
             
             </div>

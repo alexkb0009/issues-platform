@@ -182,15 +182,38 @@ isApp.Models.SearchBar = Backbone.Model.extend({
     initialize: function(attributes, options){
         this.input = options.input;
         this.container = options.container;
+        
+        /* Bind Key Press to Search */
+        
         this.input.on('keyup', $.proxy(function(e){
+            this.set('query' , this.input.val());
             clearTimeout(this.get('time'));
             this.time = setTimeout(function(m){
-                m.find(m.input.val());
-            }, 500, this);
+                m.find();
+            }, 750, this);
         }, this));
     },
     
+    clear : function(){
+        this.input.val('');
+        this.emptyResults();
+    },
+    
+    emptyResults : function(){
+        this.get('results').reset();
+        this.get('results').trigger('changeSet');
+        this.container.addClass('no-results');
+    },
+    
     find : function(query){
+    
+        if (typeof query == 'undefined') query = this.get('query');
+    
+        if (query.length < 2) {
+            this.emptyResults();
+            return;
+        }
+        
         $.ajax({
             url: this.url() || this.url,
             type: 'POST',
@@ -199,16 +222,21 @@ isApp.Models.SearchBar = Backbone.Model.extend({
             },
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify({search: query, sort: session.sort}),
+            data: JSON.stringify({ 
+                search : query, 
+                scale  : isApp.me.get('current_scale')
+            }),
             success: $.proxy(function(data, textStatus, xhr){
                 this.get('results').reset(data['results'], {parse: true});
                 this.get('results').trigger('changeSet');
-                this.container.removeClass('no-results');
+                if (data['results'].length > 0){
+                    this.container.removeClass('no-results');
+                } else {
+                    this.container.addClass('no-results');
+                }
             }, this),
             error: $.proxy(function(jqXHR, textStatus, error){
-                this.get('results').reset();
-                this.get('results').trigger('changeSet');
-                this.container.addClass('no-results');
+                this.emptyResults();
             }, this)
         });
     }

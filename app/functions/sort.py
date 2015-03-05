@@ -1,7 +1,7 @@
 
 ## Options for how issues may be sorted
 
-def getIssuesSortOptions(key = False, includeMongoSort = False):
+def getIssuesSortOptions(key = False, includeMongoSortFunc = False):
     sortMap = [
         {'key' : 'trending', 'title' : "Trending"},
         {'key' : 'latest', 'title' : "Latest"},
@@ -12,7 +12,7 @@ def getIssuesSortOptions(key = False, includeMongoSort = False):
     if key:
         for item in sortMap:
             if item['key'] == key:
-                if includeMongoSort:
+                if includeMongoSortFunc:
                     if key == 'trending':           item['func'] = [('scoring.score', -1)]
                     if key == 'latest':             item['func'] = [('meta.created_date', -1)]
                     if key == 'most-views':         item['func'] = [('scoring.views', -1)]
@@ -25,6 +25,8 @@ def getIssuesSortOptions(key = False, includeMongoSort = False):
         
         
 def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
+    if striptags: 
+        from lxml import html
 
     # Localize to user's geographic regions, if defined.
     # Some defaults to fall back on first.
@@ -54,16 +56,33 @@ def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
         for item in scaleMap:
             if item['key'] == key:
                 if striptags: 
-                    from lxml import html
                     item['title'] = html.fromstring(item['title']).text_content()
                 return item
         return False
     else:
         if striptags:
-            from lxml import html
             for item in scaleMap: 
                 item['title'] = html.fromstring(item['title']).text_content()
         return scaleMap
+        
+        
+def getMongoScaleQuery(scale, user):
+
+    # Default, to get issues @ certain scale only.
+    matchQuery = {'meta.scales' : scale }
+    
+    if user:
+        if not scale.is_integer():
+            matchQuery = {'meta.scales' : { '$elemMatch' : {'$gt' : scale, '$lt' : (scale + 1) } } }
+        if scale > 2.5:
+            # State
+            if scale in [3, 3.5]: matchQuery['meta.state'] = user['meta']['state']
+            # City
+            if scale in [4, 4.5]: matchQuery['meta.city']  = user['meta']['city']
+            # District
+            if scale in [5]:      matchQuery['meta.zip']   = user['meta']['zip']
+        
+    return matchQuery
         
  
 def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
@@ -73,23 +92,12 @@ def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
     
     print("Getting " + sorting + " issues @ scale " + str(scale))
     
-    # Config proper sort
+    # Get sort function
     sortSet = getIssuesSortOptions(sorting, True)['func']
     
-    # Default, to get issues @ certain scale only.
-    matchQuery = {'meta.scales' : scale }
-    
-    if not scale.is_integer():
-        matchQuery = {'meta.scales' : { '$elemMatch' : {'$gt' : scale, '$lt' : (scale + 1) } } }
-        
-    if scale > 2.5:
-        from app.includes.bottle import request
-        # State
-        if scale in [3, 3.5]: matchQuery['meta.state'] = request.user['meta']['state']
-        # City
-        if scale in [4, 4.5]: matchQuery['meta.city']  = request.user['meta']['city']
-        # District
-        if scale in [5]:      matchQuery['meta.zip']   = request.user['meta']['zip']
+    # Get scale in context of user
+    from app.includes.bottle import request
+    matchQuery = getMongoScaleQuery(scale, request.user)
         
     return db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit, sort = sortSet)
         

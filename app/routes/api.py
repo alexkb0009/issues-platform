@@ -111,19 +111,22 @@ def set_scale():
 ## Search Issues
 @app.route('/' + app.config['app_info.api_request_path'] + 'search/issues', method="POST")
 def search_issues():
-    from app.functions.sort import getIssuesSortOptions
+    from app.functions.sort import getMongoScaleQuery
     query = request.json.get('search')
     if query:
-        #sort = getIssuesSortOptions(request.json.get('sort').get('key'), True)
-        #if sort == False: sort = { 'func' : [('scoring.score', -1)] }
-        issues = db.command('text', 'issues', search = query, limit = 10)
+        scaleQuery = None
+        headers_key_auth()
+        if hasattr(request, 'user'):
+            scaleQuery = getMongoScaleQuery(float(request.json.get('scale')), request.user)
+        else:
+            scaleQuery = getMongoScaleQuery(0.0, False)
+        
+        issues = db.command('text', 'issues', search = query, filter = scaleQuery, limit = 10)
         if len(issues['results']) > 0:
-            headers_key_auth()
             issues['results'] = getIssuesFromCursor(map(lambda r: r['obj'], issues['results']))
             return json.dumps(issues)
             
-    response.status = 404
-    return {'message' : 'No Results'}
+    return {'message' : 'No Results', 'results' : []}
     
     
 
