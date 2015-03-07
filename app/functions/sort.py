@@ -1,7 +1,15 @@
 
-## Options for how issues may be sorted
-
-def getIssuesSortOptions(key = False, includeMongoSortFunc = False):
+def getIssuesSortOptions(key = None, includeMongoSortFunc = False):
+    '''
+    Return either a list of all Issues sorting options or one option if a key is provided.
+    An 'option' is a dict consisting of 'key' and 'title'.
+    Optionally, if includeMongoSortFunc is True, returns the formatted MongoDB sort option ONLY if key is also provided.
+    
+    @type  key: string
+    @param key: The key (matching 'key' in dict of return object) of sort option.
+    @type  includeMongoSortFunc: boolean
+    @param includeMongoSortFunc: Whether to include the pymongo/MongoDB-formatted sort query. Only returned if key is also set.
+    '''
     sortMap = [
         {'key' : 'trending', 'title' : "Trending"},
         {'key' : 'latest', 'title' : "Latest"},
@@ -41,15 +49,15 @@ def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
     
     # The map of options. Maybe convert to YAML file or something in time.
     scaleMap = [
-        {'key' : 0, 'title' : "<i class='fa fa-fw fa-globe'></i>Anywhere", 'class' : 'primary'},
-        #{'key' : 1, 'title' : "Worldwide"},
-        {'key' : 2, 'title' : "<i class='fa fa-fw fa-plane'></i>National <span class='light'>Issues</span>", 'class' : 'primary'},
+        {'key' : 0,   'title' : "<i class='fa fa-fw fa-globe'></i>Anywhere", 'class' : 'primary'},
+        #{'key' : 1,   'title' : "Worldwide"},
+        {'key' : 2,   'title' : "<i class='fa fa-fw fa-plane'></i>National <span class='light'>Issues</span>", 'class' : 'primary'},
         {'key' : 2.5, 'title' : "Nationwide <span class='light'>State Issues</span>", 'class' : 'secondary'},
-        {'key' : 3, 'title' : "<i class='fa fa-fw fa-car'></i>" + state + " <span class='light'>Issues</span>", 'class' : 'primary'},
+        {'key' : 3,   'title' : "<i class='fa fa-fw fa-car'></i>" + state + " <span class='light'>Issues</span>", 'class' : 'primary'},
         {'key' : 3.5, 'title' : "Statewide <span class='light'>City Issues</span>", 'class' : 'secondary'},
-        {'key' : 4, 'title' : "<i class='fa fa-fw fa-subway'></i>" + city + " <span class='light'>Issues</span>", 'class' : 'primary'},
+        {'key' : 4,   'title' : "<i class='fa fa-fw fa-subway'></i>" + city + " <span class='light'>Issues</span>", 'class' : 'primary'},
         {'key' : 4.5, 'title' : "Citywide <span class='light'>District Issues</span>", 'class' : 'secondary'},
-        {'key' : 5, 'title' : "<i class='fa fa-fw fa-bicycle'></i>" + zip + " <span class='light'>Issues</span>", 'class' : 'primary'}
+        {'key' : 5,   'title' : "<i class='fa fa-fw fa-bicycle'></i>" + zip + " <span class='light'>Issues</span>", 'class' : 'primary'}
     ]
 
     if key is not False:
@@ -66,14 +74,26 @@ def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
         return scaleMap
         
         
-def getMongoScaleQuery(scale, user):
+def getMongoScaleQuery(scale = 2.0, user = False):
+
+    if not user: scale = 2.0 # Only national scale for unregistered users.
 
     # Default, to get issues @ certain scale only.
-    matchQuery = {'meta.scales' : scale }
+    matchQuery = {'meta.scale' : scale }
     
     if user:
+        if scale == 0: 
+            matchQuery = {
+                '$or' : [
+                    {'meta.scale': 2},
+                    {'meta.scale': 3, 'meta.state' : user['meta']['state']},
+                    {'meta.scale': 4, 'meta.city'  : user['meta']['city'] },
+                    {'meta.scale': 5, 'meta.city'  : user['meta']['zip']  }
+                ]
+            }
         if not scale.is_integer():
-            matchQuery = {'meta.scales' : { '$elemMatch' : {'$gt' : scale, '$lt' : (scale + 1) } } }
+            import math
+            matchQuery = {'meta.scale' : math.ceil(scale) }
         if scale > 2.5:
             # State
             if scale in [3, 3.5]: matchQuery['meta.state'] = user['meta']['state']
@@ -87,16 +107,12 @@ def getMongoScaleQuery(scale, user):
  
 def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
     from app.state import db, logMachine
-    print = logMachine.log # Debug stuff better
-    cursor = None
-    
-    print("Getting " + sorting + " issues @ scale " + str(scale))
+    from app.includes.bottle import request
     
     # Get sort function
     sortSet = getIssuesSortOptions(sorting, True)['func']
     
     # Get scale in context of user
-    from app.includes.bottle import request
     matchQuery = getMongoScaleQuery(scale, request.user)
         
     return db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit, sort = sortSet)

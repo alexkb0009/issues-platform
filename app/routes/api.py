@@ -33,7 +33,7 @@ def getIssuesFromCursor(cursor, redactFields = []):
             'revision_author' : currentRevisionAuthor,
             'revisions_count' : issue['revisions_count'] if 'revisions_count' in issue else None,
             'initial_author' : issue['meta']['initial_author'],
-            'scales' : issue['meta']['scales']
+            'scale' : issue['meta']['scale']
           }
         }
         

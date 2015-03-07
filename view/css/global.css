@@ -238,7 +238,7 @@ div.large-1 {
 }
 
 #search_issues_row .result-title {
-  margin: 12px 0 0;
+  margin: 0.75rem 0 0;
   padding-top: 12px;
   border-top: 1px dotted #888;
 }

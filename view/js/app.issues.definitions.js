@@ -161,9 +161,10 @@ isApp.Models.Issue = Backbone.Model.extend({
 isApp.Models.SearchBar = Backbone.Model.extend({
 
     defaults: {
-        query: null,
+        query: '',
         time: null,
-        results: null
+        results: null,
+        currentXHR : $.ajax() // Empty jqXHR obj.
     },
     
     url: function (){
@@ -179,6 +180,7 @@ isApp.Models.SearchBar = Backbone.Model.extend({
         this.input.on('keyup', $.proxy(function(e){
             this.set('query' , this.input.val());
             clearTimeout(this.get('time'));
+            this.get('currentXHR').abort();
             this.time = setTimeout(function(m){
                 m.find();
             }, 750, this);
@@ -218,7 +220,8 @@ isApp.Models.SearchBar = Backbone.Model.extend({
             return;
         }
         
-        $.ajax({
+        //this.get('currentXHR').abort();
+        var xhr = $.ajax({
             url: this.url() || this.url,
             type: 'POST',
             headers : {
@@ -239,10 +242,11 @@ isApp.Models.SearchBar = Backbone.Model.extend({
                 }
                 this.container.removeClass('no-results');
             }, this),
-            error: $.proxy(function(jqXHR, textStatus, error){
-                this.emptyResults();
+            error: $.proxy(function(xhr, textStatus, error){
+                if (xhr.statusText != 'abort') this.emptyResults();
             }, this)
         });
+        this.set('currentXHR', xhr);
     }
 
 });

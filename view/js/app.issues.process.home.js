@@ -57,7 +57,6 @@ isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(
         'scale' : isApp.me.get('current_scale')
       },
       success: function(data, textStatus, xhr){
-        console.log(data);
         if (typeof data.new_scale != "undefined"){
           isApp.currentIssues.reset();
           isApp.currentIssues.once('sync',function(){
