@@ -32,6 +32,21 @@ def do_register():
     from app.functions.auth import register_new_account
     result = register_new_account(db, request.forms, app.config)
     if result == True:
+        from app.utilities.email import email
+        message = '''
+            Congratulations! You have been registered at http://myissues.us.
+            This application is still in beta so some parts and features have not yet been fully developed.
+            
+            As a reminder, your username is {0}.
+            You may login at https://myissues.us.
+            '''.format(request.forms.get('username'))
+            
+        email(
+            to = request.forms.get('email'),
+            subject = 'Registration @ MyIssues',
+            message = message,
+            toname = request.forms.get('firstname') + ' ' + request.forms.get('lastname')
+        )
         redirect(app.config['app_info.root_directory'] + 'register/2?s=registered&more=' + request.forms.get('username'))
     else: 
         redirect(app.config['app_info.root_directory'] + 'register/2?s=error&reason=' + result[0] + "&more=" + result[1])

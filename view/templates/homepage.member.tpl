@@ -98,7 +98,7 @@
                                 <input type="text" name="search" placeholder="rising cost of wheat" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
                             </div>
                             <div class="large-1 small-2 columns">
-                                <a href="#" class="button postfix radius clear-search">
+                                <a href="#" class="button secondary postfix radius clear-search">
                                     &nbsp;<i class="fa fa-times"></i>&nbsp;
                                 </a>
                             </div>
@@ -108,7 +108,11 @@
             </div>
             <h5 class="result-title">Search Results</h5>
             <div class="search-results container">
-            
+                {# Container for search results #}
+            </div>
+            <div class="create-new-issue">
+                <h6>Nothing matching your concern?</h6>
+                <a href="{{ root }}define-issue" class="button radius expand success">Define an Issue!</a>
             </div>
         </div>
         

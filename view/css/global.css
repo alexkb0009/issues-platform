@@ -129,8 +129,14 @@ div.main-body > .main-content.row {
   padding-bottom: 2px;
 }
 
-.section-header > .ext {
+h1 > .ext, h2 > .ext, h3 > .ext,
+h4 > .ext, h5 > .ext, h6 > .ext {
   font-weight: 100;
+}
+
+hr.smaller {
+  border-color: #ccc;
+  margin: 10px 0 12px;
 }
 
 /* responsive edits */
@@ -142,25 +148,21 @@ div.main-body > .main-content.row {
 
 /** Title Select Dropdowns **/
 
-h4#main_issues_title a#sorted_by_title ,
-h4#main_issues_title a#scale_title  { 
+h1 a[data-dropdown], h2 a[data-dropdown], h3 a[data-dropdown],
+h4 a[data-dropdown], h5 a[data-dropdown], h6 a[data-dropdown] {
   color: #222; 
 }
-h4#main_issues_title a#sorted_by_title:hover,
-h4#main_issues_title a#scale_title:hover  { 
-  color: #000; 
-}
 
-h4#main_issues_title a#sorted_by_title:after,
-h4#main_issues_title a#scale_title:after  { 
+h1 a[data-dropdown]:after , h2 a[data-dropdown]:after , h3 a[data-dropdown]:after ,
+h4 a[data-dropdown]:after , h5 a[data-dropdown]:after , h6 a[data-dropdown]:after  { 
   font-family: FontAwesome;
   content: " \f0dd"; 
   padding: 0 3px;
   font-size: .875em;
 }
 
-h4#main_issues_title a#sorted_by_title:hover,
-h4#main_issues_title a#scale_title:hover  { 
+h1 a[data-dropdown]:hover, h2 a[data-dropdown]:hover, h3 a[data-dropdown]:hover,
+h4 a[data-dropdown]:hover, h5 a[data-dropdown]:hover, h6 a[data-dropdown]:hover  { 
   opacity: 0.5;
 }
 
@@ -230,6 +232,14 @@ div.large-1 {
 
 #search_issues_row form a.button {
   margin: 0;
+  background-color: #C4C8D3;
+  background-color: rgba(0,0,0,0.075);
+}
+
+#search_issues_row form a.button:hover {
+  margin: 0;
+  background-color: #B6BAC5;
+  background-color: rgba(0,0,0,0.15);
 }
 
 #search_issues_row .search-icon-container i {
@@ -249,11 +259,21 @@ div.large-1 {
 }
 
 #search_issues_row .search-results.container h6.error {
+  margin-bottom: 2px;
+}
 
+#search_issues_row .create-new-issue {
+  padding: 7px 0 0;
+}
+
+#search_issues_row .create-new-issue a.button {
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 #search_issues_row.no-results .result-title,
-#search_issues_row.no-results .search-results.container {
+#search_issues_row.no-results .search-results.container,
+#search_issues_row.no-results .create-new-issue {
   display: none;
 }
 
@@ -262,6 +282,10 @@ div.large-1 {
 }
 
 /* Issues */
+
+body.in-search div#main_issues {
+  display: none;
+}
 
 .issue.listview {
   margin-top: 6px;

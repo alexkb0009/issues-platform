@@ -17,6 +17,7 @@ setup(name='My Issues',
           'beaker>=1.6', 
           'redis', 
           'requests', 
-          'lxml'
+          'lxml',
+          'Markdown'
       ]
      )

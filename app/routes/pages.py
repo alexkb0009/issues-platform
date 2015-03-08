@@ -12,10 +12,14 @@ print = logMachine.log # Debug stuff better
 ## Primary Pages
 
 @app.route('/')
-#@view('homepage.tpl')
 def index():
+    '''
+    This is the primary index page. It outputs two different templates/views, depending on if user is guest or authenticated user.
+    If authenticated, render the homepage.member.tpl template which contains lists of Issues, etc. to make up users' home portal.
+    If guest, get guest / marketing content + login access.
+    '''
     from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions
-    status = request.query.get('s')
+    status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
 
     if session_auth():
         return template('homepage.member.tpl', {
@@ -31,7 +35,33 @@ def index():
         if status in ['login_failed', 'logged_out']:
             returnObj['subheader_message'] = status
         return template('homepage.guest.tpl', returnObj)
+        
+
+
+@app.route('/define-issue')
+#@view('define_issue.tpl')
+def define_issue():
+    '''
+    This is the page where issues may be created.
+    '''
     
+    status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
+
+    if session_auth():
+        return template('define_issue.tpl', {
+          'logged_in' : True,
+          'user' : request.user,
+          'route' : [('Define Issue', '', 'Create/define a new Issue')],
+          'session' : request.environ['beaker.session']
+        })
+        
+    else:
+        response.status = 401
+        return {'message': 'Not Authenticated'}
+        
+        
+        
+## User pages, e.g. register, account settings, etc.    
     
 @app.route('/register')
 @app.route('/register/')
@@ -63,11 +93,16 @@ def register(pagenum = None):
         
     return returnObj
     
-## About Us 
+    
+## Some 'static' pages >
+# About Us 
     
 @app.route('/about')
 @view('content_pages/about.tpl')
 def about():
+    '''
+    The about us page.
+    '''
     status = request.query.get('s')
     returnObj = {
       'route' : [('About', '', 'Return to homepage')]
@@ -126,6 +161,12 @@ def test_errors():
     asouFHasduifg
     return "No Error"
     
+@app.route('/test_email')
+def test_errors():
+    from app.utilities.email import email
+    email(to = 'alex.balashov@gmail.com', subject = 'Testing Email Receipt', message = 'Testing... email... receipt')
+    return "Ok"
+    
 @app.route('/test_zip/<zipcode>')
 def test_zip(zipcode):
     import requests
@@ -145,36 +186,33 @@ def error404(error):
     }
     return returnObj
     
+@app.error(403)
+@view('error.tpl')
+def error403(error):
+    returnObj = {
+        'route'     : [('Error', '', 'Return to homepage')],
+        'error'     : 403,
+        'message'   : 'You are not authenticated or do not have the proper permissions to access this page.'
+    }
+    return returnObj
+    
 @app.error(500)
 def handle_500_errors(error):
 
     if not logMachine.commandLine: # ERROR REPORT, but only if not in debugging, e.g. hosted as service rather than working in command line
-        from smtplib import SMTP_SSL as SMTP
-        from email.mime.text import MIMEText
+        from app.utilities.email import email
         
         # First, log into file.
         print('\n' + error.body)
         print(error.traceback)
         
         # Then email.
-        message = MIMEText(error.body + '\n\nRequest: ' + str(request) + '\n\nStackTrace: \n\n' + str(error.traceback))
-        message['Subject'] = 'ERROR on ISSUES'
-        message['To'] = app.config['reporting.report_email']
-        
-        try:
-            connection = SMTP(app.config['reporting.smtp_server'])
-            connection.set_debuglevel(True)
-            connection.login(app.config['reporting.smtp_username'], app.config['reporting.smtp_password'])    
-            try:
-                connection.sendmail(app.config['reporting.from_email'], app.config['reporting.report_email'], message.as_string())
-            finally:
-                connection.close()
-        except Exception as exc:
-            print('Couldnt send email.')
-            print(exc)
-    
-    
-    #print(error.traceback)
+        email(
+            to = app.config['reporting.report_email'],
+            subject = 'ERROR on ISSUES',
+            message = error.body + '\n\nRequest: ' + str(request) + '\n\nStackTrace: \n\n' + str(error.traceback)
+        )
+
     return '''
     <div style="border: 1px solid #777; margin: 20px; padding: 15px 20px 20px; font-family: Source Sans Pro, HelveticaNeue, Helvetica, Arial, sans-serif">
         <h3 style="margin: 0 0 10px; color:rgb(181, 0, 0);border-bottom: 1px dotted #bbb;padding-bottom: 10px;">500 Error.</h3>

@@ -114,7 +114,11 @@ def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
     
     # Get scale in context of user
     matchQuery = getMongoScaleQuery(scale, request.user)
+    
+    iterable = db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit + 1, sort = sortSet)
+    more = iterable.count(True) > limit
+    iterable = iterable[:limit]
         
-    return db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit, sort = sortSet)
+    return (iterable, more)
         
     

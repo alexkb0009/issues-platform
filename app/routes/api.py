@@ -69,12 +69,12 @@ def issues_list_scored(sorting):
         if 'current_scale' in request.user['meta']: scale = request.user['meta']['current_scale']
         else: scale = 0 # Anywhere is default for logged-in users.
         
-    iterable = getSortedIssuesIterableFromDB(sorting, 20, float(scale))
+    (iterable, more) = getSortedIssuesIterableFromDB(sorting, 20, float(scale))
     
     session['last_sort'] = sorting
     session.save();    
         
-    return json.dumps(getIssuesFromCursor(iterable))
+    return json.dumps({'results' : getIssuesFromCursor(iterable), 'more' : more })
 
     
 ## My Subscribed Issues:
@@ -84,7 +84,7 @@ def issues_list_subscribed():
 
     if not headers_key_auth(): return { 'message' : 'Not authenticated' }   
     subscribedIssues = map(lambda objId: {'_id' : objId }, request.user['subscribed_issues'])
-    return json.dumps(getIssuesFromCursor(subscribedIssues, ['meta.am_subscribed']))
+    return json.dumps({'results' : getIssuesFromCursor(subscribedIssues, ['meta.am_subscribed'])})
     
     
     
@@ -121,12 +121,13 @@ def search_issues():
         else:
             scaleQuery = getMongoScaleQuery(0.0, False)
         
-        issues = db.command('text', 'issues', search = query, filter = scaleQuery, limit = 10)
+        issues = db.command('text', 'issues', search = query, filter = scaleQuery, limit = 11)
         if len(issues['results']) > 0:
-            issues['results'] = getIssuesFromCursor(map(lambda r: r['obj'], issues['results']))
+            issues['more'] = len(issues['results']) > 10
+            issues['results'] = getIssuesFromCursor(map(lambda r: r['obj'], issues['results'][:10]))
             return json.dumps(issues)
             
-    return {'message' : 'No issues found matching "' + query + '"', 'results' : []}
+    return {'message' : 'No issues found matching "' + query + '"', 'results' : [], 'more' : False}
     
     
 

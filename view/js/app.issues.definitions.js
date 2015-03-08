@@ -209,6 +209,7 @@ isApp.Models.SearchBar = Backbone.Model.extend({
         this.get('results').reset();
         this.get('results').trigger('changeSet');
         this.container.addClass('no-results');
+        app.ce.body.removeClass('in-search');
     },
     
     find : function(query){
@@ -234,13 +235,15 @@ isApp.Models.SearchBar = Backbone.Model.extend({
                 scale  : isApp.me.get('current_scale')
             }),
             success: $.proxy(function(data, textStatus, xhr){
-                this.get('results').reset(data['results'], {parse: true});
+                this.get('results').reset(data, {parse: true});
+                console.log(data);
                 this.get('results').trigger('changeSet');
                 if (data['results'].length == 0){
                     this.get('results').view.el.innerHTML = '<h6 class="error"><i class="fa fa-fw fa-angle-right"></i>' + data['message'] + '</h6>';
-                    this.get('results').view.el.innerHTML += '<div>Why not create one?</div>'
+                    //this.get('results').view.el.innerHTML += '<div>Why not create one?</div>'
                 }
                 this.container.removeClass('no-results');
+                app.ce.body.addClass('in-search');
             }, this),
             error: $.proxy(function(xhr, textStatus, error){
                 if (xhr.statusText != 'abort') this.emptyResults();
@@ -258,6 +261,14 @@ isApp.Models.SearchBar = Backbone.Model.extend({
 isApp.Collections = {
 
     Issues: Backbone.Collection.extend({
+    
+        parse: function(response){
+            if (_.has(response, 'results')){
+                return response['results'];
+            } else {
+                return response;
+            }
+        },
     
         model : isApp.Models.Issue,
         initialize: function(items, options){
