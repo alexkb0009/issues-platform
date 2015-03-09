@@ -166,6 +166,11 @@ h4 a[data-dropdown]:hover, h5 a[data-dropdown]:hover, h6 a[data-dropdown]:hover 
   opacity: 0.5;
 }
 
+h1 a[data-dropdown] > i.fa-fw:first-child, h2 a[data-dropdown] > i.fa-fw:first-child , h3 a[data-dropdown] > i.fa-fw:first-child ,
+h4 a[data-dropdown] > i.fa-fw:first-child , h5 a[data-dropdown] > i.fa-fw:first-child , h6 a[data-dropdown] > i.fa-fw:first-child  {
+  margin-right: 5px;
+}
+
 ul.issues-title-dropdown.f-dropdown {
   background: #333;
   border-color: #222;
@@ -249,13 +254,13 @@ div.large-1 {
 
 #search_issues_row .result-title {
   margin: 0.75rem 0 0;
-  padding-top: 12px;
+  padding-top: 15px;
   border-top: 1px dotted #888;
 }
 
 #search_issues_row .search-results.container {
   border-bottom: 1px dotted #888;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
 }
 
 #search_issues_row .search-results.container h6.error {
@@ -263,7 +268,11 @@ div.large-1 {
 }
 
 #search_issues_row .create-new-issue {
-  padding: 7px 0 0;
+  padding: 10px 0 0;
+}
+
+#search_issues_row .create-new-issue > h6 {
+  margin-bottom: 10px;
 }
 
 #search_issues_row .create-new-issue a.button {
@@ -322,6 +331,17 @@ body.in-search div#main_issues {
   padding-top: 7px;
   padding-bottom: 3px;
   line-height: 32px;
+}
+.issue.listview h5.issue-title > a.title {
+    color: #222;
+}
+
+.issue.listview h5.issue-title > a.title:hover:after {
+  content: "\f054";
+  font-family: FontAwesome;
+  margin: -5px 9px 0;
+  display: inline-block;
+  font-size: .875em;
 }
 
 .issue.listview h5.issue-title > .open-icon,

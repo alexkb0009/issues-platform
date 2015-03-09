@@ -18,10 +18,17 @@ def index():
     If authenticated, render the homepage.member.tpl template which contains lists of Issues, etc. to make up users' home portal.
     If guest, get guest / marketing content + login access.
     '''
-    from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions
+    from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions, saveUserScale
     status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
-
+    scale = request.query.get('scale')
+    print(scale)
+    
+    
     if session_auth():
+        if scale:
+            scale = float(scale)
+            saveUserScale(scale, request.user)
+            request.user['meta']['current_scale'] = scale
         return template('homepage.member.tpl', {
           'logged_in' : True,
           'user' : request.user,
@@ -36,10 +43,47 @@ def index():
             returnObj['subheader_message'] = status
         return template('homepage.guest.tpl', returnObj)
         
-
+@app.route('/is/<issue_slug>')
+def view_issue(issue_slug):
+    '''
+    This is the page where issue may be viewed.
+    '''
+    from app.functions.issues import getIssueByID, getWellFormedIssue
+    from app.functions.sort import getIssuesScaleOptions
+    from slugify import slugify
+    from bson import json_util
+    
+    status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
+    
+    authd = session_auth()
+    issue = getIssueByID(slugify(issue_slug))
+    
+    if not issue:
+        response.status = 404
+        redirect('/404')
+    else: 
+        issue = getWellFormedIssue(issue, fullMode = True)
+        issue['jsonSerialized'] = json_util.dumps(issue)
+        scale = getIssuesScaleOptions(float(issue['meta']['scale']))
+        
+    returnObj = {
+        'logged_in' : authd,
+        'route' : [(scale['title'], '?scale=' + str(int(scale['key'])), ''),(issue['title'], '', '')],
+        'issue' : issue,
+        
+    }
+    
+    if not authd and issue['meta']['scale'] > 2:
+        response.status = 401
+        return {'message': 'Not Authenticated'}
+    elif authd:
+        returnObj['user'] = request.user
+        returnObj['session'] = request.environ['beaker.session']
+    
+    return template('issue.view.tpl', returnObj)
+        
 
 @app.route('/define-issue')
-#@view('define_issue.tpl')
 def define_issue():
     '''
     This is the page where issues may be created.
@@ -48,7 +92,7 @@ def define_issue():
     status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
 
     if session_auth():
-        return template('define_issue.tpl', {
+        return template('issue.define.tpl', {
           'logged_in' : True,
           'user' : request.user,
           'route' : [('Define Issue', '', 'Create/define a new Issue')],

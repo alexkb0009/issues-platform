@@ -38,8 +38,10 @@
       {# Initial Data, Settings #}
       
       <script>
+        {% if logged_in %}
         isApp.me = new isApp.Models.User({{ user.jsonSerialized|safe }});
         isApp.me.set('current_scale', {{ user['meta']['current_scale'] }} || 0);
+        {% endif %}
       </script>
     {%- endif -%}
     

@@ -5,8 +5,8 @@ def getIssuesSortOptions(key = None, includeMongoSortFunc = False):
     An 'option' is a dict consisting of 'key' and 'title'.
     Optionally, if includeMongoSortFunc is True, returns the formatted MongoDB sort option ONLY if key is also provided.
     
-    @type  key: string
-    @param key: The key (matching 'key' in dict of return object) of sort option.
+    @type                   key: string
+    @param                  key: The key (matching 'key' in dict of return object) of sort option.
     @type  includeMongoSortFunc: boolean
     @param includeMongoSortFunc: Whether to include the pymongo/MongoDB-formatted sort query. Only returned if key is also set.
     '''
@@ -32,8 +32,12 @@ def getIssuesSortOptions(key = None, includeMongoSortFunc = False):
         return sortMap
         
         
-def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
-    if striptags: 
+def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, stripIssues = False, separateTitle = False):
+    '''
+    @type  key: String
+    @param key: The key of scale option to get. If false, returns all options in an array. Defaults to false.
+    '''
+    if stripTags: 
         from lxml import html
 
     # Localize to user's geographic regions, if defined.
@@ -49,30 +53,85 @@ def getIssuesScaleOptions(key = False, localizeUser = None, striptags = False):
     
     # The map of options. Maybe convert to YAML file or something in time.
     scaleMap = [
-        {'key' : 0,   'title' : "<i class='fa fa-fw fa-globe'></i>Anywhere", 'class' : 'primary'},
+        {
+            'key' : 0,   
+            'title' : ("<i class='fa fa-fw fa-globe'></i>", "Anywhere", ""),
+            'class' : 'primary'
+        },
         #{'key' : 1,   'title' : "Worldwide"},
-        {'key' : 2,   'title' : "<i class='fa fa-fw fa-plane'></i>National <span class='light'>Issues</span>", 'class' : 'primary'},
-        {'key' : 2.5, 'title' : "Nationwide <span class='light'>State Issues</span>", 'class' : 'secondary'},
-        {'key' : 3,   'title' : "<i class='fa fa-fw fa-car'></i>" + state + " <span class='light'>Issues</span>", 'class' : 'primary'},
-        {'key' : 3.5, 'title' : "Statewide <span class='light'>City Issues</span>", 'class' : 'secondary'},
-        {'key' : 4,   'title' : "<i class='fa fa-fw fa-subway'></i>" + city + " <span class='light'>Issues</span>", 'class' : 'primary'},
-        {'key' : 4.5, 'title' : "Citywide <span class='light'>District Issues</span>", 'class' : 'secondary'},
-        {'key' : 5,   'title' : "<i class='fa fa-fw fa-bicycle'></i>" + zip + " <span class='light'>Issues</span>", 'class' : 'primary'}
+        {
+            'key' : 2,   
+            'title' : ("<i class='fa fa-fw fa-plane'></i>", "National", " <span class='light'>Issues</span>"), 
+            'class' : 'primary'
+        },
+        {
+            'key' : 2.5, 
+            'title' : ("", "Nationwide ", " <span class='light'>State Issues</span>"), 
+            'class' : 'secondary'
+        },
+        {
+            'key' : 3,   
+            'title' : ("<i class='fa fa-fw fa-car'></i>", state, " <span class='light'>Issues</span>"), 
+            'class' : 'primary'
+        },
+        {
+            'key' : 3.5, 
+            'title' : ("","Statewide", " <span class='light'>City Issues</span>"), 
+            'class' : 'secondary'
+        },
+        {
+            'key' : 4,   
+            'title' : ("<i class='fa fa-fw fa-subway'></i>", city, " <span class='light'>Issues</span>"), 
+            'class' : 'primary'
+        },
+        {
+            'key' : 4.5, 
+            'title' : ("", "Citywide", " <span class='light'>District Issues</span>"), 
+            'class' : 'secondary'
+        },
+        {
+            'key' : 5,   
+            'title' : ("<i class='fa fa-fw fa-bicycle'></i>", zip, " <span class='light'>Issues</span>"), 
+            'class' : 'primary'
+        }
     ]
+    
+    def optionSet(item):
+        if stripIssues:
+            item['title'] = (item['title'][0], item['title'][1])
+        if stripTags: 
+            for segment in item['title']:
+                if len(segment) > 0:
+                    segment = html.fromstring(segment).text_content()
+        if not separateTitle:
+            item['title'] = ''.join(item['title'])
+        return item
 
     if key is not False:
-        for item in scaleMap:
-            if item['key'] == key:
-                if striptags: 
-                    item['title'] = html.fromstring(item['title']).text_content()
-                return item
+        for option in scaleMap:
+            if option['key'] == key:
+                return optionSet(option)
         return False
     else:
-        if striptags:
-            for item in scaleMap: 
-                item['title'] = html.fromstring(item['title']).text_content()
+        for option in scaleMap:
+            option = optionSet(option)
         return scaleMap
         
+
+def saveUserScale(scale, user):
+    '''
+    @type  scale: float
+    @param scale: Key of scale option to set.
+    @type   user: User Object
+    @param  user: User object, as gotten via an auth query and available in request.user.
+    '''
+    from app.state import db
+    return db.users.update(
+        {'_id' : user['_id']}, 
+        {'$set' : {'meta.current_scale' : scale} },
+        multi=False
+    )
+    
         
 def getMongoScaleQuery(scale = 2.0, user = False):
 
@@ -103,6 +162,7 @@ def getMongoScaleQuery(scale = 2.0, user = False):
             if scale in [5]:      matchQuery['meta.zip']   = user['meta']['zip']
         
     return matchQuery
+    
         
  
 def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):

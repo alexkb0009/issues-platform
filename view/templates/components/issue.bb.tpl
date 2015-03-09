@@ -3,7 +3,7 @@
     <% this.$el.addClass('content-container') %>
 
     <h5 class="issue-title">
-    <%= title %>
+        <a class="title" href="<%= path %>"><%= title %></a>
         <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
     <% if (meta.get('am_subscribed')){ %>
         <i class="subscribe-icon subscribed fa fa-fw fa-star"></i>
@@ -29,7 +29,7 @@
     <div class="large-11 small-10 columns">
       <div class="content-container">
         <h5 class="issue-title">
-        <%= title %>
+            <a class="title" href="<%= path %>"><%= title %></a>
             <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
         <% if (meta.get('am_subscribed')){ %>
             <i class="subscribe-icon subscribed fa-fw fa fa-star"></i>
@@ -42,4 +42,31 @@
         </div>
       </div>
     </div>
+</script>
+
+
+<script id="backbone_issue_template_full" type="text/template">
+
+    <% this.$el.addClass('row') %>
+
+    <div class="large-12 columns">
+      <div class="content-container">
+        <h5 class="issue-title">
+        <%= title %>
+            <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
+        <% if (meta.get('am_subscribed')){ %>
+            <i class="subscribe-icon subscribed fa fa-fw fa-star"></i>
+        <% } else if (meta.get('am_subscribed') == false) { %>
+            <i class="subscribe-icon fa fa-fw fa-star-o"></i>
+        <% } %>
+        </h5>
+        <div class="description">
+            <%= description %>
+        </div>
+        <div class="body">
+            <%= body %>
+        </div>
+      </div>
+    </div>
+    
 </script>

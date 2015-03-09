@@ -39,11 +39,7 @@ $(window).load(function(){
 
 function resizeBody(){
   app.cd.innerBodyMinHeight = Math.max(window.innerHeight - app.ce.footer.outerHeight() - app.ce.topBar.outerHeight(), 360 + (app.ce.mainBody.children('div.main-subheader').outerHeight() || 0));
-  //if (app.ce.body.width() > 1025) {
     app.ce.mainBody.css('min-height', app.cd.innerBodyMinHeight);
-  //} else {
-  //  app.ce.mainBody.css('min-height', '');
-  //}
 }
 
 $(window).resize(function(){
@@ -64,9 +60,22 @@ function verticalCenterOffset(parentHeight, childHeight){
   return parseInt((parentHeight - childHeight) / 2);
 }
 
+/** ------------ **/
 
-window.u = {
-  setLoaderInElem : function(element){
-    element.innerHTML = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>';
-  }
+/** Global Processing/Setup **/
+
+/** - OpenTips Styles **/
+
+Opentip.styles.pop = {
+    tipJoint: 'bottom',
+    target: true,
+    borderRadius: 3,
+    background: '#111',
+    borderColor: '#000',
+    borderWidth: 0,
+    textColor: '#fff'
+    
 }
+
+Opentip.defaultStyle = "pop";
+

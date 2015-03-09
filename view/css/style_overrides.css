@@ -37,8 +37,36 @@
   font-size: 0.6875rem;
 }
 
-.button {
+.button, button {
   font-family: SansPro, Roboto, Helvetica, Arial, sans-serif;
+  background-color: #5897fb;
+}
+
+/** Forms **/
+
+input[type="text"], input[type="password"], input[type="date"], 
+input[type="datetime"], input[type="datetime-local"], input[type="month"], 
+input[type="week"], input[type="email"], input[type="number"], 
+input[type="search"], input[type="tel"], input[type="time"], 
+input[type="url"], input[type="color"], textarea {
+  border-color: #bbb;
+}
+
+/** Select2 Dropdowns, to Match Foundation **/
+
+.select2-container--default .selection .select2-selection {
+  height: 2.3125rem;
+  padding: 0.2rem;
+  border-radius: 0px;
+  border-color: #bbb;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+.select2-container--default .selection .select2-selection.radius {
+  border-radius: 3px;
+}
+.select2-container--default .selection .select2-selection .select2-selection__arrow {
+  height: 2.25rem;
+  padding-right: 2.25rem;
 }
 
 /** Form Errors **/

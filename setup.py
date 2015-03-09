@@ -12,12 +12,14 @@ setup(name='My Issues',
       url='http://www.python.org/sigs/distutils-sig/',
       install_requires=[
           'wsgi-request-logger>=0.4', 
-          'passlib>=1.6', 'Jinja2>=2.7', 
+          'passlib>=1.6', 
+          'Jinja2>=2.7', 
           'pymongo', 
           'beaker>=1.6', 
           'redis', 
           'requests', 
           'lxml',
-          'Markdown'
+          'Markdown',
+          'python-slugify'
       ]
      )

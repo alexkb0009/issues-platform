@@ -2,7 +2,7 @@
 {% set sort = issue_sort_options(session['last_sort']|default('trending')) %}
 
 {# Current Scale of User, if set #}
-{% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2), user, True) %}
+{% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2), user, True, True) %}
 
 
 

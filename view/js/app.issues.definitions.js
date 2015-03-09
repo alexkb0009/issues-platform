@@ -86,8 +86,8 @@ isApp.Models.IssueScoring = Backbone.Model.extend({
 isApp.Models.IssueMeta = Backbone.Model.extend({
     defaults: {
         last_edit: new Date(),
-        scales: [2,3,4,5],
-        initial_author: "billyg123"
+        scale: 2,
+        initial_author: function() { return (isApp.me.get('username') || "billyg123") }
     },
     
     parse: function(response, options){
@@ -150,6 +150,7 @@ isApp.Models.Issue = Backbone.Model.extend({
     
     initialize: function(item, options){
         this.set('id', item['_id']);
+        this.set('path', (app.settings.root || '/') + 'is/' + item['_id'] );
     },
     
     validate : function(attributes){
@@ -411,29 +412,3 @@ isApp.Views = {
     })
     
 }
-
-/* Global Sync Override */
-
-_existingSync = Backbone.sync;
-Backbone.sync = function(method, model, options){
-    options.beforeSend = function(xhr){
-        /* Include auth token */
-        xhr.setRequestHeader('Authorization', isApp.me.get('auth_key'));
-    }
-    _existingSync.call(this, method, model, options);
-}
-
-/* OpenTips Styles */
-
-Opentip.styles.pop = {
-    tipJoint: 'bottom',
-    target: true,
-    borderRadius: 3,
-    background: '#111',
-    borderColor: '#000',
-    borderWidth: 0,
-    textColor: '#fff'
-    
-}
-
-Opentip.defaultStyle = "pop";
