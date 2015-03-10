@@ -32,7 +32,7 @@ def getIssuesSortOptions(key = None, includeMongoSortFunc = False):
         return sortMap
         
         
-def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, stripIssues = False, separateTitle = False):
+def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, stripIssues = False, stripIcons = False, separateTitle = False):
     '''
     @type  key: String
     @param key: The key of scale option to get. If false, returns all options in an array. Defaults to false.
@@ -98,11 +98,11 @@ def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, s
     
     def optionSet(item):
         if stripIssues:
-            item['title'] = (item['title'][0], item['title'][1])
+            item['title'] = (item['title'][0], item['title'][1], "")
+        if stripIcons:
+            item['title'] = ("", item['title'][1], item['title'][2])
         if stripTags: 
-            for segment in item['title']:
-                if len(segment) > 0:
-                    segment = html.fromstring(segment).text_content()
+            item['title'] = tuple(html.fromstring(seg).text_content() for seg in item['title'] if len(seg) > 0)
         if not separateTitle:
             item['title'] = ''.join(item['title'])
         return item

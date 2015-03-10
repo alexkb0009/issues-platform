@@ -64,11 +64,10 @@ def view_issue(issue_slug):
     else: 
         issue = getWellFormedIssue(issue, fullMode = True)
         issue['jsonSerialized'] = json_util.dumps(issue)
-        scale = getIssuesScaleOptions(float(issue['meta']['scale']))
-        
+        scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = True, localizeUser = request.user if authd else None)
     returnObj = {
         'logged_in' : authd,
-        'route' : [(scale['title'], '?scale=' + str(int(scale['key'])), ''),(issue['title'], '', '')],
+        'route' : [(scale['title'], '?scale=' + str(int(scale['key'])), 'Scale of this issue'),(issue['title'], '', '')],
         'issue' : issue,
         
     }

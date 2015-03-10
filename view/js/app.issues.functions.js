@@ -35,7 +35,7 @@ isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle)
     }
     var loadElem = document.createElement('i');
     loadElem.style.cssText = extraStyle;
-    loadElem.className = extraClassName + " fa fa-circle-o-notch fa-spin fa-fw";
+    loadElem.className = extraClassName + " fa fa-circle-o-notch fa-spin fa-fw loader-icon";
     if (replace) rawElement.parentNode.replaceChild(loadElem, rawElement);
     else {
         rawElement.innerHTML = '';

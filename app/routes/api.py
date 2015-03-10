@@ -36,7 +36,13 @@ def issues_list_subscribed():
 
     if not headers_key_auth(): return { 'message' : 'Not authenticated' }   
     subscribedIssues = map(lambda objId: {'_id' : objId }, request.user['subscribed_issues'])
-    return json.dumps({'results' : getIssuesFromCursor(subscribedIssues, ['meta.am_subscribed'])})
+    # Check if issues are found, return ones that aren't.
+    (subscribedIssues, notFound) = getIssuesFromCursor(subscribedIssues, ['meta.am_subscribed'], returnNotFound = True)
+    # Unset from subscribed those issues which no longer exist.
+    for issueID in notFound:
+        db.users.update({'_id' : request.user['_id']}, {'$pull' : {'subscribed_issues' : issueID}})
+    # Return all that exist still
+    return json.dumps({'results' : subscribedIssues, 'removed' : len(notFound)})
     
     
     
@@ -58,7 +64,7 @@ def create_issue():
             multi=False
         )
     
-    return {'mssage' : "OK"}
+    return {'message' : "OK", 'id' : issueId}
     
 
     
@@ -126,7 +132,7 @@ def search_issues():
 def set_scale():
     if not headers_key_auth(): return { 'message' : 'Not authenticated' } 
     from app.functions.sort import getIssuesScaleOptions, saveUserScale
-    scale = getIssuesScaleOptions(float(request.forms.get('scale')), request.user, True, True)
+    scale = getIssuesScaleOptions(float(request.forms.get('scale')), request.user, stripIssues = True)
     if scale is False: return { 'message' : 'Scale not valid. Must be numerical.' } 
     saveUserScale(scale['key'], request.user)
     return { 'message' : 'Success', 'new_scale' : scale }

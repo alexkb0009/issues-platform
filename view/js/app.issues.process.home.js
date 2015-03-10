@@ -13,14 +13,18 @@ isApp.searchBar = new isApp.Models.SearchBar({results: new isApp.Collections.Iss
 isApp.searchBar.get('results').view = new isApp.Views.IssuesView({ el: $("#search_issues_row .search-results"), collection: isApp.searchBar.get('results'), childTemplateID: 'backbone_issue_template' });
 
 
-
+// Title container
 app.ce.currentIssuesTitle = $('#main_issues_title');
+
+// Sorted-By Title
+isApp.ex.sortTitle = app.ce.currentIssuesTitle.children('#sorted_by_title');
+isApp.ex.sortTitle.data('tooltip', new Opentip(isApp.ex.sortTitle, 'Sort by', {delay : 0.4, tipJoint: 'bottom'}));
 
 // Selecting new sort
 isApp.ex.titleSortLink = app.ce.currentIssuesTitle.next('#main_issues_title_sorting_options').find('a').click(function(){
 
     var clickedLink = $(this);
-    isApp.u.setLoaderInElem(app.ce.currentIssuesTitle.children('#sorted_by_title'));
+    isApp.u.setLoaderInElem(isApp.ex.sortTitle);
     
     // Set new endpoint for Current Issues
     session['sort'] = {key: $(this).attr('name'), title: $(this).html()}
@@ -29,7 +33,7 @@ isApp.ex.titleSortLink = app.ce.currentIssuesTitle.next('#main_issues_title_sort
     isApp.currentIssues.reset();
     isApp.currentIssues.once('sync',function(){
         // Set title + active style
-        app.ce.currentIssuesTitle.children('#sorted_by_title').html(clickedLink.html());
+        isApp.ex.sortTitle.html(clickedLink.html());
         clickedLink.parent().parent().children().removeClass('active');
         clickedLink.parent().addClass('active');
         this.trigger('changeSet');
@@ -38,11 +42,13 @@ isApp.ex.titleSortLink = app.ce.currentIssuesTitle.next('#main_issues_title_sort
 
 
 // Selecting new scale
+isApp.ex.scaleTitle = app.ce.currentIssuesTitle.children('#scale_title');
+isApp.ex.scaleTitle.data('tooltip', new Opentip(isApp.ex.scaleTitle, 'Set your scale', {delay : 0.4, tipJoint: 'bottom'}));
+
 isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(function(){
 
     var clickedLink = $(this);
-    var title = app.ce.currentIssuesTitle.children('#scale_title');
-    isApp.u.setLoaderInElem(title);
+    isApp.u.setLoaderInElem(isApp.ex.scaleTitle);
     
     isApp.me.set('current_scale', $(this).attr('name'));
     
@@ -61,7 +67,7 @@ isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(
           isApp.currentIssues.reset();
           isApp.currentIssues.once('sync',function(){
             // Set title + active style
-            title.html(data.new_scale['title']);
+            isApp.ex.scaleTitle.html(data.new_scale['title']);
             clickedLink.parent().parent().children().removeClass('active');
             clickedLink.parent().addClass('active');
             this.trigger('changeSet');

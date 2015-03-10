@@ -40,7 +40,7 @@
 {% block sub_menu_block -%}
 
 <div class="intro main-subheader">
-  <span class="inline">Viewing {{ issue.title }}</span>
+  <span class="inline">Viewing Issue</span>
   {# <span class="inline">Welcome, {{ user.firstname }}!</span> #}
   {# <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a> #}
 </div>
@@ -51,23 +51,18 @@
 {% block content %}
 
 <div class="main-content row">
-    <div class="large-8 columns">
+    <div class="large-8 columns issue full">
     
         {# Title w/ sorting opts #}
-    
+        {#
         <h4 class="major section-header noselect">
             {{ issue['title'] }}
         </h4>
-        
-        
-
-        
+        #}
         {# Main Issues Area #}
 
-        <div class="issue listview">
-            <div id="current_issue" class="">
-                {# Container element to be used by backbone #}
-            </div>
+        <div class="row" id="current_issue">
+
         </div>
         
     </div>
@@ -76,6 +71,7 @@
 
         
     </div>
+    
 </div>
 
 {% endblock %}

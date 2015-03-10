@@ -211,7 +211,11 @@
             isApp.newIssue = new isApp.Models.Issue(formData, {parse: true});
             isApp.newIssue.save({},{
                 success : function(model,response,objects){
-                    $("form#define_issue").html("<br><h3>Issue Successfully Defined!</h3><p>See it on the front page under \"Latest\",</p>");
+                    console.log(model);
+                    console.log(response);
+                    console.log(objects);
+                    var successText = "<h4>Issue Successfully Defined!</h4><p>See it on the <a href=\"{{root}}\">home page</a> under \"Latest\" sorting or at <a href='{{root}}is/" + response.id + "'>http://{{site_domain}}{{root}}is/" + response.id + "</a>.</p>";
+                    $("form#define_issue").html(successText);
                 }
             });
             

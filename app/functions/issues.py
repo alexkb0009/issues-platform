@@ -1,12 +1,19 @@
 from app.state import app, db, logMachine
 from app.includes.bottle import request
 
-def getIssuesFromCursor(cursor, redactFields = []):
+def getIssuesFromCursor(cursor, redactFields = [], returnNotFound = False):
     if cursor is None: return False 
     returnObj = []
+    if returnNotFound: notFoundIDs = []
     for issue in cursor:
-        returnObj.append(getWellFormedIssue(issue, redactFields))
-    return returnObj
+        wellFormedIssue = getWellFormedIssue(issue, redactFields)
+        if wellFormedIssue:
+            returnObj.append(wellFormedIssue)
+        elif returnNotFound:
+            notFoundIDs.append(issue['_id'])
+            
+    if returnNotFound: return (returnObj, notFoundIDs)
+    else: return returnObj
     
 def getIssueByID(issueID):
     issue = {'_id' : issueID}
@@ -20,7 +27,11 @@ def getIssueByID(issueID):
         
 def getWellFormedIssue(issue, redactFields = [], fullMode = False):
     if 'current_revision' not in issue: 
-        issue.update(db.issues.find_one({"_id": issue['_id']}, {"_id" : 0}))
+        extendedIssue = db.issues.find_one({"_id": issue['_id']}, {"_id" : 0})
+        if extendedIssue:
+            issue.update(extendedIssue)
+        else: return None # Error: Issue not found in DB.
+            
     currentRevision = db.revisions.find_one({"_id": issue['current_revision']})
     currentRevisionAuthor = db.users.find_one({"username": currentRevision['author']}, {'username' : 1, 'firstname' : 1, 'lastname' : 1, '_id' : 0})
 

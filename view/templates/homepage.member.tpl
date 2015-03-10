@@ -2,7 +2,7 @@
 {% set sort = issue_sort_options(session['last_sort']|default('trending')) %}
 
 {# Current Scale of User, if set #}
-{% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2), user, True, True) %}
+{% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2), user, stripIssues = True) %}
 
 
 
@@ -92,7 +92,7 @@
                     <i class="fa fa-search"></i>
                 </div>
                 <div class="large-11 small-10 columns">
-                    <form id="search_issues">
+                    <form id="search_issues" action="#">
                         <div class="row collapse postfix-radius">
                             <div class="large-11 small-10 columns">
                                 <input type="text" name="search" placeholder="rising cost of wheat" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">

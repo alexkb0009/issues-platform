@@ -214,16 +214,14 @@ isApp.Models.SearchBar = Backbone.Model.extend({
     },
     
     find : function(query){
-    
+        
         if (typeof query == 'undefined') query = this.get('query');
-    
         if (query.length < 2) {
             this.emptyResults();
             return;
         }
         
-        //this.get('currentXHR').abort();
-        var xhr = $.ajax({
+        this.set('currentXHR', $.ajax({
             url: this.url() || this.url,
             type: 'POST',
             headers : {
@@ -249,8 +247,7 @@ isApp.Models.SearchBar = Backbone.Model.extend({
             error: $.proxy(function(xhr, textStatus, error){
                 if (xhr.statusText != 'abort') this.emptyResults();
             }, this)
-        });
-        this.set('currentXHR', xhr);
+        }));
     }
 
 });
@@ -362,7 +359,7 @@ isApp.Views = {
         
         subscribe: function(){
             this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
-            isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; margin: -1px 2px 0; line-height: inherit;');
+            isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; margin: -1px 2px 0; line-height: inherit; ');
             this.model.save({'meta': (this.model.get('meta'))}, { patch: true, wait: true, success: function(){
                 if (isApp.myIssues != null){
                     isApp.myIssues.reset();

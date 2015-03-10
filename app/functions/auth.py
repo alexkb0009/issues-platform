@@ -53,9 +53,12 @@ def login_user():
 ## Reads + authenticates existing session data, sets request.user object for use.
 
 def session_auth():
+    ''' 
+    Checks for session and sets 'request.user' if session for a user exists and is valid.
+    Returns True if successful or False if not.
+    '''
     from app.includes.bottle import request
     request.session = request.environ['beaker.session']
-    request.user = None
 
     if 'username' in request.session and 'auth_key' in request.session:
         authd_user = check_sent_auth_info(request.session['auth_key'], True) ## Get user object if auth stuff in session.
@@ -66,9 +69,14 @@ def session_auth():
             # Output only certain fields, for security/privacy.
             outputUserDict = {field:authd_user[field] for field in authd_user if field not in ["_id", "passhash", "roles", "meta"]}
             request.user['jsonSerialized'] = json_util.dumps(outputUserDict)
-    return True if request.user != None else False
+            return True
+    return False
     
 def headers_key_auth():
+    ''' 
+    Checks for auth key in Authorization header in request and sets 'request.user' if key for user exists and is valid.
+    Returns True if successful or False if not.
+    '''
     from app.includes.bottle import request, response
     auth_key = request.get_header('auth_key') or request.get_header('Authorization')
     authd_user = check_sent_auth_info(auth_key, True);
