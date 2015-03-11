@@ -17,7 +17,7 @@
 
 
 {% block additionalheader -%}
-
+<script src="{{ root }}js/vendor/marked.js"></script>
 <link rel="stylesheet" href="{{ root }}css/homepage.css">
 <script>
     window.session = {
@@ -77,6 +77,7 @@
 {% endblock %}
 
 {% block additionalfooter -%}
+
 <script>
     isApp.currentIssue = new isApp.Models.Issue({{ issue.jsonSerialized }}, {parse: true});
     isApp.currentIssue.view = new isApp.Views.IssueView({

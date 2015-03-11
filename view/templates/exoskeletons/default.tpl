@@ -19,7 +19,7 @@
     <script src="{{ root }}js/vendor/modernizr.js"></script>
     <script src="{{ root }}js/vendor/jquery-2.1.3.min.js"></script>
     {% block js_templates %}{% endblock %}
-    {%- if logged_in -%} 
+    
       {# We don't need these for guests, who get the marketing version. #}
       <script>
         {# Some settings needed pre- BackBone models #}
@@ -36,7 +36,7 @@
       <script src="{{ root }}js/app.issues.functions.js"></script>
       
       {# Initial Data, Settings #}
-      
+      {%- if logged_in -%} 
       <script>
         {% if logged_in %}
         isApp.me = new isApp.Models.User({{ user.jsonSerialized|safe }});

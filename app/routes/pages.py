@@ -69,6 +69,7 @@ def view_issue(issue_slug):
         'logged_in' : authd,
         'route' : [(scale['title'], '?scale=' + str(int(scale['key'])), 'Scale of this issue'),(issue['title'], '', '')],
         'issue' : issue,
+        'session' : request.environ['beaker.session']
         
     }
     
@@ -77,7 +78,6 @@ def view_issue(issue_slug):
         return {'message': 'Not Authenticated'}
     elif authd:
         returnObj['user'] = request.user
-        returnObj['session'] = request.environ['beaker.session']
     
     return template('issue.view.tpl', returnObj)
         

@@ -71,9 +71,11 @@
          <i class="open-icon fa fa-fw fa-angle-up right" title="Show/hide description"></i>
     </div>
     <div class="content-container large-12 columns">
-        <div class="body">
+        <article class="body"><% 
+        if (typeof marked != 'undefined' && markdownParse) { %><%= marked(body) %><% } else { %>
             <%= body %>
-        </div>
+        <% } %>
+        </article>
     </div>
     
     

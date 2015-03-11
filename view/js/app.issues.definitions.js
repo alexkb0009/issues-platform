@@ -126,6 +126,7 @@ isApp.Models.Issue = Backbone.Model.extend({
     defaults: {
         title: "<div style='display: inline-block; height: 10px; background-color: #e9e9e9; width: 75%; margin: 8px 0 12px;'></div>",
         description: "<div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 50%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 75%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 60%; margin: 8px 0 12px;'></div>",
+        markdownParse: true, // Whether to use marked.js to parse on view render.
         revision: 'NoneYet',
         scoring: new isApp.Models.IssueScoring({'scoring': 1}),
         meta: new isApp.Models.IssueMeta({})

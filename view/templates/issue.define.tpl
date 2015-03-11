@@ -78,8 +78,8 @@
                 </div>
                 <div class="large-7 columns">
                     <p>
-                        <strong>Important: </strong><br>Is this a <em>national</em> or <em>local</em>-scale issue?
-                        <br>Is this a problem to be solved within your district or at the national level?
+                        <strong>Consider: </strong><br>Is this a <em>national</em> or <em>local</em>-scale issue?
+                        <br>To be solved within your district or at the national level?
                         <br><em>Scale cannot be changed once issue is defined.</em>
                     </p>
                 </div>
@@ -110,7 +110,7 @@
             <div class="row">
                 <div class="large-12 columns">
                     <label><h4>Extended Description <span class="ext">/ Background / References</span></h4>
-                        <textarea rows="12" type="text" name="body" placeholder="Background\n==========\nGovernment-funded agricultural subsidies have been part of the national fabric since the beginning of the 20th century. They were often put in place to protect farmers' livelihoods in the face of volatile market prices and growing conditions for produce which, in difficult times such as recessions, may lead to overall net losses for farmers ..." ></textarea>
+                        <textarea rows="12" type="text" name="body" placeholder="##Background\n\nGovernment-funded agricultural subsidies have been part of the national fabric since the beginning of the 20th century. They were often put in place to protect farmers' livelihoods in the face of volatile market prices and growing conditions for produce which, in difficult times such as recessions, may lead to overall net losses for farmers ..." ></textarea>
                     </label>
                 </div>
             </div>
@@ -127,17 +127,9 @@
     </div>
       
     <div class="large-4 columns">
-        <h4 class="major section-header noselect">Markdown Format</h4>
         
-        <p>
-        {{ site_name }} utilizes the <em><a href="http://daringfireball.net/projects/markdown/">Markdown</a></em> text format for its larger text areas and articles.
-        </p>
-        <p>
-        It is suggested to check out a couple of examples &mdash; one Markdown example is included at the referenced page and contains markup from which the referenced page is created.
-        </p>
-        
-        <h4 class="major section-header noselect">Guidelines</h4>
-        
+
+        <h3 class="major section-header noselect">Guidelines</h3>
         <p>
         In order to ensure a standard of quality of Issues, please aim to achieve the following:
         </p>
@@ -156,10 +148,21 @@
                 </p>
             </li>
             <li>
-                Articulate well. 
-                Someone should be able to get the gist of what the issue is about without reading the full and intricate details just yet.
+                <p>
+                <b>Articulate and support facts.</b><br> 
+                Write comprehensibly. Support any/all factual claims with evidence and/or credible references. Imagine the body (<em>Extended Description</em>) as a research paper or Wikipedia article.
+                </p>
             </li>
         </ul>
+        
+        <h3 class="major section-header noselect">Markdown Format</h3>
+        
+        <p>
+        {{ site_name }} utilizes the <em><a href="http://daringfireball.net/projects/markdown/">Markdown</a></em> text format for its extended description/background/articles.
+        </p>
+        <p>
+        It is suggested to check out a couple of examples &mdash; one Markdown example is included at the referenced page and contains markup from which the referenced page is created.
+        </p>
         
         
     </div>
