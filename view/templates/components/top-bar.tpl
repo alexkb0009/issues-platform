@@ -21,7 +21,7 @@
   <section class="top-bar-section">
     <!-- Right Nav Section -->
     <ul class="right">
-      <li {# class="active" #}><a href="#">Right Button Active</a></li>
+      {# <li><a href="#">Right Button Active</a></li> #}
       {% if user %}
       <li class="has-dropdown">
         <a href="#"><i class="fa fa-user fa-fw"></i>My Account</a>
@@ -30,6 +30,13 @@
           <li><a href="{{ root }}do/logout"><i class="fa fa-power-off fa-fw"></i>Log Out</a></li>
         </ul>
       </li>
+      {% else %}
+      <li>
+        <a href="{{ root }}register/1"><i class="fa fa-thumbs-up fa-fw"></i>Sign Up</a>
+      </li>
+      {# <li>
+        <a href="{{ root }}"><i class="fa fa-user fa-fw"></i>Login</a>
+      </li> #}
       {% endif %}
     </ul>
 

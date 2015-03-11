@@ -346,8 +346,8 @@ body.in-search div#main_issues {
   font-size: .875em;
 }
 
-.issue.listview h5.issue-title > .open-icon,
-.issue.listview h5.issue-title > .subscribe-icon {
+.issue.listview .issue-title .open-icon,
+.issue.listview .issue-title .subscribe-icon {
   float: right;
   opacity: 0.3;
   line-height: inherit;
@@ -363,23 +363,23 @@ body.in-search div#main_issues {
   margin-right: 2px;
 }
 
-.issue.listview h5.issue-title > .subscribe-icon.subscribed {
+.issue .issue-title  .subscribe-icon.subscribed {
   opacity: 1;
   color: rgb(239, 109, 0);
 }
 
-.issue.listview h5.issue-title > .open-icon:hover,
-.issue.listview h5.issue-title > .subscribe-icon:hover {
+.issue .open-icon:hover,
+.issue .issue-title .subscribe-icon:hover {
   opacity: 1;
   cursor: pointer;
 }
 
-.issue.listview h5.issue-title > .subscribe-icon:hover:before {
+.issue .issue-title  .subscribe-icon:hover:before {
   content: "\f005";
   color: rgb(239, 109, 0);
 }
 
-.issue.listview h5.issue-title > .subscribe-icon.subscribed:hover:before {
+.issue .issue-title  .subscribe-icon.subscribed:hover:before {
   content: "\f006";
   color: #000;
 }
@@ -393,17 +393,21 @@ body.in-search div#main_issues {
 
 .issue.full span.icons {
   font-size: 24px !important;
-  padding-top: 5px;
+  padding-top: 15px;
   display: inline-block;
   float: right;
 }
 
-.issue.full span.icons .fa-star-o {
+.issue.full .subscribe-icon {
   opacity: 0.25;
 }
 
 .issue.full span.icons .loader-icon {
   font-size: 21px;
+}
+
+.issue.full .description {
+  margin-bottom: 30px;
 }
 
 .issue.full .description-title {

@@ -15,10 +15,10 @@ def getIssuesFromCursor(cursor, redactFields = [], returnNotFound = False):
     if returnNotFound: return (returnObj, notFoundIDs)
     else: return returnObj
     
-def getIssueByID(issueID):
+def getIssueByID(issueID, customFields = None):
     issue = {'_id' : issueID}
-    issueFound = db.issues.find_one({"_id": issueID}, {"_id" : 0})
-    print(issue)
+    if not customFields: customFields = {"_id" : 0}
+    issueFound = db.issues.find_one({"_id": issueID}, customFields)
     if issueFound:
         issue.update(issueFound)
         return issue
@@ -74,7 +74,16 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
             elif len(fieldParts) == 1: del issueWellFormed[fieldParts[0]]
             
     return issueWellFormed
-    
+ 
+def addToIssueViews(issueID):
+    issue = getIssueByID(issueID, {'scoring.views' : 1, '_id': 0})
+    if issue:
+        db.issues.update(
+            {'_id' : issue['_id']}, 
+            {'$inc' : {'scoring.views' : 1} },
+            multi=False
+        )
+        return issue['scoring']['views'] + 1
     
 def createIssueID(title, scale):
     from slugify import slugify

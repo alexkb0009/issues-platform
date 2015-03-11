@@ -50,10 +50,6 @@ def application():
     globals.app = Bottle()
     globals.app.config.load_config('./settings.ini') # Read config/settings, e.g. for MongoDB connection
 
-    # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
-    TEMPLATE_PATH.insert(0, './view/templates/')
-    import app.template_setup
-
     # Connect to MongoDB Instance
     from pymongo import MongoClient
 
@@ -64,6 +60,10 @@ def application():
 
     globals.mongo_client = MongoClient(globals.mongo_url)
     globals.db = globals.mongo_client[globals.app.config['security.mongo_db']]
+    
+    # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
+    TEMPLATE_PATH.insert(0, './view/templates/')
+    import app.template_setup
 
     # Set Up Sessions
     from beaker.middleware import SessionMiddleware

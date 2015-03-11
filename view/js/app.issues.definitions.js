@@ -79,7 +79,8 @@ isApp.Models.IssueScoring = Backbone.Model.extend({
     defaults: {
         views: 1,
         score: 1,
-        contributions: 1
+        contributions: 1,
+        subscribed: 1
     }
 });
     
@@ -361,13 +362,18 @@ isApp.Views = {
         subscribe: function(){
             this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
             isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; margin: -1px 2px 0; line-height: inherit; ');
-            this.model.save({'meta': (this.model.get('meta'))}, { patch: true, wait: true, success: function(){
+            this.model.save({'meta': this.model.get('meta'), 'scoring' : this.model.get('scoring')}, { patch: true, wait: true, success: $.proxy(function(){
                 if (isApp.myIssues != null){
                     isApp.myIssues.reset();
                     isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
                     isApp.myIssues.fetch();
                 }
-            }, error: function(issue){
+                if (this.model.get('meta').get('am_subscribed')){
+                    this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') + 1);
+                } else {
+                    this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') - 1);
+                }
+            }, this), error: function(issue){
                 issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
                 /* */
             } });

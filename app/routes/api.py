@@ -86,8 +86,9 @@ def patch_issue(issue_id):
         response.status = 404
         return { 'message' : 'No such issue exists.' }
     
-    # Get into mappin n updating
+    # Mapping + Updating
     
+    returnObj = {}
     meta = request.json.get('meta')
     if 'am_subscribed' in meta:
         if meta['am_subscribed']:
@@ -96,14 +97,25 @@ def patch_issue(issue_id):
                 {'$addToSet' : {'subscribed_issues' : issue['_id']} },
                 multi=False
             )
+            db.issues.update(
+                {'_id' : issue['_id']}, 
+                {'$inc' : {'scoring.subscribed' : 1} },
+                multi=False
+            )
         else:
             db.users.update(
                 {'_id' : request.user['_id']}, 
                 {'$pull' : {'subscribed_issues' : issue['_id']} },
                 multi=False
             )
+            db.issues.update(
+                {'_id' : issue['_id']}, 
+                {'$inc' : {'scoring.subscribed' : -1} },
+                multi=False
+            )
 
-    return { 'status' : 200, 'statusText' : 'OK' }
+    returnObj['status'] = 200
+    return returnObj
     
 ## Search Issues
 @app.route('/' + app.config['app_info.api_request_path'] + 'search/issues', method="POST")

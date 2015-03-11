@@ -50,28 +50,10 @@
 
 {% block content %}
 
-<div class="main-content row">
-    <div class="large-8 columns issue full">
-    
-        {# Title w/ sorting opts #}
-        {#
-        <h4 class="major section-header noselect">
-            {{ issue['title'] }}
-        </h4>
-        #}
-        {# Main Issues Area #}
+<div class="main-content row issue full" id="current_issue">
 
-        <div class="row" id="current_issue">
+        {# Main Issue Area #}
 
-        </div>
-        
-    </div>
-      
-    <div class="large-4 columns">
-
-        
-    </div>
-    
 </div>
 
 {% endblock %}

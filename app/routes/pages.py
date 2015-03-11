@@ -48,7 +48,7 @@ def view_issue(issue_slug):
     '''
     This is the page where issue may be viewed.
     '''
-    from app.functions.issues import getIssueByID, getWellFormedIssue
+    from app.functions.issues import getIssueByID, getWellFormedIssue, addToIssueViews
     from app.functions.sort import getIssuesScaleOptions
     from slugify import slugify
     from bson import json_util
@@ -59,18 +59,21 @@ def view_issue(issue_slug):
     issue = getIssueByID(slugify(issue_slug))
     
     if not issue:
+        #  404 Not Found
         response.status = 404
         redirect('/404')
     else: 
+        issue['scoring']['views'] = addToIssueViews(issue['_id'])
         issue = getWellFormedIssue(issue, fullMode = True)
         issue['jsonSerialized'] = json_util.dumps(issue)
         scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = True, localizeUser = request.user if authd else None)
+    
+    
     returnObj = {
         'logged_in' : authd,
         'route' : [(scale['title'], '?scale=' + str(int(scale['key'])), 'Scale of this issue'),(issue['title'], '', '')],
         'issue' : issue,
         'session' : request.environ['beaker.session']
-        
     }
     
     if not authd and issue['meta']['scale'] > 2:
