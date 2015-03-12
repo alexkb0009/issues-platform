@@ -111,7 +111,7 @@
             <div class="row">
                 <div class="large-12 columns">
                     <label><h4>Extended Description <span class="ext">/ Background / References</span></h4>
-                        <textarea rows="12" type="text" name="body" placeholder="#Background\n\nGovernment-funded agricultural subsidies have been part of the national fabric since the beginning of the 20th century. They were often put in place to *protect farmers' livelihoods* in the face of volatile market prices and growing conditions for produce which, in difficult times such as recessions, may lead to overall net losses for farmers ... \n\n###Grain Futures Act\n\n The first of these subsidies was enacted in 1922 with the *Grain Futures Act* of 1922 ... " ></textarea>
+                        <textarea rows="12" type="text" name="body" placeholder="#Background\n\nGovernment-funded agricultural subsidies have been part of the national fabric since the beginning of the 20th century. They were often put in place to *protect farmers' livelihoods* in the face of volatile market prices and growing conditions for produce which, in difficult times such as recessions, may lead to overall net losses for farmers ... \n\n###Grain Futures Act\n\n The first of these subsidies was enacted in 1922 with the *[Grain Futures Act](http://en.wikipedia.org/wiki/Grain_Futures_Act) of 1922* ... " ></textarea>
                     </label>
                 </div>
             </div>
@@ -168,10 +168,11 @@
         <h3 class="major section-header noselect">Markdown Format</h3>
         
         <p>
-        {{ site_name }} utilizes the <em><a href="http://daringfireball.net/projects/markdown/">Markdown</a></em> text format for its extended description/background/articles.
+        {{ site_name }} utilizes the <em><a href="http://daringfireball.net/projects/markdown/" target="_blank">Markdown</a></em> text format for its extended description/background/articles.
+        A good tutorial for it exists at <a href="http://markdowntutorial.com" target="_blank">markdowntutorial.com</a>
         </p>
         <p>
-        It is highly recommended to check out a couple of examples &mdash; one Markdown example is included at the referenced page and contains markup from which the referenced page is created.
+        It is highly recommended to check out at least a couple of examples.
         Or, just start typing. You will see the formatted version of your text below in the "Preview" section.
         </p>
         
