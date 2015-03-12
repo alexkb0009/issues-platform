@@ -92,15 +92,15 @@
         
         <h3 class="major section-header ranking-title">Rankings</h3>
         <div class="row scoring-container">
-            <div class="large-4 columns text-center aggregated-score">
+            <div class="large-4 small-4 columns text-center aggregated-score">
                 <h4><%= scoring.get('score') %></h4>
                 <p>Score</p>
             </div>
-            <div class="large-4 columns text-center subscribed-score">
+            <div class="large-4 small-4 columns text-center subscribed-score">
                 <h4><%= scoring.get('subscribed') %></h4>
                 <p>Subscribed</p>
             </div>
-            <div class="large-4 columns text-center">
+            <div class="large-4 small-4 columns text-center">
                 <h4>0</h4>
                 <p>Votes</p>
             </div>

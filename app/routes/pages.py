@@ -66,7 +66,7 @@ def view_issue(issue_slug):
         issue['scoring']['views'] = addToIssueViews(issue['_id'])
         issue = getWellFormedIssue(issue, fullMode = True)
         issue['jsonSerialized'] = json_util.dumps(issue)
-        scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = True, localizeUser = request.user if authd else None)
+        scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = False, localizeUser = request.user if authd else None)
     
     
     returnObj = {
