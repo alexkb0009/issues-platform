@@ -169,7 +169,8 @@
         
         <p>
         {{ site_name }} utilizes the <em><a href="http://daringfireball.net/projects/markdown/" target="_blank">Markdown</a></em> text format for its extended description/background/articles.
-        A good tutorial for it exists at <a href="http://markdowntutorial.com" target="_blank">markdowntutorial.com</a>
+        You can create links & references, images, blockquotes, headings, etc.
+        A great tutorial for it exists at <a href="http://markdowntutorial.com" target="_blank">markdowntutorial.com</a>.
         </p>
         <p>
         It is highly recommended to check out at least a couple of examples.
