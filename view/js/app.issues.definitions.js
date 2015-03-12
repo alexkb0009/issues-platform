@@ -365,9 +365,9 @@ isApp.Views = {
                 }
             }
             
-            var views_number = this.$el.find('.scoring-container .views-number');
+            var views_number = this.$el.find('.views-number > b');
             if (views_number.length > 0){
-                this.tooltips.views = new Opentip(views_number, "Does NOT count towards rank/score");
+                this.tooltips.views = new Opentip(views_number, "Does not count towards rank");
             }
             
             var views_number = this.$el.find('.scoring-container .subscribed-score');

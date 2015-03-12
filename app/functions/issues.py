@@ -145,6 +145,7 @@ def saveNewIssueFromRequestObj(issueReq):
             'city' : request.user['meta']['city'],
             'state' : request.user['meta']['state'],
             'initial_author' : request.user['username'],
+            'approved' : False
         },
         'scoring' : {
             'views' : 1,

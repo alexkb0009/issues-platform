@@ -79,6 +79,14 @@
                 </article>
             </div>
         </div>
+        <div class="row issue-footer-row">
+          <div class="large-3 columns">
+            <i class="fa fa-fw fa-pencil"></i> Edit
+          </div>
+          <div class="large-3 columns text-right views-number">
+            <b><%= scoring.get('views') %></b> <em>Views</em>
+          </div>
+        </div>
     </div>
     <div class="large-4 columns info-aside">
         
@@ -92,9 +100,9 @@
                 <h4><%= scoring.get('subscribed') %></h4>
                 <p>Subscribed</p>
             </div>
-            <div class="large-4 columns text-center views-number">
-                <h4><%= scoring.get('views') %></h4>
-                <p>Views</p>
+            <div class="large-4 columns text-center">
+                <h4>0</h4>
+                <p>Votes</p>
             </div>
         </div>
         <h3 class="major section-header issue-title">Vote</h3>
@@ -109,7 +117,6 @@
         
         <h3 class="major section-header issue-title">Discussion</h3>
         <p>[<em>Most active forum-type discussion threads related to issue go here</em>]</p>
-        
         
     </div>
     
