@@ -307,7 +307,7 @@ body.in-search div#main_issues {
 .issue.listview .content-container {
   background: #fff;
   box-shadow: 0 1px 2px rgba(0,0,0,0.25);
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 0;
 }
 
@@ -393,9 +393,13 @@ body.in-search div#main_issues {
 
 .issue.full span.icons {
   font-size: 24px !important;
-  padding-top: 15px;
+  padding-top: 10px;
   display: inline-block;
   float: right;
+}
+
+.issue.full .issue-title {
+  padding: 3px 0 6px;
 }
 
 .issue.full .subscribe-icon {
@@ -413,4 +417,46 @@ body.in-search div#main_issues {
 .issue.full .description-title {
   margin-top: 5px;
   margin-bottom: 0;
+}
+
+.issue.full  .description-dropdown-icon-container {
+  padding-right: 20px;
+  padding-bottom: 9px;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.issue.full .content-container.page {
+  background-color: #f4f4f4;
+  padding-top: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.25);
+}
+
+.issue.full article.body {
+  transition: margin .4s linear;
+}
+
+.issue.full article.body h1,
+.issue.full article.body h2,
+.issue.full article.body h3,
+.issue.full article.body h4,
+.issue.full article.body h5,
+.issue.full article.body h6 {
+  font-family: SansPro, "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+  margin-top: 0;
+}
+
+.issue.full.description-closed article.body {
+  margin-top: -20px;
+}
+
+.issue.full article.body h1 { font-size: 2.725em; }
+.issue.full article.body h2 { font-size: 2.2em; /* margin-bottom: 0; */ }
+.issue.full article.body h3 { /* margin-bottom: 0; */ }
+
+.issue.full .info-aside.large-4 {
+  padding-top: 15px;
 }

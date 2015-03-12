@@ -33,7 +33,9 @@
 
 .button.super-tiny {
   margin-bottom: 0;
-  padding: 6px 16px;
+  padding: 0 16px;
+  height: 24px;
+  line-height: 24px;
   font-size: 0.6875rem;
 }
 

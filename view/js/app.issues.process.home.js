@@ -27,7 +27,7 @@ isApp.ex.titleSortLink = app.ce.currentIssuesTitle.next('#main_issues_title_sort
     isApp.u.setLoaderInElem(isApp.ex.sortTitle);
     
     // Set new endpoint for Current Issues
-    session['sort'] = {key: $(this).attr('name'), title: $(this).html()}
+    isApp.me.set('current_sort', {key: $(this).attr('name'), title: $(this).html()});
     
     // Get newly reordered issues + callback.
     isApp.currentIssues.reset();

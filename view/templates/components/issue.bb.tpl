@@ -50,39 +50,39 @@
     <% this.$el.addClass('row').addClass('issue').addClass('full') %>
     
     <div class="large-8 columns">
-    
-        <div class="content-container large-12 columns">
-            <h2 class="major section-header issue-title">
-                <%= title %>
-            <span class="icons">
-            <% if (meta.get('am_subscribed')){ %>
-                <i class="subscribe-icon subscribed fa fa-fw fa-star right"></i>
-            <% } else if (meta.get('am_subscribed') == false) { %>
-                <i class="subscribe-icon fa fa-fw fa-star-o right"></i>
-            <% } %>
-            </span>
-            </h2>
-        </div>
-        <div class="content-container large-11 small-10 columns">
-            <div class="description">
-                <%= description %>
+        <div class="content-container page clearfix">
+            <div class="large-12 columns">
+                <h2 class="major section-header issue-title">
+                    <%= title %>
+                <span class="icons">
+                <% if (meta.get('am_subscribed')){ %>
+                    <i class="subscribe-icon subscribed fa fa-fw fa-star right"></i>
+                <% } else if (meta.get('am_subscribed') == false) { %>
+                    <i class="subscribe-icon fa fa-fw fa-star-o right"></i>
+                <% } %>
+                </span>
+                </h2>
+            </div>
+            <div class="large-11 small-10 columns">
+                <div class="description">
+                    <%= description %>
+                </div>
+            </div>
+            <div class="large-1 small-2 columns right description-dropdown-icon-container">
+                 <i class="open-icon fa fa-fw fa-angle-up right" title="Show/hide description"></i>
+            </div>
+            <div class="large-12 columns">
+                <article class="body"><% 
+                if (typeof marked != 'undefined' && markdownParse) { %><%= marked(body) %><% } else { %>
+                    <%= body %>
+                <% } %>
+                </article>
             </div>
         </div>
-        <div class="content-container large-1 small-2 columns right" style="padding-right: 20px;">
-             <i class="open-icon fa fa-fw fa-angle-up right" title="Show/hide description"></i>
-        </div>
-        <div class="content-container large-12 columns">
-            <article class="body"><% 
-            if (typeof marked != 'undefined' && markdownParse) { %><%= marked(body) %><% } else { %>
-                <%= body %>
-            <% } %>
-            </article>
-        </div>
-    
     </div>
-    <div class="large-4 columns">
+    <div class="large-4 columns info-aside">
         
-        <h3 class="major section-header issue-title">Rankings</h3>
+        <h3 class="major section-header ranking-title">Rankings</h3>
         <div class="row scoring-container">
             <div class="large-4 columns text-center aggregated-score">
                 <h4><%= scoring.get('score') %></h4>

@@ -334,6 +334,7 @@ isApp.Views = {
                 } else {
                     descriptionBox.css('display', 'block');
                 }
+                this.$el.removeClass('description-closed');
             } else {
                 this.$el.find('.open-icon').addClass('fa-angle-down').removeClass('fa-angle-up');
                 descriptionBox.addClass('closed');
@@ -342,6 +343,7 @@ isApp.Views = {
                 } else {
                     descriptionBox.css('display', 'none');
                 }
+                this.$el.addClass('description-closed');
             }
         },
         
