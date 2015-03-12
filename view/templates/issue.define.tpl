@@ -15,6 +15,7 @@
 {% block additionalheader -%}
   <link rel="stylesheet" href="{{ root }}css/vendor/select2.min.css">
   <script src="{{ root }}js/vendor/select2.min.js"></script>
+  <script src="{{ root }}js/vendor/marked.js"></script>
 {%- endblock %} 
 
 
@@ -90,7 +91,7 @@
             <div class="row">
                 <div class="large-12 columns">
                     <label><h4>Title</h4>
-                        <input type="text" name="title" placeholder="Rising cost of non-corn-based groceries." />
+                        <input type="text" name="title" placeholder="Rising cost of non-corn-based groceries." value="{{ query_title }}" />
                     </label>
                 </div>
             </div>
@@ -110,12 +111,21 @@
             <div class="row">
                 <div class="large-12 columns">
                     <label><h4>Extended Description <span class="ext">/ Background / References</span></h4>
-                        <textarea rows="12" type="text" name="body" placeholder="##Background\n\nGovernment-funded agricultural subsidies have been part of the national fabric since the beginning of the 20th century. They were often put in place to protect farmers' livelihoods in the face of volatile market prices and growing conditions for produce which, in difficult times such as recessions, may lead to overall net losses for farmers ..." ></textarea>
+                        <textarea rows="12" type="text" name="body" placeholder="#Background\n\nGovernment-funded agricultural subsidies have been part of the national fabric since the beginning of the 20th century. They were often put in place to *protect farmers' livelihoods* in the face of volatile market prices and growing conditions for produce which, in difficult times such as recessions, may lead to overall net losses for farmers ... \n\n###Grain Futures Act\n\n The first of these subsidies was enacted in 1922 with the *Grain Futures Act* of 1922 ... " ></textarea>
                     </label>
                 </div>
             </div>
             
             <hr class="smaller">
+            
+            <div class="preview-issue-body">
+                <h4 class="hide preview-heading section-header noselect" style="margin-bottom: 36px;">
+                  Preview Extended Description Markup:
+                </h4>
+                <article class="body">
+                    
+                </article>
+            </div>
             
             <div class="row">
                 <div class="large-12 columns">
@@ -161,7 +171,8 @@
         {{ site_name }} utilizes the <em><a href="http://daringfireball.net/projects/markdown/">Markdown</a></em> text format for its extended description/background/articles.
         </p>
         <p>
-        It is suggested to check out a couple of examples &mdash; one Markdown example is included at the referenced page and contains markup from which the referenced page is created.
+        It is highly recommended to check out a couple of examples &mdash; one Markdown example is included at the referenced page and contains markup from which the referenced page is created.
+        Or, just start typing. You will see the formatted version of your text below in the "Preview" section.
         </p>
         
         
@@ -200,6 +211,22 @@
             data: scaleOptions,
             templateResult: template,
             templateSelection: template
+        }){%- if current_scale['class'] != 'secondary' and current_scale['key'] != 0 -%}.select2("val", {{ current_scale['key'] }}){%- endif -%};
+
+        
+        
+        var articlePreviewBody = $("div.preview-issue-body > article.body");
+        var articlePreviewHeading = $("div.preview-issue-body > .preview-heading");
+        
+        $("form#define_issue textarea[name=body]").on("keyup", function(){
+            var val = $(this).val();
+            if (val.length > 0){
+                articlePreviewBody.html(marked(val)).removeClass('hide');
+                articlePreviewHeading.removeClass('hide');
+            } else {
+                articlePreviewHeading.addClass('hide');
+                articlePreviewBody.addClass('hide');
+            }
         });
         
         $("form#define_issue").submit(function( event ) {
@@ -214,15 +241,17 @@
             isApp.newIssue = new isApp.Models.Issue(formData, {parse: true});
             isApp.newIssue.save({},{
                 success : function(model,response,objects){
-                    console.log(model);
-                    console.log(response);
-                    console.log(objects);
                     var successText = "<h4>Issue Successfully Defined!</h4><p>See it on the <a href=\"{{root}}\">home page</a> under \"Latest\" sorting or at <a href='{{root}}is/" + response.id + "'>http://{{site_domain}}{{root}}is/" + response.id + "</a>.</p>";
                     $("form#define_issue").html(successText);
                 }
             });
             
-        }); 
+        });
+
+        // Select Title input box and put cursor @ end of it.
+        $("input[name=title]").focus(function(){
+          this.value = this.value;
+        }).focus();
         
         
     })();

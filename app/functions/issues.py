@@ -2,6 +2,17 @@ from app.state import app, db, logMachine
 from app.includes.bottle import request
 
 def getIssuesFromCursor(cursor, redactFields = [], returnNotFound = False):
+    '''
+    Gets well-formed issues (e.g. to return to Backbone) from a cursor or other iterable. 
+    At minimum issue objects must be dicts with an "_id" field.
+    
+    @type          cursor: Iterable
+    @param         cursor: Cursor or list of issues, as might be returned from MongoDB query.
+    @type    redactFields: List
+    @param   redactFields: List of Issues' fields/attributes which not to include in output.
+    @type  returnNotFound: Boolean
+    @param returnNotFound: Return a list of IDs which were not found in MongoDB. Only works if cursor/iterable passed in is incomplete to begin with. If True, output will be a tuple: (wellFormedIssueDicts, listOfNotFoundIDs)
+    '''
     if cursor is None: return False 
     returnObj = []
     if returnNotFound: notFoundIDs = []
@@ -16,6 +27,15 @@ def getIssuesFromCursor(cursor, redactFields = [], returnNotFound = False):
     else: return returnObj
     
 def getIssueByID(issueID, customFields = None):
+    '''
+    Get Issue dict from Mongo by ID. Return none if not found. 
+    Mostly a shortcut/wrapper for db.issues.find_one.
+
+    @type       issueID: String
+    @param      issueID: ID of issue to fetch.
+    @type  customFields: Dict
+    @param customFields: Override the second param of Mongo's find() (which fields to include or not). 
+    '''
     issue = {'_id' : issueID}
     if not customFields: customFields = {"_id" : 0}
     issueFound = db.issues.find_one({"_id": issueID}, customFields)
@@ -129,7 +149,8 @@ def saveNewIssueFromRequestObj(issueReq):
         'scoring' : {
             'views' : 1,
             'score' : 1,
-            'contributions' : 1
+            'contributions' : 1,
+            'subscribed' : 1
         },
         'title' : issueReq['title'],
         'current_revision' : revisionId,

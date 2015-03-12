@@ -167,7 +167,7 @@ isApp.Models.SearchBar = Backbone.Model.extend({
         query: '',
         time: null,
         results: null,
-        currentXHR : $.ajax() // Empty jqXHR obj.
+        currentXHR : null // Empty jqXHR obj.
     },
     
     url: function (){
@@ -183,7 +183,7 @@ isApp.Models.SearchBar = Backbone.Model.extend({
         this.input.on('keyup', $.proxy(function(e){
             this.set('query' , this.input.val());
             clearTimeout(this.get('time'));
-            this.get('currentXHR').abort();
+            if (this.get('currentXHR')) this.get('currentXHR').abort();
             this.time = setTimeout(function(m){
                 m.find();
             }, 750, this);
@@ -346,7 +346,12 @@ isApp.Views = {
         },
         
         /* Create Button Tooltips */
+        
         generateToolTips: function(){
+        
+            // Reset.
+            delete this.tooltips;
+        
             /* Subscribe Icon */
             var subscribe_icon = this.$el.find('.subscribe-icon');
             if (subscribe_icon.length > 0){
@@ -357,6 +362,17 @@ isApp.Views = {
                     this.tooltips.subscribe.setContent("Subscribe to updates in this issue");
                 }
             }
+            
+            var views_number = this.$el.find('.scoring-container .views-number');
+            if (views_number.length > 0){
+                this.tooltips.views = new Opentip(views_number, "Does NOT count towards rank/score");
+            }
+            
+            var views_number = this.$el.find('.scoring-container .subscribed-score');
+            if (views_number.length > 0){
+                this.tooltips.views = new Opentip(views_number, "Number of people subscribed to this issue");
+            }
+            
         },
         
         subscribe: function(){

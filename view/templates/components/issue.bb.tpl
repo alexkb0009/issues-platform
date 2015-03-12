@@ -83,21 +83,33 @@
     <div class="large-4 columns">
         
         <h3 class="major section-header issue-title">Rankings</h3>
-        <div class="row scoring">
-            <div class="large-4 columns text-center">
+        <div class="row scoring-container">
+            <div class="large-4 columns text-center aggregated-score">
                 <h4><%= scoring.get('score') %></h4>
                 <p>Score</p>
             </div>
-            <div class="large-4 columns text-center">
+            <div class="large-4 columns text-center subscribed-score">
                 <h4><%= scoring.get('subscribed') %></h4>
                 <p>Subscribed</p>
             </div>
-            <div class="large-4 columns text-center">
+            <div class="large-4 columns text-center views-number">
                 <h4><%= scoring.get('views') %></h4>
                 <p>Views</p>
             </div>
         </div>
-        <h5><i class="fa fa-square fa-fw"></i> This issue is important to me.</h5>
+        <h3 class="major section-header issue-title">Vote</h3>
+        <ul style="list-style-type: none; margin-left: 0; margin-top: 14px;" class="vote-options">
+            <li><h5><i class="fa fa-fw fa-arrow-up"></i>   This issue is important to me</h5></li>
+            <li><h5><i class="fa fa-fw fa-arrow-down"></i> This issue has no relevancy for me</h5></li>
+            <li><h5><i class="fa fa-fw fa-trash"></i>      This issue is rubbish</h5></li>
+        </ul>
+        
+        <h3 class="major section-header issue-title">Responses</h3>
+        <p>[<em>Top Proposed Responses/Solutions go here</em>]</p>
+        
+        <h3 class="major section-header issue-title">Discussion</h3>
+        <p>[<em>Most active forum-type discussion threads related to issue go here</em>]</p>
+        
         
     </div>
     

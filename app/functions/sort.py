@@ -147,7 +147,7 @@ def getMongoScaleQuery(scale = 2.0, user = False):
                     {'meta.scale': 2},
                     {'meta.scale': 3, 'meta.state' : user['meta']['state']},
                     {'meta.scale': 4, 'meta.city'  : user['meta']['city'] },
-                    {'meta.scale': 5, 'meta.city'  : user['meta']['zip']  }
+                    {'meta.scale': 5, 'meta.zip'   : user['meta']['zip']  }
                 ]
             }
         if not scale.is_integer():

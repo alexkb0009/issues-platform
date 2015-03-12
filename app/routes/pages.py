@@ -85,7 +85,7 @@ def view_issue(issue_slug):
     return template('issue.view.tpl', returnObj)
         
 
-@app.route('/define-issue')
+@app.route('/define-issue', method="POST")
 def define_issue():
     '''
     This is the page where issues may be created.
@@ -94,7 +94,19 @@ def define_issue():
     status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
 
     if session_auth():
+        from re import sub
+        queryTitle = sub(
+            r"[A-Za-z]+('[A-Za-z]+)?", 
+            lambda mo: mo.group(0)[0].upper() + mo.group(0)[1:].lower(), 
+            request.forms.get("search")
+        )
+        
+        if len(queryTitle) == 0:
+            response.status = 404
+            return {'message': 'No title query supplied. Required for access to page.'}
+        
         return template('issue.define.tpl', {
+          'query_title' : queryTitle,
           'logged_in' : True,
           'user' : request.user,
           'route' : [('Define Issue', '', 'Create/define a new Issue')],
@@ -222,6 +234,16 @@ def test_zip(zipcode):
     
 ## Error Handling
 
+@app.error(403)
+@view('error.tpl')
+def error403(error):
+    returnObj = {
+        'route'     : [('Error', '', 'Return to homepage')],
+        'error'     : 403,
+        'message'   : 'You are not authenticated or do not have the proper permissions to access this page.'
+    }
+    return returnObj
+
 @app.error(404)
 @view('error.tpl')
 def error404(error):
@@ -232,15 +254,17 @@ def error404(error):
     }
     return returnObj
     
-@app.error(403)
+@app.error(405)
 @view('error.tpl')
-def error403(error):
+def error404(error):
     returnObj = {
         'route'     : [('Error', '', 'Return to homepage')],
-        'error'     : 403,
-        'message'   : 'You are not authenticated or do not have the proper permissions to access this page.'
+        'error'     : 405,
+        'message'   : 'Not allowed to access page or endpoint via this method.'
     }
     return returnObj
+    
+
     
 @app.error(500)
 def handle_500_errors(error):

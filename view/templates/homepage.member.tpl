@@ -87,12 +87,12 @@
         {# Main Issues Area #}
         
         <div id="search_issues_row" class="{# row #} no-results">
-            <div class="row container">
-                <div class="large-1 small-2 columns text-center search-icon-container">
-                    <i class="fa fa-search"></i>
-                </div>
-                <div class="large-11 small-10 columns">
-                    <form id="search_issues" action="#">
+            <form id="search_issues" action="{{ root }}define-issue" method="POST">
+                <div class="row container">
+                    <div class="large-1 small-2 columns text-center search-icon-container">
+                        <i class="fa fa-search"></i>
+                    </div>
+                    <div class="large-11 small-10 columns">
                         <div class="row collapse postfix-radius">
                             <div class="large-11 small-10 columns">
                                 <input type="text" name="search" placeholder="rising cost of wheat" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
@@ -103,17 +103,17 @@
                                 </a>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <h5 class="result-title">Search Results</h5>
-            <div class="search-results container">
-                {# Container for search results #}
-            </div>
-            <div class="create-new-issue">
-                <h6>Nothing matching your concern?</h6>
-                <a href="{{ root }}define-issue" class="button radius expand success">Define an Issue!</a>
-            </div>
+                <h5 class="result-title">Search Results</h5>
+                <div class="search-results container">
+                    {# Container for search results #}
+                </div>
+                <div class="create-new-issue">
+                    <h6>Nothing matching your concern?</h6>
+                    <button type="submit" class="button radius expand success">Define an Issue!</button>
+                </div>
+            </form>
         </div>
         
         <div id="main_issues">
