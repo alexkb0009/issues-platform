@@ -108,8 +108,8 @@
       </div>
       
       <div class="large-6 columns">
-        <label for="r_street_f">Street Address <small>required</small></label>
-        <input name="addr[street]" id="r_street_f" required type="text" placeholder="123 Real St. Unit #44" />
+        <label for="r_street_f">Street Address <small>Not required for BETA testers</small></label>
+        <input name="addr[street]" id="r_street_f" type="text" placeholder="123 Real St. Unit #44" />
         <small class="error">Address is required.</small>
       </div>
       
