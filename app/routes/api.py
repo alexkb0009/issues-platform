@@ -9,23 +9,10 @@ from app.functions.issues import getIssuesFromCursor
 
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>', method="GET") # = /api/issues/trending
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<page:int>', method="GET") # = /api/issues/trending
-def issues_list_scored(sorting):
-    from app.includes.bottle import request
-    from app.functions.sort import getIssuesSortOptions, getSortedIssuesIterableFromDB
-    session = request.environ['beaker.session']
-    
-    headers_key_auth() # So we have request.users if/when needed
-    
-    scale = 2 # Nationwide is default, e.g. if no user.
-    if hasattr(request, 'user'): 
-        if 'current_scale' in request.user['meta']: scale = request.user['meta']['current_scale']
-        else: scale = 0 # Anywhere is default for logged-in users.
-        
-    (iterable, more) = getSortedIssuesIterableFromDB(sorting, 20, float(scale))
-    
-    session['last_sort'] = sorting
-    session.save();    
-        
+def issues_list_scored(sorting, page = 1):
+    from app.functions.issues import getScaledPagifiedIssuesIterableBySort
+    headers_key_auth() # So we have request.users if/when needed   
+    (iterable, more) = getScaledPagifiedIssuesIterableBySort(sorting, page)
     return json.dumps({'results' : getIssuesFromCursor(iterable), 'more' : more })
 
     
@@ -141,9 +128,12 @@ def search_issues():
     
 ## Set Scale 
 @app.route('/' + app.config['app_info.api_request_path'] + 'user/scale', method="PUT")
-def set_scale():
-    if not headers_key_auth(): return { 'message' : 'Not authenticated' } 
+def set_user_scale():
     from app.functions.sort import getIssuesScaleOptions, saveUserScale
+    if not headers_key_auth(): return { 
+        'message' : 'Not authenticated. Can only retain current national scale.',
+        'new_scale' : getIssuesScaleOptions(float(2), stripIssues = True)
+    } 
     scale = getIssuesScaleOptions(float(request.forms.get('scale')), request.user, stripIssues = True)
     if scale is False: return { 'message' : 'Scale not valid. Must be numerical.' } 
     saveUserScale(scale['key'], request.user)

@@ -12,7 +12,8 @@ print = logMachine.log # Debug stuff better
 ## Primary Pages
 
 @app.route('/')
-def index():
+@app.route('/search/<search_term>')
+def index(search_term = None):
     '''
     This is the primary index page. It outputs two different templates/views, depending on if user is guest or authenticated user.
     If authenticated, render the homepage.member.tpl template which contains lists of Issues, etc. to make up users' home portal.
@@ -20,28 +21,47 @@ def index():
     '''
     from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions, saveUserScale
     status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
+    session = request.environ['beaker.session']
     scale = request.query.get('scale')
-    print(scale)
-    
-    
-    if session_auth():
-        if scale:
+    if scale: 
+        try:
             scale = float(scale)
-            saveUserScale(scale, request.user)
-            request.user['meta']['current_scale'] = scale
-        return template('homepage.member.tpl', {
-          'logged_in' : True,
+        except ValueError:
+            scale = None
+    
+    authd = session_auth()
+    
+    returnObj = {
+        'logged_in' : authd,
+        'session' : session,
+        'search_term' : search_term
+    }
+    
+    if not search_term: 
+        # Get some initial issues for us.
+        from app.functions.issues import getScaledPagifiedIssuesIterableBySort, getIssuesFromCursor
+        import json
+        (iterable, more) = getScaledPagifiedIssuesIterableBySort(session.get('last_sort') or 'trending', 1)
+        returnObj['formatted_issues'] = json.dumps(getIssuesFromCursor(iterable))
+        returnObj['next_page'] = more
+        
+    if authd:
+    
+        if scale is not None:
+            if saveUserScale(scale, request.user):
+                request.user['meta']['current_scale'] = scale
+                
+        returnObj.update({
           'user' : request.user,
-          'route' : [('Home', '', 'Return to homepage')],
-          'session' : request.environ['beaker.session']
+          'route' : [('Home', '', 'Return to homepage')]
         })
+            
+        return template('homepage.member.tpl', returnObj)
         
     else:
-        returnObj = {}
-        returnObj['logged_in'] = False
         if status in ['login_failed', 'logged_out']:
             returnObj['subheader_message'] = status
-        return template('homepage.guest.tpl', returnObj)
+        return template('homepage.member.tpl', returnObj)
         
 @app.route('/is/<issue_slug>')
 def view_issue(issue_slug):
@@ -60,8 +80,8 @@ def view_issue(issue_slug):
     
     if not issue:
         #  404 Not Found
-        response.status = 404
-        redirect('/404')
+        # response.status = 404
+        redirect('/s/' + issue_slug)
     else: 
         issue['scoring']['views'] = addToIssueViews(issue['_id'])
         issue = getWellFormedIssue(issue, fullMode = True)

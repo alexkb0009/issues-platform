@@ -99,3 +99,24 @@ ul {
 .alert-box .close {
   margin-top: -0.4875rem;
 }
+
+.alert-box.info {
+  background-color: #F2F2F2;
+  border-color: #A5A5A5;
+}
+
+/** Top bar **/
+
+@media only screen and (min-width: 40.063em){
+  
+  .top-bar-section li:not(.has-form) a:not(.button),
+  .top-bar-section .dropdown li:not(.has-form):not(.active)>a:not(.button) {
+    background: inherit;
+  }
+  
+  nav.top-bar ul li:not(.has-form):not(.active) a:not(.button):hover {
+    background: #222;
+    background: rgba(0,0,0,0.33);
+}
+
+}

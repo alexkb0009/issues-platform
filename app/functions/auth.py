@@ -12,7 +12,7 @@ def check_sent_auth_info(key, returnUser = False):
     try:
         user_auth_array = base64.b64decode(key).decode('utf-8').split('@')
     except:
-        log('Incorrect encoding or something supplied:', sys.exc_info()[0])
+        log('Incorrect encoding or something supplied: ' + str(sys.exc_info()[0]))
         return False
     else:
         if returnUser: 
@@ -81,7 +81,6 @@ def headers_key_auth():
     auth_key = request.get_header('auth_key') or request.get_header('Authorization')
     authd_user = check_sent_auth_info(auth_key, True);
     if auth_key == None or authd_user == None or authd_user == False:
-        response.status = 401
         return False
     request.user = authd_user
     return True

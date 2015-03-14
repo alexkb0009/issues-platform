@@ -20,7 +20,6 @@
     {# Certain JS (libs) can go in Head #}
     <script type="text/javascript" src="{{ root }}js/vendor/modernizr.js"></script>
     <script type="text/javascript" src="{{ root }}js/vendor/jquery-2.1.3.min.js"></script>
-    {% block js_templates %}{% endblock %}
     
       {# We don't need these for guests, who get the marketing version. #}
       <script>
@@ -36,19 +35,25 @@
       
       <script type="text/javascript" src="{{ root }}js/vendor/underscore-min.js"></script>
       <script type="text/javascript" src="{{ root }}js/vendor/backbone-min.js"></script>
-      
+      {% block js_templates %}{% endblock %}
       <script type="text/javascript" src="{{ root }}js/app.issues.definitions.js"></script>
       <script type="text/javascript" src="{{ root }}js/app.issues.functions.js"></script>
       
       {# Initial Data, Settings #}
-      {%- if logged_in -%} 
       <script type="text/javascript">
-        {% if logged_in %}
-        isApp.me = new isApp.Models.User({{ user.jsonSerialized|safe }});
-        isApp.me.set('current_scale', {{ user['meta']['current_scale'] }} || 0);
-        {% endif %}
+        {% if logged_in -%}
+          isApp.me = new isApp.Models.User({{ user.jsonSerialized|safe }});
+          isApp.me.set('logged_in', true);
+          isApp.me.set('current_scale', {{ user['meta']['current_scale'] }} || 0);
+        {%- else -%}
+          isApp.me = new isApp.Models.User({
+              
+          });
+          isApp.me.set('logged_in', false);
+          isApp.me.set('current_scale', 2);
+        {%- endif %}
       </script>
-    {%- endif -%}
+
     
     
     {% block additionalheader %}{% endblock %}

@@ -2,16 +2,16 @@
 {% set sort = issue_sort_options(session['last_sort']|default('trending')) %}
 
 {# Current Scale of User, if set #}
-{% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2), user, stripIssues = True) %}
-
+{% if user %}
+    {% set current_scale = issue_scale_options(user['meta']['current_scale']|default(2), user, stripIssues = True) %}
+{% else %}
+    {% set current_scale = issue_scale_options(2, stripIssues = True) %}
+{% endif %}
 
 
 
 {# Template Begins #}
-
-
 {% extends "exoskeletons/default.tpl" %}
-
 
 {% block title %}{{ site_name }} > Home{% endblock %} 
 
@@ -38,12 +38,27 @@
   
   
 {% block sub_menu_block -%}
-
+{% if user %}
 <div class="intro main-subheader">
   <span class="inline">Welcome, {{ user.firstname }}!</span>
   <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a>
 </div>
-
+{% else %}
+  {%- if subheader_message == 'login_failed' -%}
+    <div class="warning main-subheader">
+      <h4>Login failed.</h4>
+      <ul>
+        <li>Check your username & password combination.
+        <li>After three incorrect attempts you will be prevented from accessing the site for 30 minutes.</li>
+      </ul>
+    </div>
+  {%- elif subheader_message == 'logged_out' -%}
+    <div class="confirmation main-subheader alert-box" data-alert>
+      You have logged out successfully!
+      <a href="#" class="close">×</a>
+    </div>
+  {%- endif -%}
+{% endif %}
 {%- endblock %}
 
 
@@ -78,8 +93,17 @@
 
         <ul id="main_issues_title_scale_options" class="f-dropdown issues-title-dropdown" data-dropdown-content aria-hidden="true" tabindex="1">
             {% for opt in issue_scale_options(localizeUser = user) %}
+            {% if not user and not opt['guest_enabled'] %}
+              {% set disabled = True %}
+            {% else %}
+              {% set disabled = False %}
+            {% endif %}
             <li class="{{ opt['class'] }}{% if current_scale['key'] == opt['key'] %} active{% endif %}">
-                <a href="#" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
+                {% if disabled == True -%}
+                    <span class="disabled">{{ opt['title'] }}</span>
+                {%- else -%}
+                    <a href="#" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
+                {%- endif %}
             </li>
             {% endfor %}
         </ul>
@@ -122,22 +146,42 @@
         
     </div>
       
+    {% if user %}   
+    
+    {# Show Subscribed Issues block if logged in #}
+    
     <div class="large-4 columns">
         <h4 id="my_issues_title" class="major section-header noselect">My Issues</h4>
-     
-        <div id="my_issues">
-            {# Container element to be used by backbone #}
-        </div>
-        
+        <div id="my_issues"></div>
     </div>
+    
+    {% else %}      
+    
+    {# Or login block if not #}
+    
+    <div class="large-4 columns login-area">
+      {% include 'components/login-block.tpl' %}
+    </div>
+    
+    {% endif %}
+    
+    
 </div>
 
 {% endblock %}
 
 {% block additionalfooter -%}
-  {%- if not logged_in -%}{# Script for guests #}
-    <script src="{{ root }}js/homepage.guest.js"></script> 
-  {%- else -%} 
-    <script src="{{ root }}js/app.issues.process.home.js"></script>
-  {%- endif -%}
+
+  {% if formatted_issues %}
+      <script>
+        isApp.currentIssues = new isApp.Collections.Issues({{ formatted_issues }}, {parse: true});
+      </script>
+  {% endif %}
+  
+  <script src="{{ root }}js/app.issues.process.home.js"></script>
+  
+  {% if search_term %}
+    <script>isApp.searchBar.search("{{ search_term }}");</script>
+  {% endif %}
+  
 {%- endblock %}

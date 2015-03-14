@@ -15,13 +15,23 @@ body {
 
 /** Top Menu **/
 
-nav.top-bar ul li a > i {
-  padding-right: 24px;
+.top-bar { 
+  /* background: #4f4f4f !important; */
+  /* background: #094257 !important; */
+  background: #2A424A !important;
+  
+  /* border-bottom: .1875rem solid #0E171A; */
+  /* height: 3rem; */ /** 3 - .1875 = 2.8125rem orig height **/
+
 }
 
-nav.top-bar ul li:not(.has-form):not(.active) a:not(.button):hover {
-  /* box-shadow: inset 0px 1px 6px #000; */
-  background: #222 !important;
+.top-bar-section ul li,
+.top-bar-section ul li .dropdown  {
+  background: #2A424A;
+}
+
+nav.top-bar ul li a > i {
+  padding-right: 24px;
 }
 
 nav.top-bar ul.title-area li.name h1 a {
@@ -80,6 +90,12 @@ div.main-subheader {
   padding-right: 0.9375em;
 }
 
+div.main-subheader.alert-box {
+  color: #000;
+  border: none;
+  margin-bottom: 5px;
+}
+
 div.main-subheader ul {
   margin-bottom: 5px;
   font-size: 0.875em;
@@ -103,7 +119,7 @@ div.main-subheader > h4 {
 /** Footer **/
 
 footer {
-  background: #d0d0d0;
+  /* background: #d0d0d0; */
   padding: 11px 0 9px;
 }
 
@@ -120,8 +136,8 @@ footer ul.inline-list {
 /** Common Elements' Styling **/
 
 div.main-body > .main-content.row {
-  padding-top: 17px;
-  padding-bottom: 17px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .section-header {
@@ -183,27 +199,34 @@ ul.issues-title-dropdown.f-dropdown:before {
   border-bottom-color: #333;
 }
 
-ul.issues-title-dropdown.f-dropdown li a {
+ul.issues-title-dropdown.f-dropdown li > * {
   color: #eee;
+  padding: 0.5rem;
+  display: block;
 }
 
-ul.issues-title-dropdown.f-dropdown li.secondary a {
+ul.issues-title-dropdown.f-dropdown li > *.disabled {
+  color: #999;
+  cursor: default;
+}
+
+ul.issues-title-dropdown.f-dropdown li.secondary > * {
   /* padding-left: 1rem; */
   font-size: 0.875em;
 }
 
-ul.issues-title-dropdown.f-dropdown li.secondary a:before {
+ul.issues-title-dropdown.f-dropdown li.secondary > *:before {
   content: "+";
   font-family: FontAwesome;
   padding: 0 8px 0 16px;
   font-size: 0.875em;
 }
 
-ul.issues-title-dropdown.f-dropdown li a > span.light {
+ul.issues-title-dropdown.f-dropdown li > * > span.light {
   opacity: 0.45;
 }
 
-ul.issues-title-dropdown.f-dropdown li a > i.fa {
+ul.issues-title-dropdown.f-dropdown li > * > i.fa {
   margin-right: 8px;
   font-size: 0.95em;
   font-size: 0.875em;
@@ -217,7 +240,7 @@ ul.issues-title-dropdown li.active {
   background-color: #2a2a2a;
 }
 
-ul.issues-title-dropdown li.active a:after  { 
+ul.issues-title-dropdown li.active > *:after  { 
   font-family: FontAwesome;
   content: " \f00c"; 
   padding: 0 3px;

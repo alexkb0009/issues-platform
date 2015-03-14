@@ -19,8 +19,6 @@
 
 <script id="backbone_issue_template_bigger" type="text/template">
 
-    <% this.$el.addClass('row') %>
-
     <div class="large-1 small-2 columns">
       <h5 class="score text-center">
         <%= scoring.get('score') %>

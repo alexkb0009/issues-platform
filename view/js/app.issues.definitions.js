@@ -215,6 +215,13 @@ isApp.Models.SearchBar = Backbone.Model.extend({
         app.ce.body.removeClass('in-search');
     },
     
+    // Manually perform a search for user, including setting value in search input box.
+    search: function(query){
+        this.input.val(query);
+        this.find(query);
+    },
+    
+    // AJAX request to find results for query, sets model + triggers events.
     find : function(query){
         
         if (typeof query == 'undefined') query = this.get('query');
@@ -270,10 +277,7 @@ isApp.Collections = {
             }
         },
     
-        model : isApp.Models.Issue,
-        initialize: function(items, options){
-
-        }
+        model : isApp.Models.Issue
         
     })
 
@@ -302,7 +306,6 @@ isApp.Views = {
         
         render: function(){
             this.$el.html(this.template( this.model.toJSON() ));
-            
             if (this.$el.hasClass('min') || window.innerWidth <= 600){ // Make smaller if it is of smaller-priority issue category or screen is small
               this.toggleDescriptionOpen(null, false); // evt = null, transition = false
             }
@@ -405,13 +408,13 @@ isApp.Views = {
     
         render: function(){
             this.el.innerHTML = '';
-            this.collection.each(function(issue){
+            this.collection.each($.proxy(function(issue){
                 var optsObj = { model: issue }; // Minimum
                 if (typeof this.childTemplateID != 'undefined') optsObj.templateID = this.childTemplateID;
                 if (typeof this.childClassName != 'undefined') optsObj.className = this.childClassName;
                 var issueView = new isApp.Views.IssueView(optsObj);
                 this.$el.append(issueView.el);
-            },this);
+            },this));
             if (this.collection.length == 0){
                 this.$el.addClass('empty');
             } else {

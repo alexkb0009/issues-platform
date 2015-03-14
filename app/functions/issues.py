@@ -1,6 +1,24 @@
 from app.state import app, db, logMachine
 from app.includes.bottle import request
 
+def getScaledPagifiedIssuesIterableBySort(sorting, page = 1):
+    from app.functions.sort import getIssuesSortOptions, getSortedIssuesIterableFromDB
+    session = request.environ['beaker.session']
+    scale = 2 # Nationwide is default, e.g. if no user.
+    user = False
+    if hasattr(request, 'user'): 
+        user = request.user
+        if 'current_scale' in request.user['meta']: scale = request.user['meta']['current_scale']
+        else: scale = 0 # Anywhere is default for logged-in users.
+        
+    if not getIssuesSortOptions(sorting): return False
+    (iterable, more) = getSortedIssuesIterableFromDB(sorting, scale = float(scale), page = page, user = user)
+    
+    session['last_sort'] = sorting
+    session.save(); 
+    
+    return (iterable, more)
+
 def getIssuesFromCursor(cursor, redactFields = [], returnNotFound = False):
     '''
     Gets well-formed issues (e.g. to return to Backbone) from a cursor or other iterable. 

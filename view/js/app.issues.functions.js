@@ -5,7 +5,6 @@
 /** Function to bind "Current Issues" (isApp.Models.Issue) url variable to, to fetch from sorted endpoint programmatically. **/
  
 isApp.u.getCurrentIssuesEndpointURL = function(){
-    console.log()
     var url = app.settings.root + 'api/issues/' + ((isApp.me.get('current_sort')['key'] || session['sort']['key'] ) || 'trending');
     if (typeof isApp.me.get('current_scale') != 'undefined' && isApp.me.get('current_scale') >= 0){
         url += '?scale=' + isApp.me.get('current_scale');

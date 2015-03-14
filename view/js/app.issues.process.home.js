@@ -1,13 +1,15 @@
 
-isApp.currentIssues = new isApp.Collections.Issues([{},{},{}]);
-isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL;
-isApp.currentIssues.fetch();
-isApp.currentIssues.view = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger' });
+//isApp.currentIssues = new isApp.Collections.Issues([{},{},{}]); // No more lazy-loading, now initial Issues avail as JS objects in template.
+isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL; // Keep this binding still for future fetches.
+//isApp.currentIssues.fetch();
+isApp.currentIssues.view = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger', childClassName: 'issue listview row' });
 
-isApp.myIssues = new isApp.Collections.Issues([{},{},{}]);
-isApp.myIssues.url = app.settings.root + 'api/issues/subscribed';
-isApp.myIssues.fetch();
-isApp.myIssues.view = new isApp.Views.IssuesView({ el: $("#my_issues"), collection: isApp.myIssues, childClassName: 'issue listview min' });
+if (isApp.me.get('logged_in')){
+  isApp.myIssues = new isApp.Collections.Issues([{},{},{}]);
+  isApp.myIssues.url = app.settings.root + 'api/issues/subscribed';
+  isApp.myIssues.fetch();
+  isApp.myIssues.view = new isApp.Views.IssuesView({ el: $("#my_issues"), collection: isApp.myIssues, childClassName: 'issue listview min' });
+}
 
 isApp.searchBar = new isApp.Models.SearchBar({results: new isApp.Collections.Issues()}, {input : $('#search_issues_row form input'), container : $('#search_issues_row')});
 isApp.searchBar.get('results').view = new isApp.Views.IssuesView({ el: $("#search_issues_row .search-results"), collection: isApp.searchBar.get('results'), childTemplateID: 'backbone_issue_template' });
@@ -43,8 +45,12 @@ isApp.ex.titleSortLink = app.ce.currentIssuesTitle.next('#main_issues_title_sort
 
 // Selecting new scale
 isApp.ex.scaleTitle = app.ce.currentIssuesTitle.children('#scale_title');
-isApp.ex.scaleTitle.data('tooltip', new Opentip(isApp.ex.scaleTitle, 'Set your scale', {delay : 0.4, tipJoint: 'bottom'}));
-
+isApp.ex.scaleTitle.data('tooltip', new Opentip(isApp.ex.scaleTitle, {delay : 0.4, tipJoint: 'bottom'}));
+if (isApp.me.get('logged_in')){
+  isApp.ex.scaleTitle.data('tooltip').setContent('Set your scale');
+} else {
+    isApp.ex.scaleTitle.data('tooltip').setContent('Guests may only browse through NATIONAL issues.');
+}
 isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(function(){
 
     var clickedLink = $(this);

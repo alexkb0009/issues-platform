@@ -62,12 +62,13 @@ def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, s
         {
             'key' : 2,   
             'title' : ("<i class='fa fa-fw fa-plane'></i>", "National", " <span class='light'>Issues</span>"), 
-            'class' : 'primary'
+            'class' : 'primary',
+            'guest_enabled' : True
         },
         {
             'key' : 2.5, 
             'title' : ("", "Nationwide ", " <span class='light'>State Issues</span>"), 
-            'class' : 'secondary'
+            'class' : 'secondary',
         },
         {
             'key' : 3,   
@@ -126,11 +127,13 @@ def saveUserScale(scale, user):
     @param  user: User object, as gotten via an auth query and available in request.user.
     '''
     from app.state import db
-    return db.users.update(
-        {'_id' : user['_id']}, 
-        {'$set' : {'meta.current_scale' : scale} },
-        multi=False
-    )
+    if getIssuesScaleOptions(scale):
+        return db.users.update(
+            {'_id' : user['_id']}, 
+            {'$set' : {'meta.current_scale' : scale} },
+            multi=False
+        )
+    else: return False
     
         
 def getMongoScaleQuery(scale = 2.0, user = False):
@@ -165,7 +168,7 @@ def getMongoScaleQuery(scale = 2.0, user = False):
     
         
  
-def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
+def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1, user = False):
     from app.state import db, logMachine
     from app.includes.bottle import request
     
@@ -173,7 +176,7 @@ def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1):
     sortSet = getIssuesSortOptions(sorting, True)['func']
     
     # Get scale in context of user
-    matchQuery = getMongoScaleQuery(scale, request.user)
+    matchQuery = getMongoScaleQuery(scale, user)
     
     iterable = db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit + 1, sort = sortSet)
     more = iterable.count(True) > limit
