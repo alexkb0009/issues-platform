@@ -1,9 +1,10 @@
 <div class="login-block">
-  <div data-alert class="alert-box info radius">
+  
+  <h4>Sign In</h5>  
+  <div data-alert class="alert-box info radius" style="margin-top: 12px;">
     In order to contribute, please sign in or <a href="{{ root }}register"><b>request an account</b></a>.
     <a href="#" class="close">&times;</a>
   </div>
-  <h4>Sign In</h5>  
   <form action="{{ root }}do/login" method="post">
     {# <label for="lb_username_f">Username:</label> #}
     <input name="username" id="lb_username_f" type="text" placeholder="Username, e.g. billyg123" />

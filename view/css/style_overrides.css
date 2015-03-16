@@ -8,11 +8,51 @@
  
  /** Layout **/
  
+ /** Larger Width layout **/
  @media screen and (min-width: 1240px) {
    .row {
      max-width: 1200px;
    }
  }
+ 
+@media screen and (min-width: 1720px) {
+  .row {
+    max-width: 1500px;
+  }
+   
+  .xlarge-1  { width: 8.33333%; } 
+  .xlarge-2  { width: 16.66667%; }
+  .xlarge-3  { width: 25%; }
+  .xlarge-4  { width: 33.33333%; }
+  .xlarge-5  { width: 41.66667%; }
+  .xlarge-6  { width: 50%; }
+  .xlarge-7  { width: 58.33333%; }
+  .xlarge-8  { width: 66.66667%; }
+  .xlarge-9  { width: 75%; }
+  .xlarge-10 { width: 83.33333%; }
+  .xlarge-11 { width: 91.66667%; }
+  .xlarge-12 { width: 100%; }
+   
+ }
+ 
+/** Enable mini-columns version **/
+
+@media only screen and (min-width: 64.063em){
+  .row.small-columns > .columns {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
+
+  .row.small-columns {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+  .row.small-columns > .columns {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
  
  /** Fonts **/
  
@@ -44,6 +84,22 @@
   background-color: #5897fb;
 }
 
+.button.page, 
+button.page {
+  background-color: #f4f4f4;
+  box-shadow: 0 1px 5px -1px rgba(0,0,0,0.25);
+}
+  
+button.page:hover, button.page:focus, 
+.button.page:hover, .button.page:focus {
+  background-color: #bababa;
+}
+
+button[disabled].page, button[disabled].page, 
+.button.page.disabled, .button.page.disabled {
+  background-color: #ECEEF5;
+}
+
 /** Forms **/
 
 input[type="text"], input[type="password"], input[type="date"], 
@@ -58,7 +114,7 @@ input[type="url"], input[type="color"], textarea {
 
 .select2-container--default .selection .select2-selection {
   height: 2.3125rem;
-  padding: 0.2rem;
+  padding: 0.275rem;
   border-radius: 0px;
   border-color: #bbb;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
@@ -119,4 +175,14 @@ ul {
     background: rgba(0,0,0,0.33);
 }
 
+}
+
+/** Opentip **/
+
+div.opentip .ot-header h1 {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 3px;
+  
 }

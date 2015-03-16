@@ -125,8 +125,8 @@ isApp.Models.Issue = Backbone.Model.extend({
     },
     
     defaults: {
-        title: "<div style='display: inline-block; height: 10px; background-color: #e9e9e9; width: 75%; margin: 8px 0 12px;'></div>",
-        description: "<div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 50%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 75%; margin: 8px 0 12px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 60%; margin: 8px 0 12px;'></div>",
+        title: "<div style='display: inline-block; height: 10px; background-color: #e9e9e9; width: 75%; margin: 8px 0 2px;'></div>",
+        description: "<div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 50%; margin: 8px 0 2px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 75%; margin: 8px 0 2px;'></div><br><div style='display: inline-block; height: 10px; background-color: #f4f4f4; width: 60%; margin: 8px 0 2px;'></div>",
         markdownParse: true, // Whether to use marked.js to parse on view render.
         revision: 'NoneYet',
         scoring: new isApp.Models.IssueScoring({'scoring': 1}),
@@ -302,15 +302,24 @@ isApp.Views = {
         tooltips: {},
         
         // Default template
-        template: _.template($('#backbone_issue_template').html()), /* dependency: issue.bb.tpl (loaded in homepage.tpl) */
+        //template: _.template($('#backbone_issue_template').html()), /* dependency: issue.bb.tpl (loaded in homepage.tpl) */
         
-        render: function(){
+        render: function(obj){
+            var minimize = false;
+            // Retain minimize if was before.
+            if (typeof obj != 'undefined' && this.$el.find('.description').hasClass('closed')) minimize = true;
+            // Else minimize if small screen or is set in init classSize.
+            if (typeof obj == 'undefined' && (this.className.indexOf('min') >= 0 || window.innerWidth <= 600)) minimize = true;
+            
             this.$el.html(this.template( this.model.toJSON() ));
-            if (this.$el.hasClass('min') || window.innerWidth <= 600){ // Make smaller if it is of smaller-priority issue category or screen is small
+
+            this.setButtonInteractivity();
+            
+            if (minimize){ 
               this.toggleDescriptionOpen(null, false); // evt = null, transition = false
             }
-
-            this.generateToolTips();
+            
+            this.generateToolTipsEnableElements();
         },
         
         initialize: function(options){
@@ -327,8 +336,8 @@ isApp.Views = {
         /* -- --                    -- -- */
         
         toggleDescriptionOpen: function(evt, transition){
+            var descriptionBox  = this.$el.find('.description');
             if (typeof transition == 'undefined') transition = true;
-            var descriptionBox = this.$el.find('.description');
             if (descriptionBox.hasClass('closed')){
                 this.$el.find('.open-icon').addClass('fa-angle-up').removeClass('fa-angle-down');
                 descriptionBox.removeClass('closed');
@@ -349,17 +358,35 @@ isApp.Views = {
                 this.$el.addClass('description-closed');
             }
         },
+
         
+        /* Set interactivity */
+        
+        setButtonInteractivity : function(){
+            if (isApp.me.get('logged_in')){
+                this.$el.find('#editbutton').removeClass('disabled').on('click', $.proxy(function(){
+                    this.template = _.template($('#backbone_issue_template_full_edit').html());
+                    this.render();
+                }, this));
+                this.$el.find('#proposebutton').removeClass('disabled');
+            } else {
+                this.$el.find('#editbutton').addClass('disabled');
+                this.$el.find('#proposebutton').addClass('disabled');
+            }
+            return this;
+        },
+        
+
         /* Create Button Tooltips */
         
-        generateToolTips: function(){
+        generateToolTipsEnableElements: function(){
         
             // Reset.
             delete this.tooltips;
         
             /* Subscribe Icon */
             var subscribe_icon = this.$el.find('.subscribe-icon');
-            if (subscribe_icon.length > 0){
+            if (subscribe_icon.length > 0){ 
                 this.tooltips.subscribe = new Opentip(subscribe_icon);
                 if (this.model.get('meta').get('am_subscribed')){
                     this.tooltips.subscribe.setContent("Un-subscribe from issue");
@@ -368,15 +395,61 @@ isApp.Views = {
                 }
             }
             
-            var views_number = this.$el.find('.views-number > b');
-            if (views_number.length > 0){
-                this.tooltips.views = new Opentip(views_number, "Does not count towards ranking");
+            /* Views Number */
+            var views_number = $('div.stats-container b');
+            if (views_number.length > 0){ 
+                this.tooltips.views = new Opentip(views_number, "Does not count towards ranking", {tipJoint: "top right", offset: [0,6]});
             }
             
-            var views_number = this.$el.find('.scoring-container .subscribed-score');
-            if (views_number.length > 0){
-                this.tooltips.views = new Opentip(views_number, "Number of people subscribed to this issue");
+            /* Visibility Icon */
+            var visibility_icon = $('div.stats-container .visibility-icon');
+            if (visibility_icon.length > 0){ 
+                this.tooltips.visibility_icon = new Opentip(visibility_icon, "Searchability: " + this.model.get('visibilityExpanded')['title'][1], {tipJoint: "top right", offset: [5,7]} );
             }
+            
+            /* # People Subscribed to Issue */
+            var subscr_number = this.$el.find('.scoring-container .subscribed-score');
+            if (subscr_number.length > 0){ 
+                this.tooltips.subscribed_number = new Opentip(subscr_number, "Number of people subscribed to this issue");
+            }
+            
+            /* Edit Button */ 
+            var edit_button = this.$el.find('#editbutton');
+            if (edit_button.length > 0){ 
+                this.tooltips.edit_button = new Opentip(edit_button, {title : "Edit"});
+                if (isApp.me.get('logged_in')){
+                    this.tooltips.edit_button.setContent("Revise language and grammar or add supporting information such as facts and references");
+                } else {
+                    this.tooltips.edit_button.setContent("Please login to contribute.");
+                }
+            }
+            
+            /* Propose Button */ 
+            var propose_button  = this.$el.find('#proposebutton');
+            if (propose_button.length > 0){ 
+                this.tooltips.propose_button = new Opentip(propose_button, {title : "Respond"});
+                if (isApp.me.get('logged_in')){
+                    this.tooltips.propose_button.setContent("Propose a new response or solution to this issue");
+                } else {
+                    this.tooltips.propose_button.setContent("Please login to contribute.");
+                }
+            }
+            
+            
+            /* Comment Button */ 
+            /* EXTRA: Adds/removes disabled class to button. */
+            var comment_button = this.$el.find('#commentbutton');
+            if (comment_button.length > 0){ 
+                this.tooltips.comment_button = new Opentip(comment_button);
+                if (isApp.me.get('logged_in')){
+                    this.tooltips.comment_button.setContent("Discuss, comment, ask a question");
+                    comment_button.removeClass('disabled');
+                } else {
+                    this.tooltips.comment_button.setContent("Please login to contribute.");
+                    comment_button.addClass('disabled');
+                }
+            }
+            
             
         },
         
@@ -412,8 +485,8 @@ isApp.Views = {
                 var optsObj = { model: issue }; // Minimum
                 if (typeof this.childTemplateID != 'undefined') optsObj.templateID = this.childTemplateID;
                 if (typeof this.childClassName != 'undefined') optsObj.className = this.childClassName;
-                var issueView = new isApp.Views.IssueView(optsObj);
-                this.$el.append(issueView.el);
+                issue.view = new isApp.Views.IssueView(optsObj);
+                this.$el.append(issue.view.el);
             },this));
             if (this.collection.length == 0){
                 this.$el.addClass('empty');
@@ -431,7 +504,7 @@ isApp.Views = {
             this.render();
             
             /* Bind some events */
-            this.collection.once('sync', this.render, this).on('changeSet', this.render, this);
+            this.collection.on('changeSet', this.render, this);
         }
     
     })

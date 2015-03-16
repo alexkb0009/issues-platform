@@ -22,7 +22,8 @@
     <div class="main-content row">
       <div class="large-12 columns">
       
-        <h4>{{ route[route|length - 1][0] }}</h4>
+        <h2>{{ route[route|length - 1][0] }}</h2>
+        <hr class="smaller">
         {{ content }}
         
       </div>

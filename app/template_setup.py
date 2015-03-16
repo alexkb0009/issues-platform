@@ -9,5 +9,5 @@ Jinja2Template.defaults = {
     'root' : app.config['app_info.root_directory'],
     'issue_scale_options' : sort.getIssuesScaleOptions,
     'issue_sort_options' : sort.getIssuesSortOptions,
-    'issue_add_view_count' : issues.addToIssueViews
+    'issue_visibility_options' : issues.getIssueVisibilityOptions
 }

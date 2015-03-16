@@ -138,12 +138,14 @@ def saveUserScale(scale, user):
         
 def getMongoScaleQuery(scale = 2.0, user = False):
 
-    if not user: scale = 2.0 # Only national scale for unregistered users.
-
     # Default, to get issues @ certain scale only.
     matchQuery = {'meta.scale' : scale }
+
+    if not user: 
+        scale = 2.0 # Only national scale for unregistered users.
+        matchQuery['meta.visibility'] = 'all'
     
-    if user:
+    elif user:
         if scale == 0: 
             matchQuery = {
                 '$or' : [
@@ -163,6 +165,8 @@ def getMongoScaleQuery(scale = 2.0, user = False):
             if scale in [4, 4.5]: matchQuery['meta.city']  = user['meta']['city']
             # District
             if scale in [5]:      matchQuery['meta.zip']   = user['meta']['zip']
+            
+        matchQuery['meta.visibility'] = { '$in' : ['all','members'] }
         
     return matchQuery
     

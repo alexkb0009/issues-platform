@@ -86,14 +86,15 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
     issueWellFormed = {
       '_id' : str(issue['_id']),
       'title' : issue['title'],
-      'description' : currentRevision['description'],
+      'description' : currentRevision.get('description'),
       'scoring' : issue['scoring'],
       'meta' : {
         'revision_date' : currentRevision['date'].isoformat(),
         'revision_author' : currentRevisionAuthor,
-        'revisions' : issue['meta']['revisions'],
-        'initial_author' : issue['meta']['initial_author'],
-        'scale' : issue['meta']['scale']
+        'revisions' :       issue['meta'].get('revisions'),
+        'initial_author' :  issue['meta'].get('initial_author'),
+        'scale' :           issue['meta'].get('scale'),
+        'visibility' :      issue['meta'].get('visibility')
       }
     }
     
@@ -144,9 +145,9 @@ def saveNewIssueFromRequestObj(issueReq):
     if issueId == False: return False
 
     revision = {
-        'title' : issueReq['title'],
-        'description' : issueReq['description'],
-        'body' : issueReq['body'],
+        'title' : issueReq.get('title'),
+        'description' : issueReq.get('description'),
+        'body' : issueReq.get('body'),
         'date' : datetime.datetime.utcnow(),
         'author' : request.user['username'],
         'parentIssue' : issueId
@@ -157,13 +158,14 @@ def saveNewIssueFromRequestObj(issueReq):
     issue = {
         'meta' : {
             'created_date' : datetime.datetime.utcnow(),
-            'scale' : float(issueReq['meta']['scale']),
+            'scale' : float(issueReq.get('meta').get('scale')),
             'revisions' : 1,
-            'zip' : request.user['meta']['zip'],
-            'city' : request.user['meta']['city'],
-            'state' : request.user['meta']['state'],
-            'initial_author' : request.user['username'],
-            'approved' : False
+            'zip' : request.user.get('meta').get('zip'),
+            'city' : request.user.get('meta').get('city'),
+            'state' : request.user.get('meta').get('state'),
+            'initial_author' : request.user.get('username'),
+            'approved' : False,
+            'visibility' : issueReq.get('meta').get('visibility'),
         },
         'scoring' : {
             'views' : 1,
@@ -171,7 +173,7 @@ def saveNewIssueFromRequestObj(issueReq):
             'contributions' : 1,
             'subscribed' : 1
         },
-        'title' : issueReq['title'],
+        'title' : issueReq.get('title'),
         'current_revision' : revisionId,
         '_id' : issueId
     }
@@ -179,4 +181,31 @@ def saveNewIssueFromRequestObj(issueReq):
     db.issues.insert(issue)
     
     return issueId
+    
+def getIssueVisibilityOptions(key = None):
+    visOptions = [
+        {
+            'key' : 'all',
+            'title' : ("<i class='fa fa-fw fa-globe'></i>","Everyone, including guests"),
+            'description' : "If you want your issue to be seen by a larger audience"
+        },
+        {
+            'key' : 'members',
+            'title' : ("<i class='fa fa-fw fa-users'></i>","Only for signed-in members"),
+            'description' : "Only signed-in users will issue in trending views and search results."
+        },
+        {
+            'key' : 'hidden',
+            'title' : ("<i class='fa fa-fw fa-terminal'></i>","Hidden; direct link/URL only."),
+            'description' : "Effectively keeps the issue private except for those with the URL to it. "
+        }
+    ]
+    
+    if key is not None:
+        for option in visOptions:
+            if option['key'] == key:
+                return option
+        return False
+    
+    return visOptions
     

@@ -7,8 +7,9 @@ isApp.currentIssues.view = new isApp.Views.IssuesView({ el: $("#main_issues"), c
 if (isApp.me.get('logged_in')){
   isApp.myIssues = new isApp.Collections.Issues([{},{},{}]);
   isApp.myIssues.url = app.settings.root + 'api/issues/subscribed';
+  isApp.myIssues.view = new isApp.Views.IssuesView({ el: $("#my_issues"), collection: isApp.myIssues, childTemplateID: 'backbone_issue_template', childClassName: 'issue listview min' });
+  isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
   isApp.myIssues.fetch();
-  isApp.myIssues.view = new isApp.Views.IssuesView({ el: $("#my_issues"), collection: isApp.myIssues, childClassName: 'issue listview min' });
 }
 
 isApp.searchBar = new isApp.Models.SearchBar({results: new isApp.Collections.Issues()}, {input : $('#search_issues_row form input'), container : $('#search_issues_row')});

@@ -9,7 +9,7 @@ from app.functions.issues import getIssuesFromCursor
 
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>', method="GET") # = /api/issues/trending
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<page:int>', method="GET") # = /api/issues/trending
-def issues_list_scored(sorting, page = 1):
+def issues_list_sorted(sorting, page = 1):
     from app.functions.issues import getScaledPagifiedIssuesIterableBySort
     headers_key_auth() # So we have request.users if/when needed   
     (iterable, more) = getScaledPagifiedIssuesIterableBySort(sorting, page)
@@ -34,7 +34,7 @@ def issues_list_subscribed():
     
     
 ## Create new Issue
-@app.route('/' + app.config['app_info.api_request_path'] + 'issue', method="POST") # = /api/issue/new
+@app.route('/' + app.config['app_info.api_request_path'] + 'issue', method="POST") # = /api/issue
 def create_issue():
     from app.functions.issues import saveNewIssueFromRequestObj
     if not headers_key_auth(): 
@@ -50,6 +50,10 @@ def create_issue():
             {'$addToSet' : {'subscribed_issues' : issueId} },
             multi=False
         )
+        
+    else:
+        response.status = 400
+        return { 'message' : 'Issue "' + request.json.get('title') + '" already exists under scale ' + request.json.get('meta').get('scale') + '.' }
     
     return {'message' : "OK", 'id' : issueId}
     

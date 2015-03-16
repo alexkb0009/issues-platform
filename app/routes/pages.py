@@ -68,7 +68,7 @@ def view_issue(issue_slug):
     '''
     This is the page where issue may be viewed.
     '''
-    from app.functions.issues import getIssueByID, getWellFormedIssue, addToIssueViews
+    from app.functions.issues import getIssueByID, getWellFormedIssue, addToIssueViews, getIssueVisibilityOptions
     from app.functions.sort import getIssuesScaleOptions
     from slugify import slugify
     from bson import json_util
@@ -85,6 +85,7 @@ def view_issue(issue_slug):
     else: 
         issue['scoring']['views'] = addToIssueViews(issue['_id'])
         issue = getWellFormedIssue(issue, fullMode = True)
+        issue['visibilityExpanded'] = getIssueVisibilityOptions(issue['meta'].get('visibility'))
         issue['jsonSerialized'] = json_util.dumps(issue)
         scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = False, localizeUser = request.user if authd else None)
     
@@ -197,13 +198,14 @@ def about():
 # Privacy Policy
 @app.route('/about/privacy-policy')
 @view('basic_page.tpl')
-def about():
+def privacypolicy():
     status = request.query.get('s')
     returnObj = {
       'route' : [('About', 'about', 'About My Issues'), ('Privacy Policy', '', 'Read our privacy policy')],
       'content' : """
       <p>
-      All your submissions will be stored in our servers, in the "cloud". More information will become available as needed. 
+      All of your submissions are stored by us on Amazon servers (through the <a href="http://aws.amazon.com" target="_blank">Amazon Web Services</a> offering of EC2), in the "cloud". More information will become available as necessary.
+      
       </p>
       """
     }

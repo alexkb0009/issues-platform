@@ -9,9 +9,7 @@
 
 {# Template Begins #}
 
-
 {% extends "exoskeletons/default.tpl" %}
-
 
 {% block title %}{{ site_name }} > Home{% endblock %} 
 
@@ -32,7 +30,7 @@
 {% block js_templates %}
 
 {# Below: Template for issues to be used by backbone #}
-{% include 'components/issue.bb.tpl' %}
+{% include 'components/issue.full.bb.tpl' %}
 
 {%- endblock %}
   
@@ -41,8 +39,12 @@
 
 <div class="intro main-subheader">
   <span class="inline">Viewing Issue</span>
-  {# <span class="inline">Welcome, {{ user.firstname }}!</span> #}
-  {# <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a> #}
+  <div class="right stats-container">
+  <b>{{ issue['scoring']['views'] }}</b> <em>Views</em>
+  {% if issue['visibilityExpanded'] %}
+    <span class="visibility-icon">{{ issue['visibilityExpanded']['title'][0] }}</span>
+  {% endif %}
+  </div>
 </div>
 
 {%- endblock %}

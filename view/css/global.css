@@ -18,6 +18,7 @@ body {
 .top-bar { 
   /* background: #4f4f4f !important; */
   /* background: #094257 !important; */
+  box-shadow: 0 0 15px rgba(0,0,0,0.25);
   background: #2A424A !important;
   
   /* border-bottom: .1875rem solid #0E171A; */
@@ -250,7 +251,8 @@ ul.issues-title-dropdown li.active > *:after  {
 
 /** Issues Row **/
 
-div.large-1 {
+.issue.listview div.large-1,
+#search_issues_row div.large-1 {
     padding-right: 0;
 }
 
@@ -317,20 +319,47 @@ div.large-1 {
 
 /* Issues */
 
+.issue .issue-title  .subscribe-icon.subscribed {
+  opacity: 1 !important;
+  color: rgb(239, 109, 0);
+}
+
+.issue .open-icon:hover,
+.issue .issue-title .subscribe-icon:hover {
+  opacity: 1 !important;
+  cursor: pointer;
+}
+
+.issue .issue-title  .subscribe-icon:hover:before {
+  content: "\f005";
+  color: rgb(239, 109, 0);
+}
+
+.issue .issue-title  .subscribe-icon.subscribed:hover:before {
+  content: "\f006";
+  color: #000;
+}
+
 body.in-search div#main_issues {
   display: none;
 }
 
+/** Issues Listview **/
+
 .issue.listview {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.issue.listview.min {
   margin-top: 6px;
   margin-bottom: 6px;
 }
 
 .issue.listview.content-container,
 .issue.listview .content-container {
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
-  border-radius: 3px;
+  background: #fcfcfc;
+  box-shadow: 0 1px 5px -1px rgba(0,0,0,0.25);
+  /* border-radius: 3px; */
   padding: 0;
 }
 
@@ -361,19 +390,24 @@ body.in-search div#main_issues {
     color: #222;
 }
 
-.issue.listview h5.issue-title > a.title:hover:after {
+.issue.listview h5.issue-title > a.title:after {
   content: "\f054";
   font-family: FontAwesome;
   margin: -5px 9px 0;
   display: inline-block;
   font-size: .875em;
+  visibility: hidden;
+}
+
+.issue.listview h5.issue-title > a.title:hover:after {
+  visibility: visible;
 }
 
 .issue.listview .issue-title .open-icon,
 .issue.listview .issue-title .subscribe-icon {
   float: right;
   opacity: 0.3;
-  line-height: inherit;
+  line-height: 1.875em;
   margin-top: -1px;
 }
 
@@ -384,27 +418,6 @@ body.in-search div#main_issues {
 .issue.listview h5.issue-title > .subscribe-icon {
   margin-left: 2px;
   margin-right: 2px;
-}
-
-.issue .issue-title  .subscribe-icon.subscribed {
-  opacity: 1;
-  color: rgb(239, 109, 0);
-}
-
-.issue .open-icon:hover,
-.issue .issue-title .subscribe-icon:hover {
-  opacity: 1;
-  cursor: pointer;
-}
-
-.issue .issue-title  .subscribe-icon:hover:before {
-  content: "\f005";
-  color: rgb(239, 109, 0);
-}
-
-.issue .issue-title  .subscribe-icon.subscribed:hover:before {
-  content: "\f006";
-  color: #000;
 }
 
 .issue.listview div.description {
@@ -455,7 +468,9 @@ body.in-search div#main_issues {
   padding-top: 10px;
   padding-left: 5px;
   padding-right: 5px;
-  box-shadow: 0 0 2px rgba(0,0,0,0.25);
+  /* box-shadow: 0 0 2px rgba(0,0,0,0.25); */
+  margin-top: 9px;
+  box-shadow: 0 1px 5px -1px rgba(0,0,0,0.25);
 }
 
 .issue.full article.body {
@@ -481,8 +496,18 @@ body.in-search div#main_issues {
 .issue.full article.body h3 { /* margin-bottom: 0; */ }
 
 .issue.full .issue-footer-row {
-  padding-top: 12px;
+  padding-top: 10px;
   padding-bottom: 2px;
+}
+
+.issue.full .issue-footer-row .columns i {
+  font-size: 1.25em;
+}
+
+.stats-container span.visibility-icon {
+  padding: 0 0 0 5px;
+  border-left: 1px solid #333;
+  margin-left: 6px;
 }
 
 .issue.full .info-aside.large-4 {

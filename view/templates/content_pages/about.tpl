@@ -22,10 +22,11 @@
       
         {# Content for About Us page #}
       
-        <h4>{{ route[route|length - 1][0] }}</h4>
+        <h2>{{ route[route|length - 1][0] }}</h2>
+        <hr class="smaller">
         <p>
         This is a product of a BAC (Boston Architectural College) thesis project started by Alexander Balashov.
-        The primary goal is to create a citizen-centric e-participation platform &mdash; <em>My Issues</em>.
+        The primary goal is to create a citizen-centric e-participation platform.
         </p>
         
       </div>

@@ -128,6 +128,20 @@
             </div>
             
             <div class="row">
+                <div class="large-3 columns">
+                    <label for"visibility_opts">
+                        <h5 style="margin-bottom: 0;">Visibility</h5>
+                        In views & search results
+                    </label>
+                </div>
+                <div class="large-9 columns" style="font-size: 0.875rem;">
+                    <select name="meta[visibility]" id="visibility_opts"></select>
+                </div>
+            </div>
+            
+            <hr class="smaller">
+            
+            <div class="row">
                 <div class="large-12 columns">
                     <button type="submit" class="right button radius"><i class="fa fa-arrow-right"></i></button>
                 </div>
@@ -135,50 +149,9 @@
             
         </form>
     </div>
-      
-    <div class="large-4 columns">
-        
-
-        <h3 class="major section-header noselect">Guidelines</h3>
-        <p>
-        In order to ensure a standard of quality of Issues, please aim to achieve the following:
-        </p>
-        <ul>
-            <li>
-                <p>
-                <b>Refrain from <em>bias</em>.</b> <br>
-                While issues can bring up a lot of different opinions, the point here is to simply <b>define the issue</b> without being biased towards
-                one response or another. If bias is detected the issue will be at risk of deletion and likely be downvoted.
-                </p>
-            </li>
-            <li>
-                <p>
-                <b>Keep the Introduction <em>succinct</em>.</b><br>
-                Someone should be able to get the gist of what the issue is about without reading the full and intricate details just yet.
-                </p>
-            </li>
-            <li>
-                <p>
-                <b>Articulate and support facts.</b><br> 
-                Write comprehensibly. Support any/all factual claims with evidence and/or credible references. Imagine the body (<em>Extended Description</em>) as a research paper or Wikipedia article.
-                </p>
-            </li>
-        </ul>
-        
-        <h3 class="major section-header noselect">Markdown Format</h3>
-        
-        <p>
-        {{ site_name }} utilizes the <em><a href="http://daringfireball.net/projects/markdown/" target="_blank">Markdown</a></em> text format for its extended description/background/articles.
-        You can create links & references, images, blockquotes, headings, etc.
-        A great tutorial for it exists at <a href="http://markdowntutorial.com" target="_blank">markdowntutorial.com</a>.
-        </p>
-        <p>
-        It is highly recommended to check out at least a couple of examples.
-        Or, just start typing. You will see the formatted version of your text below in the "Preview" section.
-        </p>
-        
-        
-    </div>
+    
+    {% include 'components/_aside.edit-guidelines.tpl' %}
+    
 </div>
 
 
@@ -187,15 +160,16 @@
 {% block additionalfooter -%}
 
 <script>
-    {# Format placeholders #}
     (function(){
+    
+        /** Format Placeholders **/
     
         var textareas = $('textarea');
         textareas.each(function(){
             $(this).attr('placeholder', $(this).attr('placeholder').replace(/\\n/g, '\n'));
         });
         
-        /** Scale Options **/
+        /** Get Scale Options **/
         
         var scaleOptions = [
         {% for opt in issue_scale_options(localizeUser = user, stripIssues = True, separateTitle = True) if opt['class'] != 'secondary' and opt['key'] != 0  -%}
@@ -204,23 +178,69 @@
         {%- endfor %}
         ];
         
+        /** Set Scale Options as UI-ified Select Options **/
+        
         var template = function(option){
             return $('<span>' + option.icon + ' &nbsp; ' + option.text + '</span>');
         };
         
-        $('select#scale_opts').select2({
+        var scaleSelect = $('select#scale_opts').select2({
             minimumResultsForSearch: 7, 
             data: scaleOptions,
             templateResult: template,
             templateSelection: template
-        }){%- if current_scale['class'] != 'secondary' and current_scale['key'] != 0 -%}.select2("val", {{ current_scale['key'] }}){%- endif -%};
-
+        });
         
+        
+        /** Visibility Options **/
+
+        var visibilityOptions = [
+        {% for opt in issue_visibility_options()  -%}
+            {id: "{{ opt['key'] }}", icon: "{{ opt['title'][0] }}", text: "{{ opt['title'][1] }}", description: "{{ opt['description'] }}" } {% if not loop.last %},{% endif %}
+        {%- endfor %}
+        ];
+        
+        template = function(option){
+            return $('<div><span>' + option.icon + ' &nbsp; ' + option.text + '</span><br><small>' + option.description + '</small></div>');
+        };
+        
+        function setVisSelect2($el, data){
+            if ($el.data('select2')) $el.select2("destroy");
+            $el.select2({
+                minimumResultsForSearch: 7, 
+                data: data,
+                templateResult: template,
+                templateSelection: template
+            });
+            return $el;
+        }
+        
+        var visibilitySelect = setVisSelect2($('select#visibility_opts'), visibilityOptions);
+        
+        /** Bind events & set defaults to select lists **/
+        
+        scaleSelect.on("change", function(e){
+            if ($(this).val() <= 2){
+                $(document.body).addClass('scale-high');
+            } else {
+                $(document.body).removeClass('scale-high');
+                if (visibilitySelect.val() == 'all') visibilitySelect.select2("val", visibilityOptions[1]['id']);
+            }
+        });
+        
+        {% if current_scale['class'] != 'secondary' and current_scale['key'] != 0 -%}
+        scaleSelect.select2("val", {{ current_scale['key'] }});
+        {% else %}
+        scaleSelect.select2("val", 2);
+        {%- endif %}
+        scaleSelect.trigger('change');
+        
+        /** Article Preview **/
         
         var articlePreviewBody = $("div.preview-issue-body > article.body");
         var articlePreviewHeading = $("div.preview-issue-body > .preview-heading");
         
-        $("form#define_issue textarea[name=body]").on("keyup", function(){
+        $("form#define_issue textarea[name=body]").on("keyup", _.debounce(function(){
             var val = $(this).val();
             if (val.length > 0){
                 articlePreviewBody.html(marked(val)).removeClass('hide');
@@ -229,17 +249,21 @@
                 articlePreviewHeading.addClass('hide');
                 articlePreviewBody.addClass('hide');
             }
-        });
+        }, 250));
+        
+        /** Override form submit & parse into JSON API call **/
         
         $("form#define_issue").submit(function( event ) {
             event.preventDefault();
             var formData = $(this).serializeObject();
             formData['meta'] = {
                 scale : formData['meta[scale]'],
+                visibility : formData['meta[visibility]'],
                 last_edit: new Date(),
                 initial_author: isApp.me.get('username')
             };
             delete formData['meta[scale]'];
+            delete formData['meta[visibility]'];
             isApp.newIssue = new isApp.Models.Issue(formData, {parse: true});
             isApp.newIssue.save({},{
                 success : function(model,response,objects){
@@ -250,7 +274,8 @@
             
         });
 
-        // Select Title input box and put cursor @ end of it.
+        /** Select Title input box and put cursor @ end of it. **/
+        
         $("input[name=title]").focus(function(){
           this.value = this.value;
         }).focus();
@@ -258,8 +283,12 @@
         
     })();
     
-    
-    
 </script>
+<style>
+
+  body:not(.scale-high) .select2-container #select2-visibility_opts-results .select2-results__option:first-child {
+    display: none;
+  }
+</style>
 
 {%- endblock %}
