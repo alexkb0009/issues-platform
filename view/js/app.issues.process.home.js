@@ -50,7 +50,7 @@ isApp.ex.scaleTitle.data('tooltip', new Opentip(isApp.ex.scaleTitle, {delay : 0.
 if (isApp.me.get('logged_in')){
   isApp.ex.scaleTitle.data('tooltip').setContent('Set your scale');
 } else {
-    isApp.ex.scaleTitle.data('tooltip').setContent('Guests may only browse through NATIONAL issues.');
+    isApp.ex.scaleTitle.data('tooltip').setContent('Guests may only browse through <b>national</b> issues.');
 }
 isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(function(){
 
