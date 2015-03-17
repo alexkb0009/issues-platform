@@ -214,8 +214,9 @@ def saveNewRevisionFromRequestObj(issueReq, issue):
     
     # Cache new page, if setup.
     if app.config.get('seo.prerender_key'):
+        import os
         # Make sure is not on a dev site or something.
-        if request.get('HTTP_HOST') == app.config.get('seo.site_domain'):
+        if os.environ.get('OPENSHIFT_APP_NAME') != None:
             import requests
             url = ('https://' if app.config.get('security.uses_https') else 'http://') + app.config.get('seo.site_domain') + '/is/' + issue['_id']
             print('Requesting prerender.io cache of ' + url)
