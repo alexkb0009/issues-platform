@@ -223,11 +223,12 @@ def saveNewRevisionFromRequestObj(issueReq, issue):
             r = requests.post(app.config.get('seo.prerender_url'), data = json.dumps({
                 'prerenderToken' : app.config.get('seo.prerender_key'),
                 'url'            : url
-            }))
-            print(json.dumps({
-                'prerenderToken' : app.config.get('seo.prerender_key'),
-                'url'            : url
-            }))
+            }), headers = {
+                'X-Prerender-Token' : app.config.get('seo.prerender_key'),
+                'Content-type' : 'application/json',
+                'Accept-encoding' : 'gzip'
+            }
+            )
             print(r.text)
     
     return newRevisionId
