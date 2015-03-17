@@ -220,10 +220,10 @@ def saveNewRevisionFromRequestObj(issueReq, issue):
             import requests
             url = ('https://' if app.config.get('security.uses_https') else 'http://') + app.config.get('app_info.site_domain') + '/is/' + issue['_id']
             print('Requesting prerender.io cache of ' + url)
-            r = requests.post(app.config.get('seo.prerender_url'), params = {
+            r = requests.post(app.config.get('seo.prerender_url'), data = json.dumps({
                 'prerenderToken' : app.config.get('seo.prerender_key'),
                 'url'            : url
-            })
+            }))
             print(r.text)
     
     return newRevisionId
