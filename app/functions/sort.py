@@ -143,7 +143,10 @@ def getMongoScaleQuery(scale = 2.0, user = False):
 
     if not user: 
         scale = 2.0 # Only national scale for unregistered users.
-        matchQuery['meta.visibility'] = 'all'
+        matchQuery = {
+            'meta.scale' : scale,
+            'meta.visibility' : 'all'
+        }
     
     elif user:
         if scale == 0: 

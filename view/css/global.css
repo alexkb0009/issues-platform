@@ -539,3 +539,8 @@ body.in-search div#main_issues {
 .issue.full .voting-row.row .columns h2.active {
   opacity: 1;
 }
+
+.issue.full.editing:not(.preview-exists) .preview-body-container,
+.issue.full.editing:not(.preview-exists) .preview-heading {
+  display: none;
+}

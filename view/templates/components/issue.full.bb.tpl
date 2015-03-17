@@ -67,13 +67,13 @@
             <!--<div class="large-3 columns">
                 
             </div>-->
-            <div class="large-4 columns text-center">
+            <div class="large-4 small-4 columns text-center">
                 <h2><i class="fa fa-fw fa-arrow-up" data-ot="This issue is important to me"></i></h2>
             </div>
-            <div class="large-4 columns text-center">
+            <div class="large-4 small-4 columns text-center">
                 <h2><i class="fa fa-fw fa-arrow-down" data-ot="This issue has no relevancy for me"></i></h2>
             </div>
-            <div class="large-4 columns text-center">
+            <div class="large-4 small-4 columns text-center">
                 <h2><i class="fa fa-fw fa-trash" data-ot="This issue is rubbish"></i></h2>
             </div>
         </div>
@@ -167,7 +167,7 @@
         </div>
         
         <h3 class="preview-heading" style="font-weight: 100;">Preview</h3>
-        <div class="content-container page clearfix">
+        <div class="content-container page clearfix preview-body-container">
             <div class="large-12 columns">
                 <article class="body preview"><% 
                 if (typeof marked != 'undefined' && markdownParse) { %><%= marked(body) %><% } else { %>

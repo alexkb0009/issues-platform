@@ -459,28 +459,27 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                 this.render();
             }, this));
             
+            /** Preview **/
             this.$el.find("textarea[name=body]").on("keyup", _.debounce(function(){
                 var val = $(this).val();
-                console.log(val);
-                if (val.length > 0){
-                    articlePreviewBody.html(marked(val)).removeClass('hide');
-                    articlePreviewHeading.removeClass('hide');
-                } else {
-                    articlePreviewHeading.addClass('hide');
-                    articlePreviewBody.addClass('hide');
-                }
+                if (val.length > 0) t.$el.addClass('preview-exists');
+                else t.$el.removeClass('preview-exists');
+                articlePreviewBody.html(marked(val));
             }, 600));
             
             /** Submit Edit Form ... Button **/
             this.$el.find("form#editform").submit(function( event ){
                 event.preventDefault();
                 var formData = $(this).serializeObject();
+                isApp.u.setLoaderInElem($(this).find('button[type=submit]')).addClass('disabled');
+                
                 t.model.save(formData, { patch: true, wait: true, success: $.proxy(function(issue, response, opts){
                     t.template = _.template($('#backbone_issue_template_full').html());
                 }, this), error: function(issue){
                     
                     
                 } });
+                
             });
             
             this.$el.find('#proposebutton').removeClass('disabled');
