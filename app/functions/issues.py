@@ -224,7 +224,7 @@ def saveNewRevisionFromRequestObj(issueReq, issue):
                 'prerenderToken' : app.config.get('seo.prerender_key'),
                 'url'            : url
             })
-            print(r.json())
+            print(r.text)
     
     return newRevisionId
     
