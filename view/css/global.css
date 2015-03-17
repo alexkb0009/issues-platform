@@ -496,10 +496,6 @@ body.in-search div#main_issues {
   margin-top: 0;
 }
 
-.issue.full.description-closed article.body {
-  margin-top: -20px;
-}
-
 .issue.full article.body h1 { font-size: 2.725em; }
 .issue.full article.body h2 { font-size: 2.2em; /* margin-bottom: 0; */ }
 .issue.full article.body h3 { /* margin-bottom: 0; */ }
