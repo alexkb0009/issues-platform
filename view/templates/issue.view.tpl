@@ -64,7 +64,7 @@
 
 <script>
     isApp.currentIssue = new isApp.Models.Issue({{ issue.jsonSerialized }}, {parse: true});
-    isApp.currentIssue.view = new isApp.Views.IssueView({
+    isApp.currentIssue.view = new isApp.Views.IssueViewFull({
       el: $("#current_issue"), 
       model: isApp.currentIssue, 
       templateID: "backbone_issue_template_full" 

@@ -81,7 +81,7 @@ def patch_issue(issue_id):
     
     returnObj = {}
     meta = request.json.get('meta')
-    if 'am_subscribed' in meta:
+    if meta and 'am_subscribed' in meta:
         if meta['am_subscribed']:
             db.users.update(
                 {'_id' : request.user['_id']}, 
@@ -104,6 +104,34 @@ def patch_issue(issue_id):
                 {'$inc' : {'scoring.subscribed' : -1} },
                 multi=False
             )
+            
+    # New revision if content update.
+    if request.json.get('title') and request.json.get('description') and request.json.get('body'):
+        import datetime
+        newRevisionId = db.revisions.insert({
+            'title'             : request.json.get('title'),
+            'description'       : request.json.get('description'),
+            'body'              : request.json.get('body'),
+            'date'              : datetime.datetime.utcnow(),
+            'author'            : request.user.get('username'),
+            'parentIssue'       : issue.get('_id'),
+            'previousRevision'  : issue.get('current_revision')
+        }, safe = True)
+        
+        db.issues.update(
+            {'_id' : issue['_id']}, 
+            {
+                '$inc' : {
+                    'meta.revisions' : 1,
+                    'scoring.contributions' : 1
+                },
+                '$set' : {
+                    'current_revision' : newRevisionId,
+                    'title' : request.json.get('title')
+                }
+            },
+            multi=False
+        )
 
     returnObj['status'] = 200
     return returnObj

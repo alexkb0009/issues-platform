@@ -73,8 +73,8 @@ Opentip.styles.pop = {
     background: '#111',
     borderColor: '#000',
     borderWidth: 0,
-    textColor: '#fff'
-    
+    textColor: '#fff',
+    removeElementsOnHide: true
 }
 
 Opentip.defaultStyle = "pop";

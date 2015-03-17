@@ -438,6 +438,15 @@ body.in-search div#main_issues {
   padding: 3px 0 6px;
 }
 
+.issue.full.editing .issue-title {
+  padding: 0 0 6px;
+}
+
+.issue.full.editing input,
+.issue.full.editing textarea {
+  margin-top: 5px;
+}
+
 .issue.full .subscribe-icon {
   opacity: 0.25;
 }
@@ -497,11 +506,16 @@ body.in-search div#main_issues {
 
 .issue.full .issue-footer-row {
   padding-top: 10px;
-  padding-bottom: 2px;
+  padding-bottom: 12px;
 }
 
 .issue.full .issue-footer-row .columns i {
   font-size: 1.25em;
+}
+
+.issue.full.editing .issue-footer-row a.button,
+.issue.full.editing .issue-footer-row button {
+  margin-bottom: 10px;
 }
 
 .stats-container span.visibility-icon {
@@ -512,4 +526,16 @@ body.in-search div#main_issues {
 
 .issue.full .info-aside.large-4 {
   padding-top: 15px;
+}
+
+.issue.full .voting-row.row {
+  margin-bottom: 24px;
+}
+
+.issue.full .voting-row.row .columns h2 {
+  opacity: 0.3;
+}
+
+.issue.full .voting-row.row .columns h2.active {
+  opacity: 1;
 }

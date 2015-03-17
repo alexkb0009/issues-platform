@@ -88,6 +88,7 @@ isApp.Models.IssueMeta = Backbone.Model.extend({
     defaults: {
         last_edit: new Date(),
         scale: 2,
+        revisions: 1,
         initial_author: function() { return (isApp.me.get('username') || "billyg123") }
     },
     
@@ -287,226 +288,292 @@ isApp.Collections = {
 /**      Views Definitions     **/
 /********************************/
 
-isApp.Views = {
+/** Individual Issues View **/
 
-    IssueView: Backbone.View.extend({
+isApp.Views.IssueView = Backbone.View.extend({
     
-        className: "issue listview",  
+    className: "issue listview",  
+    
+    events: {
+        "click .open-icon" : "toggleDescriptionOpen",
+        "click .subscribe-icon" : "subscribe"
+    },
+    
+    tooltips: {},
+    
+    render: function(obj){
+        this.renderInitial(obj);
+        this.setButtonInteractivity();
+        this.generateToolTipsEnableElements_Common();
+    },
+    
+    /** A Component of this.render() **/
+    renderInitial: function(obj){
+        var minimize = false;
         
-        events: {
-            "click .open-icon" :        "toggleDescriptionOpen",
-            "click .subscribe-icon" :   "subscribe"
-        },
+        // Retain minimize if was before.
+        if (typeof obj != 'undefined' && this.$el.find('.description').hasClass('closed')) minimize = true;
         
-        // Save any tooltips here
-        tooltips: {},
+        // Else minimize if small screen or is set in init classSize.
+        if (typeof obj == 'undefined' && (this.className.indexOf('min') >= 0 || window.innerWidth <= 600)) minimize = true;
         
-        // Default template
-        //template: _.template($('#backbone_issue_template').html()), /* dependency: issue.bb.tpl (loaded in homepage.tpl) */
+        this.$el.html(this.template( this.model.toJSON() ));
         
-        render: function(obj){
-            var minimize = false;
-            // Retain minimize if was before.
-            if (typeof obj != 'undefined' && this.$el.find('.description').hasClass('closed')) minimize = true;
-            // Else minimize if small screen or is set in init classSize.
-            if (typeof obj == 'undefined' && (this.className.indexOf('min') >= 0 || window.innerWidth <= 600)) minimize = true;
-            
-            this.$el.html(this.template( this.model.toJSON() ));
+        if (minimize){ 
+          this.toggleDescriptionOpen(null, false); // evt = null, transition = false
+        }
+        
+        return this;
+    },
+    
+    initialize: function(options){
+        if (typeof options.templateID != 'undefined'){
+          this.template = _.template($('#' + options.templateID).html());
+        }
 
-            this.setButtonInteractivity();
-            
-            if (minimize){ 
-              this.toggleDescriptionOpen(null, false); // evt = null, transition = false
-            }
-            
-            this.generateToolTipsEnableElements();
-        },
-        
-        initialize: function(options){
-            if (typeof options.templateID != 'undefined'){
-              this.template = _.template($('#' + options.templateID).html());
-            }
-
-            this.render();
-            this.model.on('sync', this.render, this);
-        },
-        
-        /* -- --                    -- -- */
-        /*          UI Functions          */
-        /* -- --                    -- -- */
-        
-        toggleDescriptionOpen: function(evt, transition){
-            var descriptionBox  = this.$el.find('.description');
-            if (typeof transition == 'undefined') transition = true;
-            if (descriptionBox.hasClass('closed')){
-                this.$el.find('.open-icon').addClass('fa-angle-up').removeClass('fa-angle-down');
-                descriptionBox.removeClass('closed');
-                if (transition) { 
-                    descriptionBox.slideDown();
-                } else {
-                    descriptionBox.css('display', 'block');
-                }
-                this.$el.removeClass('description-closed');
+        this.render();
+        this.model.on('sync', this.render, this);
+    },
+    
+    /* -- --                    -- -- */
+    /*          UI Functions          */
+    /* -- --                    -- -- */
+    
+    setButtonInteractivity : function(){
+        if (isApp.me.get('logged_in')){
+            /** Remove disabled class + bind here **/
+        } else {
+            /** Set disabled class on buttons here **/
+        }
+        return this;
+    },
+    
+    toggleDescriptionOpen: function(evt, transition){
+        var descriptionBox  = this.$el.find('.description');
+        if (typeof transition == 'undefined') transition = true;
+        if (descriptionBox.hasClass('closed')){
+            this.$el.find('.open-icon').addClass('fa-angle-up').removeClass('fa-angle-down');
+            descriptionBox.removeClass('closed');
+            if (transition) { 
+                descriptionBox.slideDown();
             } else {
-                this.$el.find('.open-icon').addClass('fa-angle-down').removeClass('fa-angle-up');
-                descriptionBox.addClass('closed');
-                if (transition) { 
-                    descriptionBox.slideUp();
-                } else {
-                    descriptionBox.css('display', 'none');
-                }
-                this.$el.addClass('description-closed');
+                descriptionBox.css('display', 'block');
             }
-        },
+            this.$el.removeClass('description-closed');
+        } else {
+            this.$el.find('.open-icon').addClass('fa-angle-down').removeClass('fa-angle-up');
+            descriptionBox.addClass('closed');
+            if (transition) { 
+                descriptionBox.slideUp();
+            } else {
+                descriptionBox.css('display', 'none');
+            }
+            this.$el.addClass('description-closed');
+        }
+    },
+    
 
+    /* Create Button Tooltips */
+    
+    generateToolTipsEnableElements_Common: function(){
+    
+        // Reset.
+        delete this.tooltips;
+    
+        /* Subscribe Icon */
+        var subscribe_icon = this.$el.find('.subscribe-icon');
+        if (subscribe_icon.length > 0){ 
+            subscribe_icon.data('tooltip', new Opentip(subscribe_icon));
+            if (this.model.get('meta').get('am_subscribed')){
+                subscribe_icon.data('tooltip').setContent("Un-subscribe from issue");
+            } else {
+                subscribe_icon.data('tooltip').setContent("Subscribe to updates in this issue");
+            }
+        }
         
-        /* Set interactivity */
+        /* Views Number */
+        var views_number = $('div.stats-container b');
+        if (views_number.length > 0 && typeof views_number.data('tooltip') == 'undefined'){ 
+            views_number.data('tooltip', new Opentip(views_number, "Does not count towards ranking", {tipJoint: "top right", offset: [0,6]}));
+        }
         
-        setButtonInteractivity : function(){
+        /* # People Subscribed to Issue */
+        var subscr_number = this.$el.find('.scoring-container .subscribed-score');
+        if (subscr_number.length > 0){ 
+            subscr_number.data('tooltip', new Opentip(subscr_number, "Number of people subscribed to this issue"));
+        }     
+        
+    },
+    
+    subscribe: function(){
+        this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
+        isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; margin: -1px 2px 0; line-height: inherit; ');
+        this.model.save({'meta': this.model.get('meta'), 'scoring' : this.model.get('scoring')}, { patch: true, wait: true, success: $.proxy(function(){
+            if (isApp.myIssues != null){
+                isApp.myIssues.reset();
+                isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
+                isApp.myIssues.fetch();
+            }
+            if (this.model.get('meta').get('am_subscribed')){
+                this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') + 1);
+            } else {
+                this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') - 1);
+            }
+        }, this), error: function(issue){
+            issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
+        } });
+    }
+    
+});
+
+/** Extends ListView Issue View into Full **/
+
+isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
+
+    render: function(obj){
+        this.renderInitial(obj);
+        this.setButtonInteractivity();
+        this.generateToolTipsEnableElements_Common();
+        this.generateToolTipsEnableElements_Full();
+        return this;
+    },
+    
+    /* Set interactivity */
+    
+    setButtonInteractivity : function(){
+        if (isApp.me.get('logged_in')){
+        
+            var t = this;
+            var articlePreviewBody = this.$el.find("article.body.preview");
+            var articlePreviewHeading = this.$el.find(".preview-heading");
+            
+            /** Edit Button **/
+            this.$el.find('#editbutton').removeClass('disabled').on('click', $.proxy(function(){
+                this.template = _.template($('#backbone_issue_template_full_edit').html());
+                this.render();
+            }, this));
+            
+            /** Cancel Edit Button **/
+            this.$el.find('#cancelbutton').on('click', $.proxy(function(){
+                this.template = _.template($('#backbone_issue_template_full').html());
+                this.render();
+            }, this));
+            
+            this.$el.find("textarea[name=body]").on("keyup", _.debounce(function(){
+                var val = $(this).val();
+                console.log(val);
+                if (val.length > 0){
+                    articlePreviewBody.html(marked(val)).removeClass('hide');
+                    articlePreviewHeading.removeClass('hide');
+                } else {
+                    articlePreviewHeading.addClass('hide');
+                    articlePreviewBody.addClass('hide');
+                }
+            }, 600));
+            
+            /** Submit Edit Form ... Button **/
+            this.$el.find("form#editform").submit(function( event ){
+                event.preventDefault();
+                var formData = $(this).serializeObject();
+                t.model.save(formData, { patch: true, wait: true, success: $.proxy(function(issue, response, opts){
+                    t.template = _.template($('#backbone_issue_template_full').html());
+                }, this), error: function(issue){
+                    
+                    
+                } });
+            });
+            
+            this.$el.find('#proposebutton').removeClass('disabled');
+            this.$el.find('#commentbutton').removeClass('disabled');
+            
+        } else {
+        
+            this.$el.find('#editbutton').addClass('disabled');
+            this.$el.find('#proposebutton').addClass('disabled');
+            this.$el.find('#commentbutton').addClass('disabled');
+            
+        }
+        return this;
+    },
+    
+    generateToolTipsEnableElements_Full: function(){
+    
+        /* Visibility Icon */
+        var visibility_icon = $('div.stats-container .visibility-icon');
+        if (visibility_icon.length > 0 && typeof visibility_icon.data('tooltip') == 'undefined'){
+            visibility_icon.data('tooltip', new Opentip(visibility_icon, "Searchability: " + this.model.get('visibilityExpanded')['title'][1], {tipJoint: "top right", offset: [5,7]} ));
+        }
+    
+        /* Edit Button */ 
+        var edit_button = this.$el.find('#editbutton');
+        if (edit_button.length > 0 && typeof edit_button.data('tooltip') == 'undefined'){ 
+            edit_button.data('tooltip', new Opentip(edit_button, {title : "Edit"}));
             if (isApp.me.get('logged_in')){
-                this.$el.find('#editbutton').removeClass('disabled').on('click', $.proxy(function(){
-                    this.template = _.template($('#backbone_issue_template_full_edit').html());
-                    this.render();
-                }, this));
-                this.$el.find('#proposebutton').removeClass('disabled');
+                edit_button.data('tooltip').setContent("Revise language and grammar or add supporting information such as facts and references<div style='margin-top: 5px;'><b>" + this.model.get('meta').get('revisions') + "</b> edits so far</div>");
             } else {
-                this.$el.find('#editbutton').addClass('disabled');
-                this.$el.find('#proposebutton').addClass('disabled');
+                edit_button.data('tooltip').setContent("Please login to contribute.");
             }
-            return this;
-        },
+        }
         
+        /* Propose Button */ 
+        var propose_button = this.$el.find('#proposebutton');
+        if (propose_button.length > 0){ 
+            propose_button.data('tooltip', new Opentip(propose_button, {title : "Respond"}));
+            if (isApp.me.get('logged_in')){
+                propose_button.data('tooltip').setContent("Propose a new response or solution to this issue");
+            } else {
+                propose_button.data('tooltip').setContent("Please login to contribute.");
+            }
+        }
+        
+        
+        /* Comment Button */ 
+        /* EXTRA: Adds/removes disabled class to button. */
+        var comment_button = this.$el.find('#commentbutton');
+        if (comment_button.length > 0){ 
+            comment_button.data('tooltip', new Opentip(comment_button));
+            if (isApp.me.get('logged_in')){
+                comment_button.data('tooltip').setContent("Discuss, comment, ask a question");
+            } else {
+                comment_button.data('tooltip').setContent("Please login to contribute.");
+            }
+        }
+        
+        return this;
+    }
 
-        /* Create Button Tooltips */
-        
-        generateToolTipsEnableElements: function(){
-        
-            // Reset.
-            delete this.tooltips;
-        
-            /* Subscribe Icon */
-            var subscribe_icon = this.$el.find('.subscribe-icon');
-            if (subscribe_icon.length > 0){ 
-                this.tooltips.subscribe = new Opentip(subscribe_icon);
-                if (this.model.get('meta').get('am_subscribed')){
-                    this.tooltips.subscribe.setContent("Un-subscribe from issue");
-                } else {
-                    this.tooltips.subscribe.setContent("Subscribe to updates in this issue");
-                }
-            }
-            
-            /* Views Number */
-            var views_number = $('div.stats-container b');
-            if (views_number.length > 0){ 
-                this.tooltips.views = new Opentip(views_number, "Does not count towards ranking", {tipJoint: "top right", offset: [0,6]});
-            }
-            
-            /* Visibility Icon */
-            var visibility_icon = $('div.stats-container .visibility-icon');
-            if (visibility_icon.length > 0){ 
-                this.tooltips.visibility_icon = new Opentip(visibility_icon, "Searchability: " + this.model.get('visibilityExpanded')['title'][1], {tipJoint: "top right", offset: [5,7]} );
-            }
-            
-            /* # People Subscribed to Issue */
-            var subscr_number = this.$el.find('.scoring-container .subscribed-score');
-            if (subscr_number.length > 0){ 
-                this.tooltips.subscribed_number = new Opentip(subscr_number, "Number of people subscribed to this issue");
-            }
-            
-            /* Edit Button */ 
-            var edit_button = this.$el.find('#editbutton');
-            if (edit_button.length > 0){ 
-                this.tooltips.edit_button = new Opentip(edit_button, {title : "Edit"});
-                if (isApp.me.get('logged_in')){
-                    this.tooltips.edit_button.setContent("Revise language and grammar or add supporting information such as facts and references");
-                } else {
-                    this.tooltips.edit_button.setContent("Please login to contribute.");
-                }
-            }
-            
-            /* Propose Button */ 
-            var propose_button  = this.$el.find('#proposebutton');
-            if (propose_button.length > 0){ 
-                this.tooltips.propose_button = new Opentip(propose_button, {title : "Respond"});
-                if (isApp.me.get('logged_in')){
-                    this.tooltips.propose_button.setContent("Propose a new response or solution to this issue");
-                } else {
-                    this.tooltips.propose_button.setContent("Please login to contribute.");
-                }
-            }
-            
-            
-            /* Comment Button */ 
-            /* EXTRA: Adds/removes disabled class to button. */
-            var comment_button = this.$el.find('#commentbutton');
-            if (comment_button.length > 0){ 
-                this.tooltips.comment_button = new Opentip(comment_button);
-                if (isApp.me.get('logged_in')){
-                    this.tooltips.comment_button.setContent("Discuss, comment, ask a question");
-                    comment_button.removeClass('disabled');
-                } else {
-                    this.tooltips.comment_button.setContent("Please login to contribute.");
-                    comment_button.addClass('disabled');
-                }
-            }
-            
-            
-        },
-        
-        subscribe: function(){
-            this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
-            isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; margin: -1px 2px 0; line-height: inherit; ');
-            this.model.save({'meta': this.model.get('meta'), 'scoring' : this.model.get('scoring')}, { patch: true, wait: true, success: $.proxy(function(){
-                if (isApp.myIssues != null){
-                    isApp.myIssues.reset();
-                    isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
-                    isApp.myIssues.fetch();
-                }
-                if (this.model.get('meta').get('am_subscribed')){
-                    this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') + 1);
-                } else {
-                    this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') - 1);
-                }
-            }, this), error: function(issue){
-                issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
-                /* */
-            } });
-            
-            //this.model.save({meta: 'test' }, {patch: true});
+});
+    
+/** The collection/list view **/
+    
+isApp.Views.IssuesView = Backbone.View.extend({
+    
+    render: function(){
+        this.el.innerHTML = '';
+        this.collection.each($.proxy(function(issue){
+            var optsObj = { model: issue }; // Minimum
+            if (typeof this.childTemplateID != 'undefined') optsObj.templateID = this.childTemplateID;
+            if (typeof this.childClassName != 'undefined') optsObj.className = this.childClassName;
+            issue.view = new isApp.Views.IssueView(optsObj);
+            this.$el.append(issue.view.el);
+        },this));
+        if (this.collection.length == 0){
+            this.$el.addClass('empty');
+        } else {
+            this.$el.removeClass('empty');
+        }
+    },
+    
+    initialize: function(options){
+        if (typeof options != 'undefined'){
+          this.childTemplateID = options.childTemplateID;
+          this.childClassName = options.childClassName;
         }
         
-    }),
-    
-    IssuesView: Backbone.View.extend({
-    
-        render: function(){
-            this.el.innerHTML = '';
-            this.collection.each($.proxy(function(issue){
-                var optsObj = { model: issue }; // Minimum
-                if (typeof this.childTemplateID != 'undefined') optsObj.templateID = this.childTemplateID;
-                if (typeof this.childClassName != 'undefined') optsObj.className = this.childClassName;
-                issue.view = new isApp.Views.IssueView(optsObj);
-                this.$el.append(issue.view.el);
-            },this));
-            if (this.collection.length == 0){
-                this.$el.addClass('empty');
-            } else {
-                this.$el.removeClass('empty');
-            }
-        },
+        this.render();
         
-        initialize: function(options){
-            if (typeof options != 'undefined'){
-              this.childTemplateID = options.childTemplateID;
-              this.childClassName = options.childClassName;
-            }
-            
-            this.render();
-            
-            /* Bind some events */
-            this.collection.on('changeSet', this.render, this);
-        }
-    
-    })
-    
-}
+        /* Bind some events */
+        this.collection.on('changeSet', this.render, this);
+    }
+
+});
