@@ -3,7 +3,7 @@
   <head>
     <title>{% block title %}{{ site_name }}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/img/assets/mi_4.png">
+    <link rel="shortcut icon" href="/img/assets/mi_5.png">
     <link rel="stylesheet" href="{{ root }}css/vendor/normalize.css">
     <link rel="stylesheet" href="{{ root }}css/vendor/foundation.min.css">
     <link rel="stylesheet" href="{{ root }}css/style_overrides.css">
