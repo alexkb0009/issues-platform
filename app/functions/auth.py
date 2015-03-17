@@ -163,7 +163,7 @@ def register_new_account(db, form, config):
             'roles' :     ['citizen'],
             'meta' : {
               'date_registered' : datetime.now(),
-              'dob'    : datetime(int(form.get('dob[year]')), int(form.get('dob[month]')), int(form.get('dob[day]'))),
+              # 'dob'    : datetime(int(form.get('dob[year]')), int(form.get('dob[month]')), int(form.get('dob[day]'))),
               'street' : form.get('addr[street]'),
               'current_scale' : 0,
               'city'   : city,
@@ -174,7 +174,12 @@ def register_new_account(db, form, config):
               'about' : form.get('about'),
               'approved' : False
             },
-            'subscribed_issues' : []
+            'subscribed_issues' : [],
+            'votes' : {
+                'issues' : [],
+                'responses' : [],
+                'comments' : []
+            }
         })
         return True
 

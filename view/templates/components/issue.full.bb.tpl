@@ -53,7 +53,7 @@
             </div>
             
             <div class="large-1 small-2 columns">
-                <a href="#edit" class="button secondary expand small page" id="editbutton">
+                <a href="#edit" class="button secondary expand small page page-shadow" id="editbutton">
                     <i class="fa fa-fw fa-pencil"></i>
                 </a>
             </div>
@@ -62,19 +62,22 @@
     </div>
     <div class="large-4 xlarge-3 columns info-aside">
         
-        <h2 style="margin: 2px 0 5px;">Vote</h2>
-        <div class="row collapse voting-row">
-            <!--<div class="large-3 columns">
-                
-            </div>-->
+        <!--<h2 style="margin: 2px 0 5px;">Vote</h2>-->
+        <div class="row collapse voting-row page">
             <div class="large-4 small-4 columns text-center">
-                <h2><i class="fa fa-fw fa-arrow-up" data-ot="This issue is important to me"></i></h2>
+                <a class="button expand page vote-option" name="up">
+                    <h2><i class="fa fa-fw fa-arrow-up"></i></h2>
+                </a>
             </div>
             <div class="large-4 small-4 columns text-center">
-                <h2><i class="fa fa-fw fa-arrow-down" data-ot="This issue has no relevancy for me"></i></h2>
+                <a class="button expand page vote-option" name="down">
+                    <h2><i class="fa fa-fw fa-arrow-down"></i></h2>
+                </a>
             </div>
-            <div class="large-4 small-4 columns text-center">
-                <h2><i class="fa fa-fw fa-trash" data-ot="This issue is rubbish"></i></h2>
+            <div class="large-4 small-4 columns text-center secondary">
+                <a class="button expand page vote-option" name="report">
+                    <h2><i class="fa fa-fw fa-trash"></i></h2>
+                </a>
             </div>
         </div>
 
@@ -116,9 +119,9 @@
 <script id="backbone_issue_template_full_edit" type="text/template">
 
     <% this.$el.addClass('row').addClass('issue').addClass('full').addClass('editing') %>
-    <form id="editform">
+    <form id="editform" data-abide>
     <div class="large-8 columns">
-        <h3>Editing <span class="ext"><%= title %></span></h3>
+        <h3 class="edit-title"><i class="fa fa-fw fa-arrow-circle-left cancelbutton" style="cursor: pointer;"></i> Editing <span class="ext"><%= title %></span></h3>
         <div class="content-container page clearfix">
             <div class="large-12 columns">
                 <label>
@@ -152,7 +155,7 @@
         <div class="row issue-footer-row small-columns">
         
             <div class="large-6 columns">
-                <a href="#" class="button secondary expand small page" id="cancelbutton">
+                <a href="#" class="button secondary expand small page page-shadow cancelbutton">
                     <i class="fa fa-fw fa-times"></i>&nbsp; Cancel
                 </a>
             </div>

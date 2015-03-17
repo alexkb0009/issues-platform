@@ -92,7 +92,6 @@ button.page-shadow {
 .button.page, 
 button.page {
   background-color: #f4f4f4;
-  box-shadow: 0 1px 5px -1px rgba(0,0,0,0.25);
 }
 
 button.page:hover, button.page:focus, 

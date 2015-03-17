@@ -36,7 +36,7 @@ def issues_list_subscribed():
 ## Create new Issue
 @app.route('/' + app.config['app_info.api_request_path'] + 'issue', method="POST") # = /api/issue
 def create_issue():
-    from app.functions.issues import saveNewIssueFromRequestObj
+    from app.functions.issues import saveNewIssueFromRequestObj, registerVoteCurrentUser
     if not headers_key_auth(): 
         response.status = 401
         return { 'message' : 'Need to be authenticated.' }
@@ -44,6 +44,8 @@ def create_issue():
     
     issueId = saveNewIssueFromRequestObj(request.json)
     if issueId:
+        # Vote up on behalf of poster.
+        registerVoteCurrentUser({'issue' : issueId, 'vote' : 'up'})
         # Subscribe User to New Issue
         db.users.update(
             {'username' : request.user['username']}, 
@@ -64,75 +66,50 @@ def create_issue():
 
 @app.route('/' + app.config['app_info.api_request_path'] + 'issue/<issue_id>', method='PATCH') # = /api/do/login
 def patch_issue(issue_id):
-    #print(request.json)
+    
+    # Need to be logged in before adjusting any issues.
     if not headers_key_auth(): 
         response.status = 401
         return { 'message' : 'Need to be authenticated.' }
-        
+       
+    # Then need to make sure issue exists, and its current values if needed.
     issue = db.issues.find_one({"_id": issue_id})
     if not issue:
         from bson.objectid import ObjectId
         issue = db.issues.find_one({"_id": ObjectId(issue_id)})
-    if not issue: # Finally, cancel
+    if not issue: # Finally, cancel if not found
         response.status = 404
         return { 'message' : 'No such issue exists.' }
+    
+    
     
     # Mapping + Updating
     
     returnObj = {}
+    
+    # Is this a subscribe/unsubscribe patch?
     meta = request.json.get('meta')
     if meta and 'am_subscribed' in meta:
-        if meta['am_subscribed']:
-            db.users.update(
-                {'_id' : request.user['_id']}, 
-                {'$addToSet' : {'subscribed_issues' : issue['_id']} },
-                multi=False
-            )
-            db.issues.update(
-                {'_id' : issue['_id']}, 
-                {'$inc' : {'scoring.subscribed' : 1} },
-                multi=False
-            )
-        else:
-            db.users.update(
-                {'_id' : request.user['_id']}, 
-                {'$pull' : {'subscribed_issues' : issue['_id']} },
-                multi=False
-            )
-            db.issues.update(
-                {'_id' : issue['_id']}, 
-                {'$inc' : {'scoring.subscribed' : -1} },
-                multi=False
-            )
+        from app.functions.issues import subscribeCurrentUserToIssue
+        subscribeCurrentUserToIssue(issue['_id'], not meta.get('am_subscribed'))
             
-    # New revision if content update.
-    if request.json.get('title') and request.json.get('description') and request.json.get('body'):
-        import datetime
-        newRevisionId = db.revisions.insert({
-            'title'             : request.json.get('title'),
-            'description'       : request.json.get('description'),
-            'body'              : request.json.get('body'),
-            'date'              : datetime.datetime.utcnow(),
-            'author'            : request.user.get('username'),
-            'parentIssue'       : issue.get('_id'),
-            'previousRevision'  : issue.get('current_revision')
-        }, safe = True)
+    # Is this a new revision?
+    if request.json.get('title') is not None and request.json.get('description') is not None and request.json.get('body') is not None:
+        from app.functions.issues import saveNewRevisionFromRequestObj, subscribeCurrentUserToIssue
+        revisionID = saveNewRevisionFromRequestObj(request.json, issue)
+        if not revisionID: 
+            response.status = 500
+            return {'message' : 'Error'}
+        elif issue['_id'] not in request.user.get('subscribed_issues'):
+            subscribeCurrentUserToIssue(issue['_id'])
+    
+    # Is this a vote?
+    vote = request.json.get('my_vote')
+    if vote:
+        vote['issue'] = issue['_id'] # Just to be sure
+        from app.functions.issues import registerVoteCurrentUser
+        returnObj['score_change'] = registerVoteCurrentUser(vote)
         
-        db.issues.update(
-            {'_id' : issue['_id']}, 
-            {
-                '$inc' : {
-                    'meta.revisions' : 1,
-                    'scoring.contributions' : 1
-                },
-                '$set' : {
-                    'current_revision' : newRevisionId,
-                    'title' : request.json.get('title')
-                }
-            },
-            multi=False
-        )
-
     returnObj['status'] = 200
     return returnObj
     

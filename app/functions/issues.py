@@ -100,6 +100,9 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
     
     if hasattr(request, 'user'):
         issueWellFormed['meta']['am_subscribed'] = True if issue['_id'] in request.user['subscribed_issues'] else False
+        for issue_vote in request.user.get('votes').get('issues'):
+            if issueWellFormed.get('_id') == issue_vote.get('issue'):
+                issueWellFormed['my_vote'] = issue_vote
         
     if fullMode:
         issueWellFormed['body'] = currentRevision['body']
@@ -169,7 +172,7 @@ def saveNewIssueFromRequestObj(issueReq):
         },
         'scoring' : {
             'views' : 1,
-            'score' : 1,
+            'score' : 0,
             'contributions' : 1,
             'subscribed' : 1
         },
@@ -181,6 +184,112 @@ def saveNewIssueFromRequestObj(issueReq):
     db.issues.insert(issue)
     
     return issueId
+    
+def saveNewRevisionFromRequestObj(issueReq, issue):
+    import datetime
+    newRevisionId = db.revisions.insert({
+        'title'             : issueReq.get('title'),
+        'description'       : issueReq.get('description'),
+        'body'              : issueReq.get('body'),
+        'date'              : datetime.datetime.utcnow(),
+        'author'            : request.user.get('username'),
+        'parentIssue'       : issue.get('_id'),
+        'previousRevision'  : issue.get('current_revision')
+    }, safe = True)
+    
+    db.issues.update(
+        {'_id' : issue['_id']}, 
+        {
+            '$inc' : {
+                'meta.revisions' : 1,
+                'scoring.contributions' : 1
+            },
+            '$set' : {
+                'current_revision' : newRevisionId,
+                'title' : issueReq.get('title')
+            }
+        },
+        multi=False
+    )
+    
+    # Cache new page, if setup.
+    if app.config.get('seo.prerender_key'):
+        # Make sure is not on a dev site or something.
+        if request.get('HTTP_HOST') == app.config.get('seo.site_domain'):
+            import requests
+            r = requests.post(app.config.get('seo.prerender_url'), params = {
+                'prerenderToken' : app.config.get('seo.prerender_key'),
+                'url'            : ('https://' if app.config.get('security.uses_https') else 'http://') + app.config.get('seo.site_domain') + '/is/' + issue['_id']
+            })
+    
+    return newRevisionId
+    
+def subscribeCurrentUserToIssue(issue_id, unsubscribe = False):
+    if not unsubscribe:
+        db.users.update(
+            {'_id' : request.user['_id']}, 
+            {'$addToSet' : {'subscribed_issues' : issue_id} },
+            multi=False
+        )
+        db.issues.update(
+            {'_id' : issue_id}, 
+            {'$inc' : {'scoring.subscribed' : 1} },
+            multi=False
+        )
+    else:
+        db.users.update(
+            {'_id' : request.user['_id']}, 
+            {'$pull' : {'subscribed_issues' : issue_id} },
+            multi=False
+        )
+        db.issues.update(
+            {'_id' : issue_id}, 
+            {'$inc' : {'scoring.subscribed' : -1} },
+            multi=False
+        )
+        
+    return True
+    
+    
+def registerVoteCurrentUser(vote, skipExistingCheck = False): 
+    # Remove existing vote if exists for user; correct issue score.
+    scoreChanged = 0
+    if not skipExistingCheck:
+        for v in request.user.get('votes').get('issues'):
+            if v.get('issue') == vote.get('issue'):
+                db.users.update(
+                    {'_id' : request.user['_id']}, 
+                    {'$pull' : {'votes.issues' : v} },
+                    multi=False
+                )
+                scoreChanged = -1 if v.get('vote') == 'up' else 1
+                db.issues.update(
+                    {'_id' : v.get('issue')}, 
+                    {'$inc' : {'scoring.score' : scoreChanged} },
+                    multi=False
+                )
+            
+    # If an "un-vote", we're done.
+    if vote.get('vote') is None: return scoreChanged
+            
+    # Else, update user with new vote.
+    db.users.update(
+        {'_id' : request.user['_id']}, 
+        {'$addToSet' : {'votes.issues' : vote} },
+        multi=False
+    )
+       
+    # Finally, adjust score.
+    scoreChanged += 1 if vote.get('vote') == 'up' else -1
+    db.issues.update(
+        {'_id' : vote.get('issue')}, 
+        {'$inc' : {'scoring.score' : (1 if vote.get('vote') == 'up' else -1)} },
+        multi=False
+    )
+     
+    # Amount score changed
+    return scoreChanged
+        
     
 def getIssueVisibilityOptions(key = None):
     visOptions = [

@@ -78,7 +78,7 @@ isApp.Models.User = Backbone.Model.extend({
 isApp.Models.IssueScoring = Backbone.Model.extend({
     defaults: {
         views: 1,
-        score: 1,
+        score: 0,
         contributions: 1,
         subscribed: 1
     }
@@ -131,7 +131,8 @@ isApp.Models.Issue = Backbone.Model.extend({
         markdownParse: true, // Whether to use marked.js to parse on view render.
         revision: 'NoneYet',
         scoring: new isApp.Models.IssueScoring({'scoring': 1}),
-        meta: new isApp.Models.IssueMeta({})
+        meta: new isApp.Models.IssueMeta({}),
+        my_vote: false
     },
     
     urlRoot: app.settings.root + 'api/issue',
@@ -401,7 +402,13 @@ isApp.Views.IssueView = Backbone.View.extend({
         var subscr_number = this.$el.find('.scoring-container .subscribed-score');
         if (subscr_number.length > 0){ 
             subscr_number.data('tooltip', new Opentip(subscr_number, "Number of people subscribed to this issue"));
-        }     
+        }  
+
+        /* Score */
+        var score_number = this.$el.find('.scoring-container .aggregated-score');
+        if (score_number.length > 0){ 
+            score_number.data('tooltip', new Opentip(score_number, "Score in relation to others of same scale, aggregated from all votes"));
+        }          
         
     },
     
@@ -454,7 +461,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             }, this));
             
             /** Cancel Edit Button **/
-            this.$el.find('#cancelbutton').on('click', $.proxy(function(){
+            this.$el.find('.cancelbutton').on('click', $.proxy(function(){
                 this.template = _.template($('#backbone_issue_template_full').html());
                 this.render();
             }, this));
@@ -475,11 +482,41 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                 
                 t.model.save(formData, { patch: true, wait: true, success: $.proxy(function(issue, response, opts){
                     t.template = _.template($('#backbone_issue_template_full').html());
+                    t.model.get('meta').set('revisions', t.model.get('meta').get('revisions') + 1);
                 }, this), error: function(issue){
                     
                     
                 } });
                 
+            });
+            
+            /** Voting Buttons **/
+        
+            this.$el.find('div.voting-row .columns .vote-option').each(function(){
+                if (isApp.me.get('logged_in')){
+                    if (t.model.get('my_vote').vote == $(this).attr('name')){
+                        $(this).addClass('active');
+                    }
+                    
+                    // Vote
+                    $(this).on('click', function(){
+                        var vote = $(this).attr('name');
+                        if ($(this).hasClass('active')) vote = null; 
+                        t.model.save({'my_vote' : {
+                            'issue' : t.model.get('id'),
+                            'vote'  : vote
+                        }}, {
+                            patch: true, 
+                            wait: true, 
+                            success: $.proxy(function(issue, response, opts){
+                                issue.get('scoring').set('score', issue.get('scoring').get('score') + response.score_change);
+                            }, this)
+                        })
+                    });
+                } else {
+                
+                    return;
+                }
             });
             
             this.$el.find('#proposebutton').removeClass('disabled');
@@ -510,7 +547,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             if (isApp.me.get('logged_in')){
                 edit_button.data('tooltip').setContent("Revise language and grammar or add supporting information such as facts and references<div style='margin-top: 5px;'><b>" + this.model.get('meta').get('revisions') + "</b> edits so far</div>");
             } else {
-                edit_button.data('tooltip').setContent("Please login to contribute.");
+                edit_button.data('tooltip').setContent(app.settings.loginRequiredString);
             }
         }
         
@@ -521,7 +558,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             if (isApp.me.get('logged_in')){
                 propose_button.data('tooltip').setContent("Propose a new response or solution to this issue");
             } else {
-                propose_button.data('tooltip').setContent("Please login to contribute.");
+                propose_button.data('tooltip').setContent(app.settings.loginRequiredString);
             }
         }
         
@@ -534,9 +571,34 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             if (isApp.me.get('logged_in')){
                 comment_button.data('tooltip').setContent("Discuss, comment, ask a question");
             } else {
-                comment_button.data('tooltip').setContent("Please login to contribute.");
+                comment_button.data('tooltip').setContent(app.settings.loginRequiredString);
             }
         }
+        
+        /* Voting Buttons */
+        
+        var voting_icon_buttons = this.$el.find('div.voting-row .columns .vote-option');
+        voting_icon_buttons.each(function(){
+            if (isApp.me.get('logged_in')){
+                if ($(this).hasClass('active')){
+                    $(this).data('tooltip', new Opentip($(this), "Click again to un-vote", "Un-Vote"));
+                    return;
+                }
+                if (typeof $(this).data('tooltip') != 'undefined') return;
+                if ($(this).attr('name') == 'up') $(this).data('tooltip', new Opentip($(this), "This issue is important to me", "Vote Up"));
+                if ($(this).attr('name') == 'down') $(this).data('tooltip', new Opentip($(this), "This issue has no relevancy for me", "Vote Down"));
+                if ($(this).attr('name') == 'report') $(this).data('tooltip', new Opentip($(this), "This issue is rubbish or spam", "Report"));
+            } else {
+                $(this).data('tooltip', new Opentip($(this), app.settings.loginRequiredString));
+            }
+        });
+        
+        /* Cancel Button/Icon (Header) */
+        var cancel_icon_h = this.$el.find('h3.edit-title > i.fa.cancelbutton');
+        if (cancel_icon_h.length > 0 && typeof cancel_icon_h.data('tooltip') == 'undefined'){
+            cancel_icon_h.data('tooltip', new Opentip(cancel_icon_h, "Cancel editing" ));
+        }
+
         
         return this;
     }

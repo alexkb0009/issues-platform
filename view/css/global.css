@@ -472,26 +472,26 @@ body.in-search div#main_issues {
   z-index: 10;
 }
 
-.issue.full .content-container.page {
+.issue.full .page:not(.button):not(button) {
   background-color: #f4f4f4;
+  box-shadow: 0 1px 5px -1px rgba(0,0,0,0.25);
+}
+
+.issue.full .page.content-container {
   padding-top: 10px;
   padding-left: 5px;
   padding-right: 5px;
   /* box-shadow: 0 0 2px rgba(0,0,0,0.25); */
   margin-top: 9px;
-  box-shadow: 0 1px 5px -1px rgba(0,0,0,0.25);
 }
 
 .issue.full article.body {
   transition: margin .4s linear;
 }
 
-.issue.full article.body h1,
-.issue.full article.body h2,
-.issue.full article.body h3,
-.issue.full article.body h4,
-.issue.full article.body h5,
-.issue.full article.body h6 {
+.issue.full article.body h1, .issue.full article.body h2,
+.issue.full article.body h3, .issue.full article.body h4,
+.issue.full article.body h5, .issue.full article.body h6 {
   font-family: SansPro, "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
   margin-top: 0;
 }
@@ -525,19 +525,38 @@ body.in-search div#main_issues {
 }
 
 .issue.full .info-aside.large-4 {
-  padding-top: 15px;
+  padding-top: 9px;
 }
 
 .issue.full .voting-row.row {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+}
+
+.issue.full .voting-row a.button.vote-option {
+  margin-bottom: 0;
+  padding-bottom: 5px;
+  padding-top: 12px;
+}
+
+.issue.full .voting-row.row .columns:not(:last-child){
+  border-right: 1px solid rgba(0,0,0,0.1);
 }
 
 .issue.full .voting-row.row .columns h2 {
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
-.issue.full .voting-row.row .columns h2.active {
+.issue.full .voting-row.row .columns.secondary h2 {
+  opacity: 0.2;
+}
+
+.issue.full .voting-row.row .columns .active {
+   background-color: #f4f4f4;
+}
+
+.issue.full .voting-row.row .columns .active h2 {
   opacity: 1;
+  color: rgb(239, 109, 0);
 }
 
 .issue.full.editing:not(.preview-exists) .preview-body-container,

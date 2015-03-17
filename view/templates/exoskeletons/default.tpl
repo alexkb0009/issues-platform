@@ -26,7 +26,8 @@
         {# Some settings needed pre- BackBone models #}
         if (typeof window.app == 'undefined') window.app = {} 
         app.settings = {
-          root: "{{ root }}"
+          root: "{{ root }}",
+          loginRequiredString: "Please login to contribute."
         }
       </script>
 
