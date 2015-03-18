@@ -3,6 +3,7 @@ from app.includes.bottle import request
 
 def getScaledPagifiedIssuesIterableBySort(sorting, page = 1):
     from app.functions.sort import getIssuesSortOptions, getSortedIssuesIterableFromDB
+    from app.functions.auth import getCurrentIP
     session = request.environ['beaker.session']
     scale = 2 # Nationwide is default, e.g. if no user.
     user = False
@@ -15,6 +16,7 @@ def getScaledPagifiedIssuesIterableBySort(sorting, page = 1):
     (iterable, more) = getSortedIssuesIterableFromDB(sorting, scale = float(scale), page = page, user = user)
     
     session['last_sort'] = sorting
+    session['ip_address'] = getCurrentIP()
     session.save(); 
     
     return (iterable, more)

@@ -1,28 +1,34 @@
 from app.state import app
 
-def email(to, subject, message, toname = None, fromEmail = 'messages@myissues.us', isHTML = False):
+def email(to, subject, message, toName = None, fromEmail = 'messages@myissues.us', fromName = None, isHTML = False):
 
-
+    # Sendgrid
+    
     if app.config['email.mode'] == 'sendgrid':
         import requests
         params = {}
-        params['api_user'] = app.config['email.sendgrid_api_user']
-        params['api_key'] = app.config['email.sendgrid_api_key']
-        params['to'] = to
-        params['subject'] = subject
-        params['toname'] = toname
-        params['from'] = fromEmail
-        params['bcc'] = app.config['reporting.report_email']
+        params['api_user']  = app.config['email.sendgrid_api_user']
+        params['api_key']   = app.config['email.sendgrid_api_key']
+        params['to']        = to
+        params['subject']   = subject
+        params['toname']    = toName
+        params['from']      = fromEmail
+        params['fromname']  = fromName or app.config.get('app_info.site_name')
+        params['bcc']       = app.config['reporting.report_email']
+        
         if isHTML:
-            params['html'] = message
+            params['html']  = message
         else:
-            params['text'] = message
+            params['text']  = message
+            
+        if app.config.get('email.replyto_email'):
+            params['replyto'] = app.config.get('email.replyto_email')
             
         sendgrid_response = requests.post(app.config['email.sendgrid_api_url'], params)
         print(sendgrid_response.text)
         return sendgrid_response.status_code == requests.codes.ok
         
-        
+    # SMTP Server
     
     else:
         from smtplib import SMTP_SSL as SMTP

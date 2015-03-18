@@ -45,7 +45,7 @@ def do_register():
             to = request.forms.get('email'),
             subject = 'Registration @ MyIssues',
             message = message,
-            toname = request.forms.get('firstname') + ' ' + request.forms.get('lastname')
+            toName = request.forms.get('firstname') + ' ' + request.forms.get('lastname')
         )
         redirect(app.config['app_info.root_directory'] + 'register/2?s=registered&more=' + request.forms.get('username'))
     else: 

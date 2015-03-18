@@ -290,6 +290,14 @@ def test_zip(zipcode):
     r = requests.get('http://ZiptasticAPI.com/' + zipcode)
     return r
     
+@app.route('/test_request')
+def test_request():
+    import json
+    print(dict(request))
+    ip_address = (request.get('HTTP_X_FORWARDED_FOR') or request.get('REMOTE_ADDR')).split(':')[0]
+    request.session = request.environ['beaker.session']
+    return ip_address
+    
     
 ## Error Handling
 

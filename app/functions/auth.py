@@ -20,13 +20,13 @@ def check_sent_auth_info(key, returnUser = False):
             if user == None:
                 log('User decoded as "' + user_auth_array[0] + '" but not found in database.')
                 return None
-            if sha256_crypt.verify(user['passhash'], user_auth_array[1]):
+            if sha256_crypt.verify(user['passhash'] + ':::::::' + getCurrentIP(), user_auth_array[1]):
                 log('Authenticated token from ' + user['username'] + ' : ' + user_auth_array[1])
                 #LOlolOlloafsa
                 return user
         else:
             user = db.users.find_one({ 'username': user_auth_array[0] }, {'passhash' : 1})
-            return sha256_crypt.verify(user['passhash'], user_auth_array[1])
+            return sha256_crypt.verify(user['passhash'] + ':::::::' + getCurrentIP(), user_auth_array[1])
 
             
 # Used directly in login routes, taking POST'd username+password
@@ -44,10 +44,15 @@ def login_user():
         authd_user['auth_key'] = generateAuthKey(authd_user['username'], authd_user['passhash'])
         session['username'] = authd_user['username']
         session['auth_key'] = authd_user['auth_key']
+        session['ip_address'] = getCurrentIP()
         session.save()
         
     return authd_user
     
+def getCurrentIP():
+    from app.includes.bottle import request
+    ip_address = (request.get('HTTP_X_FORWARDED_FOR') or request.get('REMOTE_ADDR')).split(':')[0]
+    return ip_address
     
 ## Used directly in auth'd page routes. 
 ## Reads + authenticates existing session data, sets request.user object for use.
@@ -194,5 +199,5 @@ def generateHash(password, config):
 def generateAuthKey(username, passhash):
     import base64, datetime
     from passlib.hash import sha256_crypt
-    return base64.b64encode((username + '@' + sha256_crypt.encrypt(passhash) + '@' + str(datetime.datetime.today())).encode('utf-8')).decode("utf-8")
+    return base64.b64encode((username + '@' + sha256_crypt.encrypt(passhash + ':::::::' + getCurrentIP()) + '@' + str(datetime.datetime.today())).encode('utf-8')).decode("utf-8")
         
