@@ -413,11 +413,11 @@ body.in-search div#main_issues {
   float: right;
   opacity: 0.3;
   line-height: 1.875em;
-  margin-top: -1px;
 }
 
 .issue.listview:not(.min) h5.issue-title {
   font-size: 1.6em;
+  min-height: 52px;
 }
 
 .issue.listview:not(.min) h5.issue-title > a.title {

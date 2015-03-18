@@ -414,7 +414,7 @@ isApp.Views.IssueView = Backbone.View.extend({
     
     subscribe: function(){
         this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
-        isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; margin: -1px 2px 0; line-height: inherit; ');
+        isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; line-height: 1.875em; font-size: 0.825em;');
         this.model.save({'meta': this.model.get('meta'), 'scoring' : this.model.get('scoring')}, { patch: true, wait: true, success: $.proxy(function(){
             if (isApp.myIssues != null){
                 isApp.myIssues.reset();
