@@ -457,6 +457,8 @@ body.in-search div#main_issues {
 
 .issue.full .description {
   margin-bottom: 20px;
+  margin-top: 5px;
+  font-size: 1.0725rem;
 }
 
 .issue.full .description-title {
@@ -546,11 +548,11 @@ body.in-search div#main_issues {
   opacity: 0.2;
 }
 
-.issue.full .voting-row.row .columns .active {
-   background-color: #f4f4f4;
+.issue.full .voting-row.row .columns .vote-option:not(.disabled):hover {
+  background-color: #e2e2e2;
 }
 
-.issue.full .voting-row.row .columns .active h2 {
+.issue.full .voting-row.row .columns .vote-option.active h2 {
   opacity: 1;
   color: rgb(239, 109, 0);
 }

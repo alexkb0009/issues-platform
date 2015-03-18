@@ -59,6 +59,12 @@
             </div>
             <!--<div class="large-3 columns text-right views-number"></div>-->
         </div>
+        
+        <div class="row issue-footer-row">
+            <div class="large-12 columns">
+               
+            </div>
+        </div>
     </div>
     <div class="large-4 xlarge-3 columns info-aside">
         
@@ -93,7 +99,7 @@
                 <p>Subscribed</p>
             </div>
             <div class="large-4 small-4 columns text-center">
-                <h4>0</h4>
+                <h4><%= scoring.get('num_votes') %></h4>
                 <p>Votes</p>
             </div>
         </div>

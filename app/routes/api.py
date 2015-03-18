@@ -92,6 +92,7 @@ def patch_issue(issue_id):
     if meta and 'am_subscribed' in meta:
         from app.functions.issues import subscribeCurrentUserToIssue
         subscribeCurrentUserToIssue(issue['_id'], not meta.get('am_subscribed'))
+        
             
     # Is this a new revision?
     if request.json.get('title') is not None and request.json.get('description') is not None and request.json.get('body') is not None:
@@ -108,7 +109,9 @@ def patch_issue(issue_id):
     if vote:
         vote['issue'] = issue['_id'] # Just to be sure
         from app.functions.issues import registerVoteCurrentUser
-        returnObj['score_change'] = registerVoteCurrentUser(vote)
+        (returnObj['vote_result'], returnObj['score_change']) = registerVoteCurrentUser(vote)
+        if not returnObj['vote_result']: 
+            response.status = 401
         
     returnObj['status'] = 200
     return returnObj

@@ -99,13 +99,19 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
     }
     
     if hasattr(request, 'user'):
+        from app.functions.sort import confirmScaleLocaleMatch
         issueWellFormed['meta']['am_subscribed'] = True if issue['_id'] in request.user['subscribed_issues'] else False
+        issueWellFormed['meta']['am_allowed_vote'] = confirmScaleLocaleMatch(issue, request.user)
         for issue_vote in request.user.get('votes').get('issues'):
             if issueWellFormed.get('_id') == issue_vote.get('issue'):
                 issueWellFormed['my_vote'] = issue_vote
+                break
         
     if fullMode:
         issueWellFormed['body'] = currentRevision['body']
+        issueWellFormed['meta']['state'] = issue['meta'].get('state')
+        issueWellFormed['meta']['city'] = issue['meta'].get('city')
+        issueWellFormed['meta']['zip'] = issue['meta'].get('zip')
     
     if len(redactFields) > 0:
         for field in redactFields:
@@ -274,14 +280,19 @@ def registerVoteCurrentUser(vote, skipExistingCheck = False):
                 scoreChanged = -1 if v.get('vote') == 'up' else 1
                 db.issues.update(
                     {'_id' : v.get('issue')}, 
-                    {'$inc' : {'scoring.score' : scoreChanged} },
+                    {'$inc' : {'scoring.score' : scoreChanged, 'scoring.num_votes' : -1} },
                     multi=False
                 )
             
     # If an "un-vote", we're done.
-    if vote.get('vote') is None: return scoreChanged
+    if vote.get('vote') is None: return (True, scoreChanged)
             
-    # Else, update user with new vote.
+    # Else, continue and make sure scale + locality matches before casting vote.
+    issue = getIssueByID(vote.get('issue'), {'_id' : 0, 'meta' : 1})
+    from app.functions.sort import confirmScaleLocaleMatch
+    if not confirmScaleLocaleMatch(issue, request.user): return (False, scoreChanged)
+            
+    # Update user with new vote.
     db.users.update(
         {'_id' : request.user['_id']}, 
         {'$addToSet' : {'votes.issues' : vote} },
@@ -292,12 +303,12 @@ def registerVoteCurrentUser(vote, skipExistingCheck = False):
     scoreChanged += 1 if vote.get('vote') == 'up' else -1
     db.issues.update(
         {'_id' : vote.get('issue')}, 
-        {'$inc' : {'scoring.score' : (1 if vote.get('vote') == 'up' else -1)} },
+        {'$inc' : {'scoring.score' : (1 if vote.get('vote') == 'up' else -1), 'scoring.num_votes' : 1} },
         multi=False
     )
      
     # Amount score changed
-    return scoreChanged
+    return (True, scoreChanged)
         
     
 def getIssueVisibilityOptions(key = None):

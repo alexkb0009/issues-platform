@@ -77,7 +77,6 @@ def view_issue(issue_slug):
     
     authd = session_auth()
     issue = getIssueByID(slugify(issue_slug))
-    
     if not issue:
         #  404 Not Found
         # response.status = 404
@@ -87,7 +86,7 @@ def view_issue(issue_slug):
         issue = getWellFormedIssue(issue, fullMode = True)
         issue['visibilityExpanded'] = getIssueVisibilityOptions(issue['meta'].get('visibility'))
         issue['jsonSerialized'] = json_util.dumps(issue)
-        scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = False, localizeUser = request.user if authd else None)
+        scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = False, localizeUser = issue)
     
     
     returnObj = {

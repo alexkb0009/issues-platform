@@ -472,7 +472,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                 if (val.length > 0) t.$el.addClass('preview-exists');
                 else t.$el.removeClass('preview-exists');
                 articlePreviewBody.html(marked(val));
-            }, 600));
+            }, 600)).keyup();
             
             /** Submit Edit Form ... Button **/
             this.$el.find("form#editform").submit(function( event ){
@@ -498,6 +498,11 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                         $(this).addClass('active');
                     }
                     
+                    if (!t.model.get('meta').get('am_allowed_vote')) {
+                        $(this).addClass('disabled');
+                        return;
+                    }
+                    
                     // Vote
                     $(this).on('click', function(){
                         var vote = $(this).attr('name');
@@ -509,12 +514,17 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                             patch: true, 
                             wait: true, 
                             success: $.proxy(function(issue, response, opts){
-                                issue.get('scoring').set('score', issue.get('scoring').get('score') + response.score_change);
+                                var scoring = issue.get('scoring');
+                                scoring.set(    'score', scoring.get('score')     + response.score_change   );
+                                if (vote == null){
+                                    scoring.set('num_votes', scoring.get('num_votes') - 1 );
+                                } else {
+                                    scoring.set('num_votes', scoring.get('num_votes') + (t.model.previous('my_vote').vote ? 0 : 1) );
+                                }
                             }, this)
                         })
                     });
                 } else {
-                
                     return;
                 }
             });
@@ -523,7 +533,8 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             this.$el.find('#commentbutton').removeClass('disabled');
             
         } else {
-        
+            
+            this.$el.find('div.voting-row .columns .vote-option').addClass('disabled');
             this.$el.find('#editbutton').addClass('disabled');
             this.$el.find('#proposebutton').addClass('disabled');
             this.$el.find('#commentbutton').addClass('disabled');
@@ -533,6 +544,8 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
     },
     
     generateToolTipsEnableElements_Full: function(){
+    
+        var t = this;
     
         /* Visibility Icon */
         var visibility_icon = $('div.stats-container .visibility-icon');
@@ -576,10 +589,14 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
         }
         
         /* Voting Buttons */
-        
         var voting_icon_buttons = this.$el.find('div.voting-row .columns .vote-option');
         voting_icon_buttons.each(function(){
             if (isApp.me.get('logged_in')){
+                
+                if (!t.model.get('meta').get('am_allowed_vote')) {
+                    $(this).data('tooltip', new Opentip($(this), "You're not allowed to vote for this issue because it is outside your locale."));
+                    return;
+                }
                 if ($(this).hasClass('active')){
                     $(this).data('tooltip', new Opentip($(this), "Click again to un-vote", "Un-Vote"));
                     return;

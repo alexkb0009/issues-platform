@@ -119,6 +119,17 @@ def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, s
         return scaleMap
         
 
+def confirmScaleLocaleMatch(issue, user):
+    if (   (issue['meta'].get('scale') == 1)
+        or (issue['meta'].get('scale') == 2)
+        or (issue['meta'].get('scale') == 3 and user['meta'].get('state') == issue['meta'].get('state'))
+        or (issue['meta'].get('scale') == 4 and user['meta'].get('city') == issue['meta'].get('city'))
+        or (issue['meta'].get('scale') == 5 and user['meta'].get('zip') == issue['meta'].get('zip'))
+    ): 
+        return True
+    return False
+ 
+        
 def saveUserScale(scale, user):
     '''
     @type  scale: float
