@@ -88,7 +88,7 @@
         </div>
 
         
-        <h3 class="major section-header ranking-title">Rankings</h3>
+        <h3 class="major section-header ranking-title">Stats</h3>
         <div class="row scoring-container">
             <div class="large-4 small-4 columns text-center aggregated-score">
                 <h4><%= scoring.get('score') %></h4>

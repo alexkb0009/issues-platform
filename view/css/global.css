@@ -27,8 +27,12 @@ body {
 }
 
 .top-bar-section ul li,
-.top-bar-section ul li .dropdown  {
+.top-bar-section li:not(.has-form) a:not(.button) {
   background: #2A424A;
+}
+
+.top-bar-section .dropdown li {
+  background: #253a45;
 }
 
 nav.top-bar ul li a > i {
@@ -62,6 +66,7 @@ nav.top-bar ul.title-area li.crumb:before {
   content: '>';
   color: #bbb;
   padding-left: 3px;
+  opacity: 0.5;
 }
 
 nav.top-bar ul.title-area li.crumb > a,
@@ -72,7 +77,7 @@ nav.top-bar ul.title-area li.crumb > span {
 }
 
 nav.top-bar ul.title-area li.crumb > a {
-  color: #ccc;
+  color: #eee;
 }
 
 nav.top-bar ul.title-area li.crumb > a:hover {
@@ -411,13 +416,31 @@ body.in-search div#main_issues {
   margin-top: -1px;
 }
 
-.issue.listview h5.issue-title > .open-icon {
-  margin-right: 0;
+.issue.listview:not(.min) h5.issue-title {
+  font-size: 1.6em;
 }
 
-.issue.listview h5.issue-title > .subscribe-icon {
+.issue.listview:not(.min) h5.issue-title > a.title {
+  display: inline-block;
+  padding-top: 6px;
+}
+
+.issue.listview.description-closed:not(.min) h5.issue-title > a.title {
+  font-weight: 300;
+}
+
+.issue.listview:not(.min) h5.issue-title .open-icon {
+  line-height: 1.675em;
   margin-left: 2px;
-  margin-right: 2px;
+}
+
+.issue.listview:not(.min) h5.issue-title .subscribe-icon {
+  font-size: .875em;
+  line-height: 1.725em;
+}
+
+.issue.listview:not(.min) div.description {
+  font-size: 1.0725rem;
 }
 
 .issue.listview div.description {
@@ -555,6 +578,11 @@ body.in-search div#main_issues {
 .issue.full .voting-row.row .columns .vote-option.active h2 {
   opacity: 1;
   color: rgb(239, 109, 0);
+}
+
+.issue.full .voting-row.row .columns .vote-option.semi-active h2 {
+  color: rgb(195, 89, 0);
+  opacity: 1;
 }
 
 .issue.full.editing:not(.preview-exists) .preview-body-container,

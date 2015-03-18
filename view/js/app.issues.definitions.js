@@ -496,6 +496,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                 if (isApp.me.get('logged_in')){
                     if (t.model.get('my_vote').vote == $(this).attr('name')){
                         $(this).addClass('active');
+                        if (t.model.get('my_vote').vote == 'report') $(this).parent().prev().find('.vote-option').addClass('semi-active');
                     }
                     
                     if (!t.model.get('meta').get('am_allowed_vote')) {
