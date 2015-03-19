@@ -437,11 +437,29 @@ isApp.Views.IssueView = Backbone.View.extend({
 
 isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
 
+    initialize: function(options){
+        if (typeof options.templateID != 'undefined'){
+          this.template = _.template($('#' + options.templateID).html());
+        }
+        this.render();
+    },
+    
+    bindings: {
+        '.aggregated-score > h4' : 'score'
+    },
+
     render: function(obj){
         this.renderInitial(obj);
         this.setButtonInteractivity();
         this.generateToolTipsEnableElements_Common();
         this.generateToolTipsEnableElements_Full();
+        //this.stickit();
+        // + for scoring
+        this.stickit(this.model.get('scoring'), {
+            '.aggregated-score > h4' : 'score',
+            '.subscribed-score > h4' : 'subscribed',
+            '.num-votes > h4' : 'num_votes'
+        });
         return this;
     },
     
@@ -483,6 +501,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                 t.model.save(formData, { patch: true, wait: true, success: $.proxy(function(issue, response, opts){
                     t.template = _.template($('#backbone_issue_template_full').html());
                     t.model.get('meta').set('revisions', t.model.get('meta').get('revisions') + 1);
+                    t.render();
                 }, this), error: function(issue){
                     
                     
@@ -492,19 +511,39 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             
             /** Voting Buttons **/
         
-            this.$el.find('div.voting-row .columns .vote-option').each(function(){
+            function applyClassesToVoteButton(button){
+            
+                // De-activate old tooltip
+                var tooltip = button.data('tooltip');
+                if (button.hasClass('active')) tooltip.deactivate();
+                        
+                // Clear w/e there before.
+                button.removeClass("active disabled semi-active");
+                
+                // Set conditionally.
+                if (t.model.get('my_vote').vote == button.attr('name')){
+                    button.addClass('active');
+                    if (tooltip){
+                        tooltip.setContent("Click again to <b>un-vote</b>");
+                    }
+                    if (t.model.get('my_vote').vote == 'report'){
+                        // Set "down" button to left of trash icon as semi-active.
+                        button.parent().prev().find('.vote-option').addClass('semi-active');
+                    }
+                }
+                
+                if (!t.model.get('meta').get('am_allowed_vote')) {
+                    button.addClass('disabled');
+                    return;
+                }
+            }
+        
+            var votingButtons = this.$el.find('div.voting-row .columns .vote-option');
+            votingButtons.each(function(){
                 if (isApp.me.get('logged_in')){
-                    if (t.model.get('my_vote').vote == $(this).attr('name')){
-                        $(this).addClass('active');
-                        if (t.model.get('my_vote').vote == 'report') $(this).parent().prev().find('.vote-option').addClass('semi-active');
-                    }
+                    applyClassesToVoteButton($(this));
                     
-                    if (!t.model.get('meta').get('am_allowed_vote')) {
-                        $(this).addClass('disabled');
-                        return;
-                    }
-                    
-                    // Vote
+                    // Vote action/binding
                     $(this).on('click', function(){
                         var vote = $(this).attr('name');
                         if ($(this).hasClass('active')) vote = null; 
@@ -516,22 +555,24 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                             wait: true, 
                             success: $.proxy(function(issue, response, opts){
                                 var scoring = issue.get('scoring');
-                                scoring.set(    'score', scoring.get('score')     + response.score_change   );
+                                scoring.set('score', scoring.get('score') + response.score_change);
                                 if (vote == null){
                                     scoring.set('num_votes', scoring.get('num_votes') - 1 );
                                 } else {
                                     scoring.set('num_votes', scoring.get('num_votes') + (t.model.previous('my_vote').vote ? 0 : 1) );
                                 }
+                                votingButtons.each(function(){applyClassesToVoteButton($(this))});
                             }, this)
                         })
                     });
+                    
                 } else {
                     return;
                 }
             });
             
-            this.$el.find('#proposebutton').removeClass('disabled');
-            this.$el.find('#commentbutton').removeClass('disabled');
+            this.$el.find('#proposebutton').addClass('disabled');
+            this.$el.find('#commentbutton').addClass('disabled');
             
         } else {
             

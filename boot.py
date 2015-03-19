@@ -102,7 +102,7 @@ def application():
 
     # Index DB Collections
     globals.db.users.ensure_index([('username', 1)], cache_for=31536000, unique=True)
-    globals.db.issues.ensure_index([('title', 'text')], cache_for=31536000, unique=True)
+    globals.db.issues.ensure_index([('title', 'text')], cache_for=31536000)
     globals.db.flood_ip.ensure_index([('timestamp', -1)], cache_for=31536000, unique=False, expireAfterSeconds=int(globals.app.config['security.ip_flood_limit']))
 
 

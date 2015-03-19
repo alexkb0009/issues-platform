@@ -53,7 +53,7 @@ def index(search_term = None):
                 
         returnObj.update({
           'user' : request.user,
-          'route' : [('Home', '', 'Return to homepage')]
+          # 'route' : [('Home', '', 'Return to homepage')]
         })
             
         return template('homepage.member.tpl', returnObj)
@@ -78,9 +78,7 @@ def view_issue(issue_slug):
     authd = session_auth()
     issue = getIssueByID(slugify(issue_slug))
     if not issue:
-        #  404 Not Found
-        # response.status = 404
-        redirect('/s/' + issue_slug)
+        redirect('/search/' + issue_slug)
     else: 
         issue['scoring']['views'] = addToIssueViews(issue['_id'])
         issue = getWellFormedIssue(issue, fullMode = True)

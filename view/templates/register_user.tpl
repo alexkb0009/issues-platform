@@ -146,14 +146,21 @@
         <label for="r_aboutme_f">About Me</label>
         <textarea name="about" rows="3" id="r_aboutme_f" placeholder="Please write a little of anything about yourself. This will be included in your profile. Your address, date of birth, and other information remains private."></textarea>
       </div>
-      <div class="large-4 columns">
+      <div class="large-5 columns">
         <div class="g-recaptcha" data-sitekey="6LcF1wITAAAAAFQk9BZziQ8imAdaYjVe0wbyfUvP"></div>
       </div>
-      <div class="large-8 columns">
-        <p>
+      <div class="large-7 columns">
+        
         <button type="submit" class="right" style="margin-left: 20px;">Next &nbsp;<i class="fa fa-chevron-right"></i></button>
-        By proceeding, you confirm that (a) you are at least 18 years of age, (b) reside within the United States of America, and (c) agree with our <a target="_blank" href="{{ root}}about/privacy-policy">privacy policy</a>.
+        <p style="margin: 0; font-size: .875em;">
+        By proceeding, you confirm that:
         </p>
+        <ul style="line-height: 1.175em; list-style-type: none; margin-left: 5px; font-size: .875em;">
+          <li>(a) you are at least 18 years of age, </li>
+          <li>(b) reside within the United States of America at address specified above, </li>
+          <li>(c) and agree with our <a target="_blank" href="{{ root}}about/privacy-policy">privacy policy</a>.</li>
+        </ul>
+
       </div>
     </form>
   {% elif page_number == 2 %}

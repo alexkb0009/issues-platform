@@ -41,9 +41,7 @@
         <div class="row issue-footer-row small-columns">
         
             <div class="large-10 small-8 columns">
-                <a href="#comment" class="button secondary expand small page" id="commentbutton">
-                    <i class="fa fa-fw fa-comment"></i>&nbsp; Comment
-                </a>
+                &nbsp;
             </div>
             
             <div class="large-1 small-2 columns">
@@ -98,7 +96,7 @@
                 <h4><%= scoring.get('subscribed') %></h4>
                 <p>Subscribed</p>
             </div>
-            <div class="large-4 small-4 columns text-center">
+            <div class="large-4 small-4 columns text-center num-votes">
                 <h4><%= scoring.get('num_votes') %></h4>
                 <p>Votes</p>
             </div>
@@ -117,6 +115,9 @@
         
         <h3 class="major section-header issue-title">Discussion</h3>
         <p>[<em>Most active forum-type discussion threads related to issue go here</em>]</p>
+        <a href="#comment" class="button secondary expand small page" id="commentbutton">
+            <i class="fa fa-fw fa-comment"></i>&nbsp; Comment
+        </a>
         
     </div>
     
