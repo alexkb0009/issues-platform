@@ -66,6 +66,7 @@ def getIssueByID(issueID, customFields = None):
         return None
         
 def getWellFormedIssue(issue, redactFields = [], fullMode = False):
+    from app.functions.sort import getIssuesScaleOptions
     if 'current_revision' not in issue: 
         extendedIssue = db.issues.find_one({"_id": issue['_id']}, {"_id" : 0})
         if extendedIssue:
@@ -96,6 +97,7 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
         'revisions' :       issue['meta'].get('revisions'),
         'initial_author' :  issue['meta'].get('initial_author'),
         'scale' :           issue['meta'].get('scale'),
+        'locale' :          getIssuesScaleOptions(issue['meta'].get('scale'), localizeUser = issue, fullGeo = True, stripIssues = True, stripIcons = True)['title'],
         'visibility' :      issue['meta'].get('visibility')
       }
     }

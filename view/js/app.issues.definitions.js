@@ -653,7 +653,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
         /* Scale Icon */
         var scale_icon = $('div.stats-container .scale');
         if (scale_icon.length > 0 && typeof scale_icon.data('tooltip') == 'undefined'){
-            scale_icon.data('tooltip', new Opentip(scale_icon, "Scale of Issue", {tipJoint: "top right", offset: [5,7]} ));
+            scale_icon.data('tooltip', new Opentip(scale_icon, "Issue locale is <b>" + t.model.get('meta').get('locale') + "</b>", {tipJoint: "top right", offset: [5,7]} ));
         }
     
         /* Edit Button */ 

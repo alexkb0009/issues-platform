@@ -52,9 +52,10 @@ nav.top-bar ul.title-area.no-crumbs li.name h1 a {
 }
 
 nav.top-bar ul.title-area li.name h1 a img.hov { display: none; }
+/*
 nav.top-bar ul.title-area li.name:hover h1 a img.hov { display: inline;}
 nav.top-bar ul.title-area li.name:hover h1 a img.reg { display: none;}
-
+*/
 nav.top-bar ul.title-area li.name h1 a span.lighter {
   font-size: inherit;
   font-weight: 300;
@@ -547,16 +548,25 @@ body.in-search div#main_issues {
 .stats-container span.visibility-icon {
   padding: 0 0 0 8px;
   border-left: 1px solid #eee;
-  margin-left: 1px;
+  /* margin-left: 1px; */
 }
 
 .stats-container span.scale {
   padding: 0 8px 0 8px;
   border-left: 1px solid #eee;
-  margin-left: 1px;
+  margin-left: 2px;
 }
-.stats-container span.scale > i {
-  margin-right: 5px;
+
+.stats-container span.scale a {
+  color: inherit;
+}
+
+.stats-container span.scale a:hover {
+  opacity: 0.5;
+}
+
+.stats-container span.scale i {
+  /* margin-right: 5px; */
 }
 
 .issue.full .info-aside.large-4 {
