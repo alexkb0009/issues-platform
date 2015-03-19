@@ -43,16 +43,13 @@ nav.top-bar ul.title-area li.name h1 a {
   font-weight: 700;
   font-size: 1.2em;
   font-family: SansPro, Junction;
-  min-width: 114px;
+  min-width: 100px;
+  padding: 0 10px 0 10px;
 }
 
 nav.top-bar ul.title-area li.name h1 a span.lighter {
   font-size: inherit;
   font-weight: 300;
-}
-
-nav.top-bar ul.title-area li.name {
-  margin-right: -3px;
 }
 
 nav.top-bar ul.title-area li.crumb {
@@ -63,7 +60,7 @@ nav.top-bar ul.title-area li.crumb {
 }
 
 nav.top-bar ul.title-area li.crumb:before {
-  content: '>';
+  content: '\\';
   color: #bbb;
   padding-left: 3px;
   opacity: 0.5;

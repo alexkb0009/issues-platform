@@ -77,9 +77,9 @@
       </div>
       
       <div class="large-12 columns">
-        <div data-alert class="alert-box info radius" style="margin-top: 8px;">
+        <div data-alert class="alert-box primary radius" style="margin-top: 8px;">
           <!--<h5 style="font-family: inherit; margin: 0;">-->
-            The following information is gathered for constituency authentication.
+            The following information is gathered for constituency localization & authentication.
             <a href="#" class="close">&times;</a>
           <!--</h5>-->
         </div>
