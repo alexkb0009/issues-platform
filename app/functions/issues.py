@@ -241,8 +241,10 @@ def saveNewRevisionFromRequestObj(issueReq, issue):
     
     return newRevisionId
     
-def subscribeCurrentUserToIssue(issue_id, unsubscribe = False):
-    if not unsubscribe:
+def subscribeCurrentUserToIssue(issue_id):
+    subscribe = True
+    if issue_id in request.user['subscribed_issues']: subscribe = False
+    if subscribe:
         db.users.update(
             {'_id' : request.user['_id']}, 
             {'$addToSet' : {'subscribed_issues' : issue_id} },
@@ -265,7 +267,7 @@ def subscribeCurrentUserToIssue(issue_id, unsubscribe = False):
             multi=False
         )
         
-    return True
+    return subscribe
     
     
 def registerVoteCurrentUser(vote, skipExistingCheck = False): 

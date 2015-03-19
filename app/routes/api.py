@@ -91,7 +91,7 @@ def patch_issue(issue_id):
     meta = request.json.get('meta')
     if meta and 'am_subscribed' in meta:
         from app.functions.issues import subscribeCurrentUserToIssue
-        subscribeCurrentUserToIssue(issue['_id'], not meta.get('am_subscribed'))
+        returnObj['meta'] = {'am_subscribed' : subscribeCurrentUserToIssue(issue['_id']) }
         
             
     # Is this a new revision?

@@ -74,8 +74,61 @@ isApp.Models.User = Backbone.Model.extend({
 /** Issue **/
     
 /** Issue Extended Property Containers **/
+
+isApp.Models.ChildObject = Backbone.Model.extend({
     
-isApp.Models.IssueScoring = Backbone.Model.extend({
+    parse: function(response, options){
+        if (_.has(options, 'parent')){
+            this.parent = options['parent'];
+            this.urlRoot = this.parent.urlRoot;
+            this.childName = options['childName'];
+        }
+        return response;
+    },
+    
+    url : function(){
+        return this.urlRoot + '/' + this.parent.get('id');
+    },
+    
+    save: function(attributes, options){
+        var newAttributes = { };
+        newAttributes[this.childName] = {};
+        _.mapObject(attributes, $.proxy(function(val, key){
+            newAttributes[this.childName][key] = val;
+        }, this));
+        
+        if (attributes && options.wait) {
+            this.attributes_wait = _.extend({}, attributes);
+        }
+        var success = options.success;
+        var model = this;
+        return $.ajax({
+            url: this.url(),
+            type: 'PATCH',
+            headers : {
+                'Authorization': isApp.me.get('auth_key')
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(newAttributes),
+            success: function(resp){
+                var serverAttrs = model.parse(resp, options);
+                if (options.wait) serverAttrs = _.extend(model.attributes || {}, model.attributes_wait, serverAttrs);
+                if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) {
+                  return false;
+                }
+                if (success) success(model, resp, options);
+                model.trigger('sync', model, resp, options);
+                _.each(model.attributes_wait, function(value, attribute){
+                    model.trigger('change:' + attribute, model, resp, options);
+                });
+            }
+        });
+    }
+    
+});
+
+isApp.Models.IssueScoring = isApp.Models.ChildObject.extend({
     defaults: {
         views: 1,
         score: 0,
@@ -84,35 +137,13 @@ isApp.Models.IssueScoring = Backbone.Model.extend({
     }
 });
     
-isApp.Models.IssueMeta = Backbone.Model.extend({
+isApp.Models.IssueMeta = isApp.Models.ChildObject.extend({
     defaults: {
         last_edit: new Date(),
         scale: 2,
         revisions: 1,
         initial_author: function() { return (isApp.me.get('username') || "billyg123") }
-    },
-    
-    parse: function(response, options){
-        if (_.has(options, 'parent')){
-            this.parent = options['parent'];
-            this.urlRoot = this.parent.urlRoot;
-            this.set('id', this.parent.get('id'));
-        }
-        return response;
-    },
-    
-    initialize: function(item, options){
-
     }
-    /*
-    save: function(attributes, options){
-        var newAttributes = {};
-        _.mapObject(attributes, function(val, key){
-            newAttributes['meta.' + key] = val;
-        });
-        return Backbone.Model.prototype.save.call(this, newAttributes, options);
-    }
-    */
 });
     
     
@@ -146,7 +177,7 @@ isApp.Models.Issue = Backbone.Model.extend({
             var embeddedClass = this.model[key];
             var embeddedData = response[key];
             if (typeof embeddedData != 'undefined'){
-                response[key] = new embeddedClass(embeddedData, {parse: true, parent: this});
+                response[key] = new embeddedClass(embeddedData, {parse: true, parent: this, childName: key});
             }
         }
         return response;
@@ -324,6 +355,20 @@ isApp.Views.IssueView = Backbone.View.extend({
           this.toggleDescriptionOpen(null, false); // evt = null, transition = false
         }
         
+        this.stickit(this.model.get('meta'), {
+            '.subscribed-container' : {
+                observe: 'am_subscribed',
+                updateMethod: 'html',
+                onGet: function(subVal){
+                    if (subVal == true) {
+                        return '<i class="subscribe-icon subscribed fa fa-fw fa-star right"></i>';
+                    } else if (subVal == false) {
+                        return '<i class="subscribe-icon fa fa-fw fa-star-o right"></i>';
+                    } else return '';
+                }
+            }
+        });
+        
         return this;
     },
     
@@ -413,19 +458,29 @@ isApp.Views.IssueView = Backbone.View.extend({
     },
     
     subscribe: function(){
-        this.model.get('meta').set('am_subscribed', !(this.model.get('meta').get('am_subscribed')));
         isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; line-height: 1.875em; font-size: 0.825em;');
-        this.model.save({'meta': this.model.get('meta'), 'scoring' : this.model.get('scoring')}, { patch: true, wait: true, success: $.proxy(function(){
+        this.subscribeAction();
+    },
+    
+    subscribeAction: function(callback){
+    
+        this.model.get('meta').save({'am_subscribed': !(this.model.get('meta').get('am_subscribed'))}, { patch: true, wait: true, success: $.proxy(function(resp, status, xhr){
+            // Set myIssues if needed.
             if (isApp.myIssues != null){
                 isApp.myIssues.reset();
                 isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
                 isApp.myIssues.fetch();
             }
+            
+            // Set am subscribed appropriately on local-side.
             if (this.model.get('meta').get('am_subscribed')){
                 this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') + 1);
             } else {
                 this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') - 1);
             }
+            
+            // Do callback (optional)
+            if (callback) callback(resp, status, xhr);
         }, this), error: function(issue){
             issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
         } });
@@ -453,8 +508,8 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
         this.setButtonInteractivity();
         this.generateToolTipsEnableElements_Common();
         this.generateToolTipsEnableElements_Full();
-        //this.stickit();
-        // + for scoring
+
+        // Child Model Bindings
         this.stickit(this.model.get('scoring'), {
             '.aggregated-score > h4' : 'score',
             '.subscribed-score > h4' : 'subscribed',
@@ -660,7 +715,12 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
 
         
         return this;
-    }
+    },
+    
+    subscribe: function(){
+        var loadIcon = isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; font-size: 1em;');
+        this.subscribeAction();
+    },
 
 });
     

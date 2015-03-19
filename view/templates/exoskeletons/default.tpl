@@ -36,6 +36,7 @@
       
       <script type="text/javascript" src="{{ root }}js/vendor/underscore-min.js"></script>
       <script type="text/javascript" src="{{ root }}js/vendor/backbone-min.js"></script>
+      <script type="text/javascript" src="{{ root }}js/vendor/backbone.stickit.min.js"></script>
       {% block js_templates %}{% endblock %}
       <script type="text/javascript" src="{{ root }}js/app.issues.definitions.js"></script>
       <script type="text/javascript" src="{{ root }}js/app.issues.functions.js"></script>

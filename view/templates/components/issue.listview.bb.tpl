@@ -5,11 +5,7 @@
     <h5 class="issue-title">
         <a class="title" href="<%= path %>"><%= title %></a>
         <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
-    <% if (meta.get('am_subscribed')){ %>
-        <i class="subscribe-icon subscribed fa fa-fw fa-star"></i>
-    <% } else if (meta.get('am_subscribed') == false) { %>
-        <i class="subscribe-icon fa fa-fw fa-star-o"></i>
-    <% } %>
+        <span class="subscribed-container"></span>
     </h5>
     <div class="description">
         <%= description %>
@@ -30,11 +26,7 @@
             <a class="title" href="<%= path %>"><%= title %></a>
             <span class="icons right">
               <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
-              <% if (meta.get('am_subscribed')){ %>
-                <i class="subscribe-icon subscribed fa-fw fa fa-star"></i>
-              <% } else if (meta.get('am_subscribed') == false) { %>
-                <i class="subscribe-icon fa fa-fw fa-star-o"></i>
-              <% } %>
+              <span class="subscribed-container"></span>
             </span>
         </h5>
         <div class="description">

@@ -7,13 +7,9 @@
             <div class="large-12 columns">
                 <h2 class="major section-header issue-title">
                     <%= title %>
-                <span class="icons">
-                <% if (meta.get('am_subscribed')){ %>
-                    <i class="subscribe-icon subscribed fa fa-fw fa-star right"></i>
-                <% } else if (meta.get('am_subscribed') == false) { %>
-                    <i class="subscribe-icon fa fa-fw fa-star-o right"></i>
-                <% } %>
-                </span>
+                    <span class="icons">
+                        <span class="subscribed-container"></span>
+                    </span>
                 </h2>
             </div>
             <div class="large-11 small-10 columns">
@@ -64,6 +60,7 @@
             </div>
         </div>
     </div>
+    
     <div class="large-4 xlarge-3 columns info-aside">
         
         <!--<h2 style="margin: 2px 0 5px;">Vote</h2>-->

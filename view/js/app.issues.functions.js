@@ -40,6 +40,7 @@ isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle)
         rawElement.innerHTML = '';
         rawElement.appendChild(loadElem);
     }
+    if (replace) return loadElem;
     return element;
 }
 

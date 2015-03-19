@@ -16,7 +16,6 @@
 
 {% block additionalheader -%}
 <script src="{{ root }}js/vendor/marked.js"></script>
-<script src="{{ root }}js/vendor/backbone.stickit.min.js"></script>
 <link rel="stylesheet" href="{{ root }}css/homepage.css">
 <script>
     window.session = {
