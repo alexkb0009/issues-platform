@@ -151,7 +151,7 @@
     {# Show Subscribed Issues block if logged in #}
     
     <div class="large-4 xlarge-3 columns">
-        <h4 id="my_issues_title" class="major section-header noselect">My Issues</h4>
+        <h4 id="my_issues_title" class="major section-header noselect">Subscribed Issues</h4>
         <div id="my_issues"></div>
     </div>
     

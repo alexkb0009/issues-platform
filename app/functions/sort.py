@@ -32,7 +32,7 @@ def getIssuesSortOptions(key = None, includeMongoSortFunc = False):
         return sortMap
         
         
-def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, stripIssues = False, stripIcons = False, separateTitle = False):
+def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, stripIssues = False, stripIcons = False, separateTitle = False, fullGeo = False):
     '''
     @type  key: String
     @param key: The key of scale option to get. If false, returns all options in an array. Defaults to false.
@@ -47,9 +47,12 @@ def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, s
     zip = "District"
     if localizeUser:
         from app.utilities.generic_data import getStates
+        state = getStates(localizeUser['meta']['state'])
         city = localizeUser['meta']['city'].title()
         zip = localizeUser['meta']['zip']
-        state = getStates(localizeUser['meta']['state'])
+        if fullGeo: city += ', ' + localizeUser['meta']['state']
+        if fullGeo: zip += ' in ' + city + ', ' + localizeUser['meta']['state']
+        
     
     # The map of options. Maybe convert to YAML file or something in time.
     scaleMap = [

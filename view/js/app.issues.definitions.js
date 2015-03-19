@@ -438,7 +438,7 @@ isApp.Views.IssueView = Backbone.View.extend({
         }
         
         /* Views Number */
-        var views_number = $('div.stats-container b');
+        var views_number = $('div.stats-container .views-number');
         if (views_number.length > 0 && typeof views_number.data('tooltip') == 'undefined'){ 
             views_number.data('tooltip', new Opentip(views_number, "Does not count towards ranking", {tipJoint: "top right", offset: [0,6]}));
         }
@@ -648,6 +648,12 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
         var visibility_icon = $('div.stats-container .visibility-icon');
         if (visibility_icon.length > 0 && typeof visibility_icon.data('tooltip') == 'undefined'){
             visibility_icon.data('tooltip', new Opentip(visibility_icon, "Searchability: " + this.model.get('visibilityExpanded')['title'][1], {tipJoint: "top right", offset: [5,7]} ));
+        }
+        
+        /* Scale Icon */
+        var scale_icon = $('div.stats-container .scale');
+        if (scale_icon.length > 0 && typeof scale_icon.data('tooltip') == 'undefined'){
+            scale_icon.data('tooltip', new Opentip(scale_icon, "Scale of Issue", {tipJoint: "top right", offset: [5,7]} ));
         }
     
         /* Edit Button */ 

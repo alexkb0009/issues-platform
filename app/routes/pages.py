@@ -89,7 +89,10 @@ def view_issue(issue_slug):
     
     returnObj = {
         'logged_in' : authd,
-        'route' : [(scale['title'], '?scale=' + str(int(scale['key'])), 'Scale of this issue'),(issue['title'], '', '')],
+        'route' : [
+            # (scale['title'], '?scale=' + str(int(scale['key'])), 'Scale of this issue'),
+            (issue['title'], 'is/' + issue['_id'], '')
+        ],
         'issue' : issue,
         'session' : request.environ['beaker.session']
     }
