@@ -5,7 +5,7 @@
     </li>
     {% if route %}
       {% for crumb in route %}
-      <li class="crumb">
+      <li class="crumb hide-for-small">
         {% if loop.last -%}
           <span>{{ crumb[0] }}</span>
         {%- else -%}
