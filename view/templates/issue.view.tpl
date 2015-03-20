@@ -43,7 +43,8 @@
   <span class="views-number"><b>{{ issue['scoring']['views'] }}</b> <em>Views</em>&nbsp;</span>
   <span class="scale icon-container">
     {#<a href="{{ root }}?scale={{ issue['meta']['scale'] }}">#}
-    {{ issue_scale_options(issue['meta']['scale'], stripIssues = True, localizeUser = issue, fullGeo = True)['title'] }}
+    {% set scaleTitle = issue_scale_options(issue['meta']['scale'], stripIssues = True, localizeUser = issue, fullGeo = True, separateTitle = True)['title'] %}
+    {{ scaleTitle[0] }} <span class="hide-for-small">{{ scaleTitle[1] }}</span>
     {#</a>#}
   </span>
   {%- if issue['visibilityExpanded'] -%}

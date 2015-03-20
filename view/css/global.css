@@ -38,9 +38,14 @@ body {
 nav.top-bar ul li a > i {
   padding-right: 24px;
 }
-@media screen and (max-width: 64.043rem){
-  nav.top-bar ul.title-area li.name {
-    min-width: 180px;
+
+nav.top-bar ul.title-area li.name.logo-only {
+  margin-right: -6px;
+}
+
+@media screen and (max-width: 40.07rem){
+  nav.top-bar ul.title-area li.name.logo-only {
+    min-width: 72px;
   }
 }
 
@@ -54,6 +59,10 @@ nav.top-bar ul.title-area li.name h1 a {
 
 nav.top-bar ul.title-area.no-crumbs li.name h1 a {
   padding-right: 15px;
+}
+
+nav.top-bar ul.title-area li.name h1 a span.text {
+  font-size: 1.2rem;
 }
 
 nav.top-bar ul.title-area li.name h1 a img.hov { display: none; }
@@ -571,7 +580,7 @@ body.in-search div#main_issues {
 }
 
 .stats-container span.scale i {
-  margin-right: 5px;
+  /* margin-right: 5px; */
 }
 
 .issue.full .info-aside.large-4 {
