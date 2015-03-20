@@ -55,12 +55,8 @@
           isApp.me.set('current_scale', 2);
         {%- endif %}
       </script>
-
-    
     
     {% block additionalheader %}{% endblock %}
-  </head>
-  <body class="{% if logged_in %}logged_in{% else %}guest{% endif %}">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -68,9 +64,12 @@
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
       ga('create', 'UA-60994823-1', 'auto');
+      ga('require', 'linkid', 'linkid.js');
       ga('send', 'pageview');
 
     </script>
+  </head>
+  <body class="{% if logged_in %}logged_in{% else %}guest{% endif %}">
     {% include 'view/templates/components/top-bar.tpl' %}
     
     <div class="main-body">
