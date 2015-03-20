@@ -605,6 +605,10 @@ body.in-search div#main_issues {
   opacity: 0.75;
 }
 
+.issue.full .voting-row.row .columns .vote-option.disabled h2 {
+  opacity: 0.25;
+}
+
 .issue.full .voting-row.row .columns.secondary h2 {
   opacity: 0.375;
 }
