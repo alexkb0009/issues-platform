@@ -281,6 +281,14 @@ def password_reset():
         from app.functions.auth import resetUserPassword
         from app.utilities.email import email
         userTuples = resetUserPassword(request.forms.get('credential'))
+        if not userTuples:
+            returnObj['content'] = '''
+            <h4>Not Found</h4> 
+            <br>
+            <p><big>No account(s) found with that username or email.</big></p>    
+            '''
+            return returnObj
+            
         for user in userTuples:
             message = 'Hi ' + user[3] + ', \n\n'
             message += 'Your password for account "' + user[0] + '" has been reset!\n'
@@ -295,9 +303,9 @@ def password_reset():
             )
             
         returnObj['content'] = '''
-<h4>Password reset successfully!</h4> 
-<br>
-<big>Check your email inbox for an email with your new password and then proceed to login. It is suggested you change it as soon as possible.</big>    
+        <h4>Password reset successfully!</h4> 
+        <br>
+        <p><big>Check your email inbox for an email with your new password and then proceed to login (this might take up to to 15 minutes). It is suggested you change it as soon as possible.</big>    
         '''
         
     return returnObj

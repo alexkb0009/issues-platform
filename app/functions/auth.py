@@ -194,7 +194,7 @@ def resetUserPassword(cred):
     @param cred: Email or username of account whose password to reset.
     '''
     import re, random, string
-    if not cred: return False
+    if not cred: return None
     
     is_email = False
     if re.match(r"[^@]+@[^@]+\.[^@]+", cred): is_email = True
@@ -202,6 +202,7 @@ def resetUserPassword(cred):
         matchedUsers = db.users.find({ 'username' : cred }, {'passhash' : 1, 'username': 1, 'firstname' : 1, 'lastname' : 1, 'email' : 1}, limit = 10)
     else:
         matchedUsers = db.users.find({ 'email' : cred }, {'passhash' : 1, 'username': 1, 'firstname' : 1, 'lastname' : 1, 'email' : 1}, limit = 10)
+    if not matchedUsers: return None
         
     newPassword = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(12))
     print('New password created for ' + cred)
