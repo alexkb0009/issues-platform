@@ -27,8 +27,13 @@ body {
 }
 
 .top-bar-section ul li,
-.top-bar-section li:not(.has-form) a:not(.button) {
+.top-bar-section li:not(.has-form) a:not(.button),
+.top-bar.expanded .title-area {
   background: #2A424A;
+}
+
+.top-bar.expanded .title-area {
+  border-bottom: 1px solid #3D535A;
 }
 
 .top-bar-section .dropdown li {
