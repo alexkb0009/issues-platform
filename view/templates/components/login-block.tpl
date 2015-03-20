@@ -12,6 +12,7 @@
     <input name="password" id="lb_password_f" type="password" placeholder="Password" />
     <input value="Login" class="button radius expand" type="submit" style="margin-bottom: 15px;" />
   </form>
+  <div style="font-size: .875em;">Forgot your password? Click <a href="/account/password-reset">here</a>.</div>
   <hr class="smaller">
   <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
   If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>

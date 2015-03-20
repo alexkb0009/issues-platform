@@ -9,5 +9,7 @@ Jinja2Template.defaults = {
     'root' : app.config['app_info.root_directory'],
     'issue_scale_options' : sort.getIssuesScaleOptions,
     'issue_sort_options' : sort.getIssuesSortOptions,
-    'issue_visibility_options' : issues.getIssueVisibilityOptions
+    'issue_visibility_options' : issues.getIssueVisibilityOptions#,
+    #'get_status_message' : ui.getStatusMessage
+    
 }

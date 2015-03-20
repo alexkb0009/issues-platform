@@ -255,6 +255,53 @@ Our Privacy Policy may change from time to time and all updates will be posted o
         returnObj['logged_in'] = False
         
     return returnObj
+    
+# Reset Password Page
+@app.route('/account/password-reset', method=['GET', 'POST'])
+@view('basic_page.tpl')
+def password_reset():
+    status = request.query.get('s')
+    returnObj = {
+      'route' : [('Reset Password', '', 'Reset your password')],
+    }
+    if request.get('REQUEST_METHOD') == 'GET':
+        returnObj['content'] = '''
+<h4>Yep, you forgot it.</h4> 
+<br>
+<form method="POST">
+  <label>
+    <h5 style="margin-bottom: 0;">No worries; not the end of the world.</h4>      
+    <big>Enter your username or email and you'll be sent a new one.</big>
+    <input name="credential" type="text" placeholder="joe@example.com"></input>
+  </label>
+  <input type="submit" class="button primary radius">
+</form>      
+        '''
+    else:
+        from app.functions.auth import resetUserPassword
+        from app.utilities.email import email
+        userTuples = resetUserPassword(request.forms.get('credential'))
+        for user in userTuples:
+            message = 'Hi ' + user[3] + ', \n\n'
+            message += 'Your password for account "' + user[0] + '" has been reset!\n'
+            message += 'You may now login at http://myissues.us with the following password: \n'
+            message += user[1] + '\n\n'
+            message += 'Please reset this in your account settings as soon as possible.'
+            email(
+                to = user[2],
+                subject = 'Password Reset',
+                toName = user[3],
+                message = message
+            )
+            
+        returnObj['content'] = '''
+<h4>Password reset successfully!</h4> 
+<br>
+<big>Check your email inbox for an email with your new password and then proceed to login. It is suggested you change it as soon as possible.</big>    
+        '''
+        
+    return returnObj
+
 
 ## Admin Panel
     
@@ -298,6 +345,11 @@ def test_request():
     ip_address = (request.get('HTTP_X_FORWARDED_FOR') or request.get('REMOTE_ADDR')).split(':')[0]
     request.session = request.environ['beaker.session']
     return ip_address
+    
+@app.route('/test_gen_hash')
+def gen_hash():
+    from app.functions.auth import generateHash
+    return generateHash('password', app.config)
     
     
 ## Error Handling

@@ -188,6 +188,37 @@ def register_new_account(db, form, config):
         })
         return True
 
+def resetUserPassword(cred):
+    '''
+    @type  cred: String
+    @param cred: Email or username of account whose password to reset.
+    '''
+    import re, random, string
+    if not cred: return False
+    
+    is_email = False
+    if re.match(r"[^@]+@[^@]+\.[^@]+", cred): is_email = True
+    if not is_email:
+        matchedUsers = db.users.find({ 'username' : cred }, {'passhash' : 1, 'username': 1, 'firstname' : 1, 'lastname' : 1, 'email' : 1}, limit = 10)
+    else:
+        matchedUsers = db.users.find({ 'email' : cred }, {'passhash' : 1, 'username': 1, 'firstname' : 1, 'lastname' : 1, 'email' : 1}, limit = 10)
+        
+    newPassword = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(12))
+    print('New password created for ' + cred)
+    users = []
+    for user in matchedUsers:
+        db.users.update(
+        {'_id' : user['_id']}, 
+        {'$set' : {'passhash' : generateHash(newPassword, app.config)} },
+        multi=False)
+        users.append((
+            user['username'], 
+            newPassword, 
+            user['email'], 
+            user['firstname'] + ' ' + user['lastname']
+        ))
+        
+    return users
         
         
 def generateHash(password, config):
