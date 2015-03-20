@@ -221,6 +221,9 @@ We are the sole owners of the information collected on this site. We only have a
 We will use your information to respond to you, regarding the reason you contacted us. We will not share your information with any third party outside of our organization, other than as necessary to fulfill the services / purposes of this platform, e.g. to verify citizenship or constituency, or what you include as publicly-viewable in your profile.
 </p>
 <p>
+We also collect data through Google Analytics which might show anonymous data (not bound to or associated with any user accounts) which includes demographics and interests, as collected by third-parties. Analysis of such data is purely for research and not sold or distributed to any third-parties. To opt-out of such data being collected or (anonymously) shared with us or any other website, please configure your privacy/account settings on Google's website.
+</p>
+<p>
 Unless you ask us not to, we may contact you via email in the future to tell you about specials, new products or services, or changes to this privacy policy.
 </p>
 
