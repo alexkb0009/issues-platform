@@ -602,6 +602,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                     $(this).on('click', function(){
                         var vote = $(this).attr('name');
                         if ($(this).hasClass('active')) vote = null; 
+                        isApp.u.setLoaderInElem(t.$el.find('.aggregated-score > h4'));
                         t.model.save({'my_vote' : {
                             'issue' : t.model.get('id'),
                             'vote'  : vote

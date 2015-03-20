@@ -41,7 +41,11 @@
   <span class="inline">Viewing Issue</span>
   <div class="right stats-container">
   <span class="views-number"><b>{{ issue['scoring']['views'] }}</b> <em>Views</em>&nbsp;</span>
-  <span class="scale icon-container"><a href="{{ root }}?scale={{ issue['meta']['scale'] }}">{{ issue_scale_options(issue['meta']['scale'], separateTitle = True, localizeUser = issue, fullGeo = True)['title'][0] }}</a></span>
+  <span class="scale icon-container">
+    {#<a href="{{ root }}?scale={{ issue['meta']['scale'] }}">#}
+    {{ issue_scale_options(issue['meta']['scale'], stripIssues = True, localizeUser = issue, fullGeo = True)['title'] }}
+    {#</a>#}
+  </span>
   {%- if issue['visibilityExpanded'] -%}
     <span class="visibility-icon icon-container">{{ issue['visibilityExpanded']['title'][0] }}</span>
   {%- endif -%}

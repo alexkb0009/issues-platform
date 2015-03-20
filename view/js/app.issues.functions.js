@@ -27,18 +27,14 @@ isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle)
     if (typeof color == 'undefined') color = 'inherit';
     if (typeof extraClassName == 'undefined') extraClassName = '';
     var rawElement;
-    if (element instanceof jQuery) {
-        rawElement = element[0]
-    } else {
-        rawElement = element;
-    }
+    if (!(element instanceof jQuery)) element = $(element);
     var loadElem = document.createElement('i');
     loadElem.style.cssText = extraStyle;
     loadElem.className = extraClassName + " fa fa-circle-o-notch fa-spin fa-fw loader-icon";
-    if (replace) rawElement.parentNode.replaceChild(loadElem, rawElement);
+    if (replace) element.replaceWith(loadElem);
     else {
-        rawElement.innerHTML = '';
-        rawElement.appendChild(loadElem);
+        element.html('');
+        element.append(loadElem);
     }
     if (replace) return loadElem;
     return element;

@@ -38,12 +38,17 @@ body {
 nav.top-bar ul li a > i {
   padding-right: 24px;
 }
+@media screen and (max-width: 64.043rem){
+  nav.top-bar ul.title-area li.name {
+    min-width: 180px;
+  }
+}
 
 nav.top-bar ul.title-area li.name h1 a {
   font-weight: 700;
   font-size: 1.2em;
   font-family: SansPro, Junction;
-  min-width: 105px;
+  /* min-width: 105px; */
   padding: 0 10px 0 10px;
 }
 
@@ -566,7 +571,7 @@ body.in-search div#main_issues {
 }
 
 .stats-container span.scale i {
-  /* margin-right: 5px; */
+  margin-right: 5px;
 }
 
 .issue.full .info-aside.large-4 {
@@ -588,15 +593,19 @@ body.in-search div#main_issues {
 }
 
 .issue.full .voting-row.row .columns h2 {
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 .issue.full .voting-row.row .columns.secondary h2 {
-  opacity: 0.2;
+  opacity: 0.375;
 }
 
 .issue.full .voting-row.row .columns .vote-option:not(.disabled):hover {
   background-color: #e2e2e2;
+}
+
+.issue.full .voting-row.row .columns .vote-option:not(.disabled):hover h2 {
+  opacity: 1;
 }
 
 .issue.full .voting-row.row .columns .vote-option.active h2 {
