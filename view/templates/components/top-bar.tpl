@@ -1,11 +1,11 @@
 <nav class="top-bar" data-topbar role="navigation">
   <ul class="title-area inline-list{% if not route %} no-crumbs{% endif %}">
-    <li class="name{% if route %} logo-only{% endif %}">
+    <li class="name{% if route %} with-route{% endif %}">
       <h1>
         <a href="{{ root }}">
           <img class="reg" src="/img/assets/mi_logo_0.2.5_white_bg.png" style="height: 32px; width: 32px;">
           {# <img class="hov" src="/img/assets/mi_logo_0.2.5_lighter.png" style="height: 32px; width: 32px;"> #}
-          {% if not route %}<span class="text"><span class="lighter">My </span>Issues</span>{% endif %}
+          <span class="text"><span class="lighter">My </span>Issues</span>
         </a>
       </h1>
     </li>

@@ -39,13 +39,21 @@ nav.top-bar ul li a > i {
   padding-right: 24px;
 }
 
-nav.top-bar ul.title-area li.name.logo-only {
-  margin-right: -6px;
+@media screen and (max-width: 40.07rem){
+  nav.top-bar ul.title-area li.name {
+    min-width: 72px;
+  }
 }
 
-@media screen and (max-width: 40.07rem){
-  nav.top-bar ul.title-area li.name.logo-only {
-    min-width: 72px;
+@media screen and (max-width: 60.07rem){
+  nav.top-bar ul.title-area li.name.with-route h1 a span.text {
+    display: none;
+  }
+  nav.top-bar ul.title-area li.name:not(.with-route) {
+    min-width: 200px;
+  }
+  nav.top-bar ul.title-area li.name.with-route {
+    margin-right: -6px;
   }
 }
 

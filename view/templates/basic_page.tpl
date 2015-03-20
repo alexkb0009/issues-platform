@@ -20,7 +20,7 @@
 {% block content %}
 
     <div class="main-content row">
-      <div class="large-12 columns">
+      <div class="small-12 large-8 columns">
       
         <h2>{{ route[route|length - 1][0] }}</h2>
         <hr class="smaller">

@@ -270,7 +270,7 @@ def password_reset():
 <br>
 <form method="POST">
   <label>
-    <h5 style="margin-bottom: 0;">No worries; not the end of the world.</h4>      
+    <h5 style="margin-bottom: 0;">No worries.</h4>      
     <big>Enter your username or email and you'll be sent a new one.</big>
     <input name="credential" type="text" placeholder="joe@example.com"></input>
   </label>
