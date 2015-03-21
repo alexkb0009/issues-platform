@@ -151,7 +151,7 @@
         {# Pre-render some issues for crawlers #}
         {% for issue in issues %}
             <div class="issue listview row">
-                <div class="large-1 small-2 columns">{{ issue['scoring']['score'] }}</div>
+                <div class="large-1 small-2 columns"><h5 class="score text-center">{{ issue['scoring']['score'] }}</h5></div>
                 <div class="large-11 small-10 columns">
                   <div class="content-container">
                     <h5 class="issue-title clearfix">

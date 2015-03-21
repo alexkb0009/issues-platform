@@ -235,23 +235,26 @@ def saveNewRevisionFromRequestObj(issueReq, issue):
     )
     
     # Cache new page, if setup.
-    if app.config.get('seo.prerender_key'):
-        import os
-        # Make sure is not on a dev site or something.
-        if os.environ.get('OPENSHIFT_APP_NAME') != None:
-            import requests, json
-            url = ('https://' if app.config.get('security.uses_https') else 'http://') + app.config.get('app_info.site_domain') + '/is/' + issue['_id']
-            print('Requesting prerender.io cache of ' + url)
-            r = requests.post(app.config.get('seo.prerender_url'), data = json.dumps({
-                'prerenderToken' : app.config.get('seo.prerender_key'),
-                'url'            : url
-            }), headers = {
-                'X-Prerender-Token' : app.config.get('seo.prerender_key'),
-                'Content-type' : 'application/json',
-                'Accept-encoding' : 'gzip'
-            }
-            )
-            print(r.text)
+    def cachepage_prerenderio():
+        if app.config.get('seo.prerender_key'):
+            import os
+            # Make sure is not on a dev site or something.
+            if os.environ.get('OPENSHIFT_APP_NAME') != None:
+                import requests, json
+                url = ('https://' if app.config.get('security.uses_https') else 'http://') + app.config.get('app_info.site_domain') + '/is/' + issue['_id']
+                print('Requesting prerender.io cache of ' + url)
+                r = requests.post(app.config.get('seo.prerender_url'), data = json.dumps({
+                    'prerenderToken' : app.config.get('seo.prerender_key'),
+                    'url'            : url
+                }), headers = {
+                    'X-Prerender-Token' : app.config.get('seo.prerender_key'),
+                    'Content-type' : 'application/json',
+                    'Accept-encoding' : 'gzip'
+                }
+                )
+                print(r.text)
+                return r # response
+    #cachepage_prerenderio()
     
     return newRevisionId
     
