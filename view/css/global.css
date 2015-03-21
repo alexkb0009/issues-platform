@@ -138,6 +138,7 @@ div.main-subheader.alert-box {
 div.main-subheader ul {
   margin-bottom: 5px;
   font-size: 0.875em;
+  margin-top: 13px;
 }
 
 div.main-subheader.confirmation {
@@ -300,13 +301,13 @@ ul.issues-title-dropdown li.active > *:after  {
   margin: 0.75rem 0;
 }
 
-#search_issues_row form a.button {
+#search_issues_row form a.button.clear-search {
   margin: 0;
   background-color: #C4C8D3;
   background-color: rgba(0,0,0,0.075);
 }
 
-#search_issues_row form a.button:hover {
+#search_issues_row form a.button.clear-search:hover {
   margin: 0;
   background-color: #B6BAC5;
   background-color: rgba(0,0,0,0.15);

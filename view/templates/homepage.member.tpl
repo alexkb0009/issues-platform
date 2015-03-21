@@ -45,12 +45,13 @@
 </div>
 {% else %}
   {%- if subheader_message == 'login_failed' -%}
-    <div class="warning main-subheader">
+    <div class="warning main-subheader alert-box" data-alert>
       <h4>Login failed.</h4>
       <ul>
         <li>Check your username & password combination.
         <li>After three incorrect attempts you will be prevented from accessing the site for 30 minutes.</li>
       </ul>
+      <a href="#" class="close" style="top: 20px;">×</a>
     </div>
   {%- elif subheader_message == 'logged_out' -%}
     <div class="confirmation main-subheader alert-box" data-alert>
@@ -111,7 +112,7 @@
         {# Main Issues Area #}
         
         <div id="search_issues_row" class="{# row #} no-results">
-            <form id="search_issues" action="{{ root }}define-issue" method="POST">
+            <form id="search_issues"{% if user %} action="{{ root }}define-issue" method="POST"{% endif %}>
                 <div class="row container">
                     <div class="large-1 small-2 columns text-center search-icon-container">
                         <i class="fa fa-search"></i>
@@ -135,7 +136,11 @@
                 </div>
                 <div class="create-new-issue">
                     <h6>Nothing matching your concern?</h6>
+                    {% if user %}
                     <button type="submit" class="button radius expand success">Define an Issue!</button>
+                    {% else %}
+                    <a href="{{root}}register/1" class="button radius expand success">Create an account to define an Issue!</a>
+                    {% endif %}
                 </div>
             </form>
         </div>
@@ -171,13 +176,13 @@
 {% endblock %}
 
 {% block additionalfooter -%}
-
+<script>
   {% if formatted_issues %}
-      <script>
-        isApp.currentIssues = new isApp.Collections.Issues({{ formatted_issues }}, {parse: true});
-      </script>
+    isApp.currentIssues = new isApp.Collections.Issues({{ formatted_issues }}, {parse: true});
+  {% else %}
+    isApp.currentIssues = new isApp.Collections.Issues([{},{}], {parse: true});
   {% endif %}
-  
+</script>
   <script src="{{ root }}js/app.issues.process.home.js"></script>
   
   {% if search_term %}

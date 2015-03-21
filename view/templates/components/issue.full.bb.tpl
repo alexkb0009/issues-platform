@@ -40,15 +40,11 @@
                 &nbsp;
             </div>
             
-            <div class="large-1 small-2 columns">
-                <a href="#propose" class="button secondary expand small page" id="proposebutton">
-                    <i class="fa fa-fw fa-lightbulb-o"></i>
-                </a>
-            </div>
             
-            <div class="large-1 small-2 columns">
+            
+            <div class="large-2 small-4 columns">
                 <a href="#edit" class="button secondary expand small page page-shadow" id="editbutton">
-                    <i class="fa fa-fw fa-pencil"></i>
+                    <i class="fa fa-fw fa-pencil"></i> Revise
                 </a>
             </div>
             <!--<div class="large-3 columns text-right views-number"></div>-->
@@ -98,24 +94,22 @@
                 <p>Votes</p>
             </div>
         </div>
-        
-        <!--<h3 class="major section-header issue-title">Vote</h3>-->
-        <!--
-        <ul style="list-style-type: none; margin-left: 0; margin-top: 14px;" class="vote-options">
-            <li><h5><i class="fa fa-fw fa-arrow-up"></i>   This issue is important to me</h5></li>
-            <li><h5><i class="fa fa-fw fa-arrow-down"></i> This issue has no relevancy for me</h5></li>
-            <li><h5><i class="fa fa-fw fa-trash"></i>      This issue is rubbish</h5></li>
-        </ul>
-        -->
+        <div style="opacity: 0.2">
         <h3 class="major section-header issue-title">Responses</h3>
-        <p>[<em>Top Proposed Responses/Solutions go here</em>]</p>
+        <div class="row responses-container">
+            <div class="large-12 columns text-center num-votes">
+                <a href="#propose" class="button secondary expand small page" id="proposebutton">
+                    <i class="fa fa-fw fa-lightbulb-o"></i> Propose
+                </a>
+            </div>
+        </div>
         
         <h3 class="major section-header issue-title">Discussion</h3>
         <p>[<em>Most active forum-type discussion threads related to issue go here</em>]</p>
         <a href="#comment" class="button secondary expand small page" id="commentbutton">
             <i class="fa fa-fw fa-comment"></i>&nbsp; Comment
         </a>
-        
+        </div>
     </div>
     
 </script>

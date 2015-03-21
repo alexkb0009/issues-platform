@@ -23,6 +23,8 @@ def index(search_term = None):
     status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
     session = request.environ['beaker.session']
     scale = request.query.get('scale')
+    searchParam = request.query.get('search')
+    if searchParam: search_term = searchParam
     if scale: 
         try:
             scale = float(scale)
