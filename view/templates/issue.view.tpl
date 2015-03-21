@@ -15,6 +15,9 @@
 
 
 {% block additionalheader -%}
+
+<meta name="description" content="{{ issue['description'] }}" />
+
 <script src="{{ root }}js/vendor/marked.js"></script>
 <link rel="stylesheet" href="{{ root }}css/homepage.css">
 <script>
