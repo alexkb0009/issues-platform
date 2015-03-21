@@ -62,7 +62,7 @@
 
     {# Main Issue Area #}
         
-    <div class="large-8 columns">
+    <div class="large-8 xlarge-9 columns">
         <div class="content-container page clearfix">
             <div class="large-12 columns">
                 <h2 class="major section-header issue-title">
@@ -83,7 +83,7 @@
         {% endif %}
     </div>
     
-    <div class="large-4 columns">&nbsp;</div>
+    <div class="large-4 xlarge-3 columns">&nbsp;</div>
 
 </div>
 

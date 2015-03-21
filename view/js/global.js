@@ -42,10 +42,7 @@ function resizeBody(){
     app.ce.mainBody.css('min-height', app.cd.innerBodyMinHeight);
 }
 
-$(window).resize(function(){
-  resizeBody();
-});
-
+$(window).resize(resizeBody);
 resizeBody();
 
 

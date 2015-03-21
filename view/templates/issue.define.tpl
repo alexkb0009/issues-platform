@@ -78,15 +78,30 @@
                     </label>
                 </div>
                 <div class="large-7 columns">
-                    <p>
+                    <span>
                         <strong>Consider: </strong><br>Is this a <em>national</em> or <em>local</em>-scale issue?
                         <br>To be solved within your district or at the national level?
                         <br><em>Scale cannot be changed once issue is defined.</em>
-                    </p>
+                    </span>
                 </div>
             </div>
             
+            <hr class="smaller">
             
+            <div class="row">
+                <div class="large-5 columns">
+                    <label for"visibility_opts">
+                        <h4>Visibility</h4>
+                        <select name="meta[visibility]" id="visibility_opts"></select>
+                    </label>
+                </div>
+                <div class="large-7 columns">
+                    Will this be found in searches and visible in views?<br>
+                    For example, 'Trending' on homepage.
+                </div>
+            </div>
+            
+            <hr class="smaller">
             
             <div class="row">
                 <div class="large-12 columns">
@@ -127,19 +142,7 @@
                 </article>
             </div>
             
-            <div class="row">
-                <div class="large-3 columns">
-                    <label for"visibility_opts">
-                        <h5 style="margin-bottom: 0;">Visibility</h5>
-                        In views & search results
-                    </label>
-                </div>
-                <div class="large-9 columns" style="font-size: 0.875rem;">
-                    <select name="meta[visibility]" id="visibility_opts"></select>
-                </div>
-            </div>
             
-            <hr class="smaller">
             
             <div class="row">
                 <div class="large-12 columns">
@@ -200,16 +203,14 @@
         {%- endfor %}
         ];
         
-        template = function(option){
-            return $('<div><span>' + option.icon + ' &nbsp; ' + option.text + '</span><br><small>' + option.description + '</small></div>');
-        };
-        
         function setVisSelect2($el, data){
             if ($el.data('select2')) $el.select2("destroy");
             $el.select2({
                 minimumResultsForSearch: 7, 
                 data: data,
-                templateResult: template,
+                templateResult: function(option){
+                    return $('<div><span>' + option.icon + ' &nbsp; ' + option.text + '</span><br><small>' + option.description + '</small></div>');
+                },
                 templateSelection: template
             });
             return $el;
@@ -275,11 +276,11 @@
         });
 
         /** Select Title input box and put cursor @ end of it. **/
-        
+        /*
         $("input[name=title]").focus(function(){
           this.value = this.value;
         }).focus();
-        
+        */
         
     })();
     
