@@ -11,7 +11,7 @@
 
 {% extends "exoskeletons/default.tpl" %}
 
-{% block title %}{{ site_name }} > Home{% endblock %} 
+{% block title %}{{ site_name }} > {{ issue['title'] }}{% endblock %} 
 
 
 {% block additionalheader -%}
@@ -60,7 +60,30 @@
 
 <div class="main-content row issue full" id="current_issue">
 
-        {# Main Issue Area #}
+    {# Main Issue Area #}
+        
+    <div class="large-8 columns">
+        <div class="content-container page clearfix">
+            <div class="large-12 columns">
+                <h2 class="major section-header issue-title">
+                    {{ issue['title'] }}
+                </h2>
+            </div>
+            <div class="large-12 columns">
+                <div class="description">{{ issue['description'] }}</div>
+            </div>
+        </div>
+        
+        {% if issue['body'] %}
+        <div class="content-container page clearfix">
+            <div class="large-12 columns">
+                <article class="body">{{ issue['body'] }}</article>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="large-4 columns">&nbsp;</div>
 
 </div>
 

@@ -1,7 +1,5 @@
 
-//isApp.currentIssues = new isApp.Collections.Issues([{},{},{}]); // No more lazy-loading, now initial Issues avail as JS objects in template.
 isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL; // Keep this binding still for future fetches.
-//isApp.currentIssues.fetch();
 isApp.currentIssues.view = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger', childClassName: 'issue listview row' });
 
 if (isApp.me.get('logged_in')){

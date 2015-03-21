@@ -645,6 +645,49 @@ body.in-search div#main_issues {
   opacity: 1;
 }
 
+.issue.full .scoring-container.row > .columns {
+  text-align: center;
+}
+
+.issue.full .scoring-container.row h4 {
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 1240px) {
+
+  .issue.full .scoring-container.row h4 {
+    margin-right: 3px;
+         display: inline-block;
+  }
+  .issue.full .scoring-container.row p {
+         display: inline-block;
+        position: relative;
+             top: -3px;
+  }
+  
+}
+
+.issue.full .social-row.row {
+  margin-bottom: 20px;
+  margin-top: 15px;
+}
+
+.issue.full .social-row.row > .columns {
+  text-align: center;
+  font-size: 1.75em;
+}
+
+.issue.full .social-row.row > .columns i {
+  color: rgba(120, 120, 120, 0.5);
+}
+
+.issue.full .social-row.row > .columns a.twitter:hover i { color: #55acee; }
+.issue.full .social-row.row > .columns a.facebook:hover i { color: #3b5998; }
+.issue.full .social-row.row > .columns a.linkedin:hover i { color: #1B86BC; }
+.issue.full .social-row.row > .columns a.googleplus:hover i { color: #d62d20; }
+
+/** Editing **/
+
 .issue.full.editing:not(.preview-exists) .preview-body-container,
 .issue.full.editing:not(.preview-exists) .preview-heading {
   display: none;

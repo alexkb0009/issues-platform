@@ -40,6 +40,20 @@ isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle)
     return element;
 }
 
+/** Monkey-patch links with .new-window class to pop-up **/
+
+isApp.u.patchNewWindowLinks = function(parentElem){
+    parentElem.find('a.new-window').each(function(){
+        $(this).on('click', function(){
+            var width = Math.max(window.innerWidth * 0.5, 515);
+            var height = Math.max(window.innerHeight * 0.5, 360);
+            var newWindow = window.open($(this).attr('href'), 'newwindow', 'width=' + width + ', height=' + height + ', top=300, left=350, right=350, scrollbars=no, screenX=350, screenY=300, style="overflow: hidden"');
+            newWindow.moveTo(window.innerWidth * 0.25, window.innerHeight * 0.25);
+            return false;
+        });
+    });
+}
+
 /** Global Sync Override **/
 
 isApp.u._existingSync = Backbone.sync;

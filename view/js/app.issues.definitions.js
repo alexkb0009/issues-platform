@@ -506,6 +506,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
     render: function(obj){
         this.renderInitial(obj);
         this.setButtonInteractivity();
+        isApp.u.patchNewWindowLinks(this.$el);
         this.generateToolTipsEnableElements_Common();
         this.generateToolTipsEnableElements_Full();
 

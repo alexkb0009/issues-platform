@@ -24,6 +24,7 @@ def index(search_term = None):
     session = request.environ['beaker.session']
     scale = request.query.get('scale')
     searchParam = request.query.get('search')
+    
     if searchParam: search_term = searchParam
     if scale: 
         try:
@@ -44,7 +45,8 @@ def index(search_term = None):
         from app.functions.issues import getScaledPagifiedIssuesIterableBySort, getIssuesFromCursor
         import json
         (iterable, more) = getScaledPagifiedIssuesIterableBySort(session.get('last_sort') or 'trending', 1)
-        returnObj['formatted_issues'] = json.dumps(getIssuesFromCursor(iterable))
+        returnObj['issues'] = getIssuesFromCursor(iterable)
+        returnObj['formatted_issues'] = json.dumps(returnObj['issues'])
         returnObj['next_page'] = more
         
     if authd:
@@ -82,10 +84,12 @@ def view_issue(issue_slug):
     if not issue:
         redirect('/search/' + issue_slug)
     else: 
+        import markdown
         issue['scoring']['views'] = addToIssueViews(issue['_id'])
         issue = getWellFormedIssue(issue, fullMode = True)
         issue['visibilityExpanded'] = getIssueVisibilityOptions(issue['meta'].get('visibility'))
         issue['jsonSerialized'] = json_util.dumps(issue)
+        issue['body'] = markdown.markdown(issue.get('body'))
         scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = False, localizeUser = issue)
     
     

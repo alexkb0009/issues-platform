@@ -146,7 +146,27 @@
         </div>
         
         <div id="main_issues">
-            {# Container element to be used by backbone #}
+        {# Container element to be used by backbone #}
+        
+        {# Pre-render some issues for crawlers #}
+        {% for issue in issues %}
+            <div class="issue listview row">
+                <div class="large-1 small-2 columns">{{ issue['scoring']['score'] }}</div>
+                <div class="large-11 small-10 columns">
+                  <div class="content-container">
+                    <h5 class="issue-title clearfix">
+                        <a class="title" href="{{ root ~ 'is/' ~ issue['_id'] }}">{{ issue['title'] }}</a>
+                        <span class="icons right">
+                          <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
+                          <span class="subscribed-container"></span>
+                        </span>
+                    </h5>
+                    <div class="description">{{ issue['description'] }}</div>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+        
         </div>
         
     </div>

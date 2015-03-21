@@ -73,42 +73,46 @@
             </div>
             <div class="large-4 small-4 columns text-center secondary">
                 <a class="button expand page vote-option" name="report">
-                    <h2><i class="fa fa-fw fa-trash"></i></h2>
+                    <h2><i class="fa fa-fw fa-exclamation-circle"></i></h2>
                 </a>
             </div>
         </div>
 
         
-        <h3 class="major section-header ranking-title">Stats</h3>
+        <h4 class="major section-header ranking-title">Stats</h4>
         <div class="row scoring-container">
-            <div class="large-4 small-4 columns text-center aggregated-score">
+            <div class="large-4 small-4 columns aggregated-score">
                 <h4><%= scoring.get('score') %></h4>
                 <p>Score</p>
             </div>
-            <div class="large-4 small-4 columns text-center subscribed-score">
+            <div class="large-4 small-4 columns subscribed-score">
                 <h4><%= scoring.get('subscribed') %></h4>
                 <p>Subscribed</p>
             </div>
-            <div class="large-4 small-4 columns text-center num-votes">
+            <div class="large-4 small-4 columns num-votes">
                 <h4><%= scoring.get('num_votes') %></h4>
                 <p>Votes</p>
             </div>
         </div>
-        <div style="opacity: 0.2">
-        <h3 class="major section-header issue-title">Responses</h3>
-        <div class="row responses-container">
-            <div class="large-12 columns text-center num-votes">
-                <a href="#propose" class="button secondary expand small page" id="proposebutton">
-                    <i class="fa fa-fw fa-lightbulb-o"></i> Propose
-                </a>
-            </div>
-        </div>
         
-        <h3 class="major section-header issue-title">Discussion</h3>
-        <p>[<em>Most active forum-type discussion threads related to issue go here</em>]</p>
-        <a href="#comment" class="button secondary expand small page" id="commentbutton">
-            <i class="fa fa-fw fa-comment"></i>&nbsp; Comment
-        </a>
+        <h4 class="major section-header">Social</h4>
+        {% include 'components/social_icons.row.bb.tpl' %}
+        
+        <div style="opacity: 0.2">
+            <h3 class="major section-header issue-title">Responses</h3>
+            <div class="row responses-container">
+                <div class="large-12 columns text-center num-votes">
+                    <a href="#propose" class="button secondary expand small page" id="proposebutton">
+                        <i class="fa fa-fw fa-lightbulb-o"></i> Propose
+                    </a>
+                </div>
+            </div>
+            
+            <h3 class="major section-header issue-title">Discussion</h3>
+            <p>[<em>Most active forum-type discussion threads related to issue go here</em>]</p>
+            <a href="#comment" class="button secondary expand small page" id="commentbutton">
+                <i class="fa fa-fw fa-comment"></i>&nbsp; Comment
+            </a>
         </div>
     </div>
     

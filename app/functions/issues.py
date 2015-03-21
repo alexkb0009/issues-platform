@@ -15,9 +15,10 @@ def getScaledPagifiedIssuesIterableBySort(sorting, page = 1):
     if not getIssuesSortOptions(sorting): return False
     (iterable, more) = getSortedIssuesIterableFromDB(sorting, scale = float(scale), page = page, user = user)
     
-    session['last_sort'] = sorting
-    session['ip_address'] = getCurrentIP()
-    session.save(); 
+    if user:
+        session['last_sort'] = sorting
+        session['ip_address'] = getCurrentIP()
+        session.save(); 
     
     return (iterable, more)
 
@@ -66,6 +67,16 @@ def getIssueByID(issueID, customFields = None):
         return None
         
 def getWellFormedIssue(issue, redactFields = [], fullMode = False):
+    '''
+    Takes an issue as supplied directly through mongo cursor, outputs safer 'well-formed' version to give to BackBone or something.
+    
+    @type         issue: Dict
+    @param        issue: Issue as supplied by Mongo (or similar)
+    @type  redactFields: Array
+    @param redactFields: Fields which to leave out of well-formed issues, e.g. exclude initial_author for quick listing.
+    @type      fullMode: Boolean
+    @param     fullMode: Whether to include a larger set of fields in well-formed issue, such as body.
+    '''
     from app.functions.sort import getIssuesScaleOptions
     if 'current_revision' not in issue: 
         extendedIssue = db.issues.find_one({"_id": issue['_id']}, {"_id" : 0})
@@ -87,12 +98,13 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
     
     # Add "well-formed" (post-relational) JSONified Issue to output list.
     issueWellFormed = {
-      '_id' : str(issue['_id']),
-      'title' : issue['title'],
+      '_id' :         str(issue['_id']),
+      'title' :       issue.get('title'),
       'description' : currentRevision.get('description'),
-      'scoring' : issue['scoring'],
+      'scoring' :     issue.get('scoring'),
+      'tags' :        issue.get('tags'),
       'meta' : {
-        'revision_date' : currentRevision['date'].isoformat(),
+        'revision_date' :   currentRevision['date'].isoformat(),
         'revision_author' : currentRevisionAuthor,
         'revisions' :       issue['meta'].get('revisions'),
         'initial_author' :  issue['meta'].get('initial_author'),
