@@ -40,8 +40,12 @@
 {% block sub_menu_block -%}
 {% if user %}
 <div class="intro main-subheader">
-  <span class="inline">Welcome, {{ user.firstname }}!</span>
-  <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a>
+  <div class="row">
+    <div class="large-12 columns">
+      <span class="inline">Welcome, {{ user.firstname }}!</span>
+      <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a>
+    </div>
+  </div>
 </div>
 {% endif %}
 {%- endblock %}

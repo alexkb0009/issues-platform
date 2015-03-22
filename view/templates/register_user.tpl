@@ -18,15 +18,27 @@
 {% block sub_menu_block -%}
   {% if status == 'error' %}
   <div class="intro main-subheader warning">
-    <h4>Error</h4>
+    <div class="row">
+      <div class="large-12 columns">
+        <h4>Error</h4>
+      </div>
+    </div>
   </div>
   {% elif status == 'registered' %}
   <div class="intro main-subheader confirmation">
-    You are now registered.
+    <div class="row">
+      <div class="large-12 columns">
+        You are now registered.
+      </div>
+    </div>
   </div>
   {% else %}
   <div class="intro main-subheader">
-    Welcome! Please follow steps below to create an account.
+    <div class="row">
+      <div class="large-12 columns">
+        Welcome! Please follow steps below to create an account.
+      </div>
+    </div>
   </div>
   {% endif %}
 {%- endblock %}

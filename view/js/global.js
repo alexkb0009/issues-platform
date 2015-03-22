@@ -12,7 +12,7 @@
 
 window.app.ce = {
   mainBody :    $('body > div.main-body'),
-  topBar :      $('body > nav.top-bar'),
+  topBar :      $('body > .top-bar-container'),
   footer :      $('body > footer'),
   body :        $('body')
 }

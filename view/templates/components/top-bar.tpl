@@ -1,4 +1,5 @@
-<nav class="top-bar" data-topbar role="navigation">
+<div class="top-bar-container">
+<nav class="top-bar row" data-topbar role="navigation">
   <ul class="title-area inline-list{% if not route %} no-crumbs{% endif %}">
     <li class="name{% if route %} with-route{% endif %}">
       <h1>
@@ -58,4 +59,6 @@
     </ul>
 
   </section>
+
 </nav>
+</div>

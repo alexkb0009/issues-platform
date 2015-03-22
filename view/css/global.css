@@ -15,10 +15,15 @@ body {
 
 /** Top Menu **/
 
+.top-bar-container {
+  background: #2A424A;
+  box-shadow: 0 0 15px rgba(0,0,0,0.25);
+}
+
 .top-bar { 
   /* background: #4f4f4f !important; */
   /* background: #094257 !important; */
-  box-shadow: 0 0 15px rgba(0,0,0,0.25);
+  
   background: #2A424A !important;
   
   /* border-bottom: .1875rem solid #0E171A; */
