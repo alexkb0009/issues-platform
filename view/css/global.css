@@ -124,7 +124,7 @@ nav.top-bar ul.title-area li.crumb > a:hover {
 /** Top Bar Login Block **/
 
 .top-bar .login-block {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.2);
   /* border-top: 3px solid #bbb; */
 }
 
@@ -139,8 +139,7 @@ nav.top-bar ul.title-area li.crumb > a:hover {
 
 .top-bar .login-block .form-container {
   /* background: #efefef; */
-  /* background: #444c4f; */
-  background: #253a45;
+  background: #344044;
   color: #ccc;
   padding: 2px 15px 10px 15px;
 }
