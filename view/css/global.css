@@ -786,6 +786,7 @@ div.main-body > .main-content.row.issue.full {
 .issue.full .social-row.row > .columns a.facebook:hover i { color: #3b5998; }
 .issue.full .social-row.row > .columns a.linkedin:hover i { color: #1B86BC; }
 .issue.full .social-row.row > .columns a.googleplus:hover i { color: #d62d20; }
+.issue.full .social-row.row > .columns a.reddit:hover i { color: #FF4500; }
 
 /** Editing **/
 

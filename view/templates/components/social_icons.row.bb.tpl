@@ -10,7 +10,9 @@
         </a>
     </div>
     <div class="large-3 small-3 columns">
-        <i>..</i>
+        <a href="http://www.reddit.com/submit?url={{ site_domain ~ path() }}&title=<%= title %>" class="social-icon link reddit new-window">
+            <i class="fa fa-fw fa-reddit"></i>
+        </a>
     </div>
     <div class="large-3 small-3 columns">
         <i>..</i>

@@ -95,7 +95,7 @@
             </div>
         </div>
         
-        <h4 class="major section-header">Social</h4>
+        <h4 class="major section-header">Share</h4>
         {% include 'components/social_icons.row.bb.tpl' %}
         
         <div style="opacity: 0.2">
