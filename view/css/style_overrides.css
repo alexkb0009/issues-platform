@@ -174,14 +174,16 @@ ul {
   
   .top-bar-section li:not(.has-form) a:not(.button),
   .top-bar-section .dropdown li:not(.has-form):not(.active)>a:not(.button),
-  .top-bar-section .dropdown li a,
-  .top-bar-section ul li:hover:not(.has-form) > a  {
+  .top-bar-section .dropdown li a  {
     background: inherit;
   }
   
   nav.top-bar ul li:not(.has-form):not(.active):not(.menu-icon) a:not(.button):hover,
   .top-bar-section .dropdown li:not(.has-form):not(.active):hover > a:not(.button),
-  .top-bar-section li:not(.has-form) a:not(.button):hover  {
+  .top-bar-section li:not(.has-form) a:not(.button):hover,
+  .top-bar li.has-dropdown.hover > a,
+  .top-bar-section ul li:hover:not(.has-form) > a,
+.top-bar-section ul li:hover:not(.has-form):not(.hover) > a  { 
     background: #222;
     background: rgba(0,0,0,0.33);
   }

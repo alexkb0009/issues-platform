@@ -32,7 +32,6 @@ body {
 }
 
 .top-bar-section ul li,
-.top-bar-section li:not(.has-form) a:not(.button),
 .top-bar.expanded .title-area {
   background: #2A424A;
 }
@@ -126,17 +125,23 @@ nav.top-bar ul.title-area li.crumb > a:hover {
 
 .top-bar .login-block {
   box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-  border-top: 3px solid #bbb;
+  /* border-top: 3px solid #bbb; */
 }
 
 .top-bar .login-block > h4 {
-  background: #e8e8e8;
-  padding: 10px 15px 10px;
+  /* background: #e8e8e8; */
+  background: #333;
+  background: #1c2c31;
+  color: #fff;
+  padding: 10px 15px 8px;
   margin: 0;
 }
 
 .top-bar .login-block .form-container {
-  background: #efefef;
+  /* background: #efefef; */
+  /* background: #444c4f; */
+  background: #253a45;
+  color: #ccc;
   padding: 2px 15px 10px 15px;
 }
 
