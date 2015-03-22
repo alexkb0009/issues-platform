@@ -100,7 +100,8 @@ def view_issue(issue_slug):
             (issue['title'], 'is/' + issue['_id'], '')
         ],
         'issue' : issue,
-        'session' : request.environ['beaker.session']
+        'session' : request.environ['beaker.session'],
+        'subheader_message' : request.query.get('s')
     }
     
     if not authd and issue['meta']['scale'] > 2:
@@ -269,9 +270,12 @@ Our Privacy Policy may change from time to time and all updates will be posted o
 @app.route('/account/password-reset', method=['GET', 'POST'])
 @view('basic_page.tpl')
 def password_reset():
+    if session_auth():
+        redirect(app.config['app_info.root_directory'] + '?s=logged_in')
     status = request.query.get('s')
     returnObj = {
       'route' : [('Reset Password', '', 'Reset your password')],
+      'subheader_message' : status
     }
     if request.get('REQUEST_METHOD') == 'GET':
         returnObj['content'] = '''

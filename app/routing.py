@@ -8,9 +8,9 @@ log = logMachine.log
 @app.route('/do/login', method='POST')
 def do_login():
     from app.functions.auth import login_user
-    
+    path = request.query.get('from')
     if login_user() != False:
-        redirect(app.config['app_info.root_directory']) # Redirect home after login
+        redirect(path) # Redirect home after login
     else:
         redirect(app.config['app_info.root_directory'] + '?s=login_failed') # Redirect home after fail, w/ error message
         

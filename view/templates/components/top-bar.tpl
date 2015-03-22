@@ -37,9 +37,20 @@
         </ul>
       </li>
       {% else %}
+      
       <li>
         <a href="{{ root }}register/1"><i class="fa fa-thumbs-up fa-fw"></i>Sign Up</a>
       </li>
+      
+      {# Sign-in #}
+      
+      <li class="has-dropdown">
+        <a href="#sign-in"><i class="fa fa-sign-in fa-fw"></i>Sign In</a>
+        <ul class="dropdown login-area" id="sign-in">
+          {% include 'components/login-block.tpl' %}
+        </ul>
+      </li>
+      
       {# <li>
         <a href="{{ root }}"><i class="fa fa-user fa-fw"></i>Login</a>
       </li> #}

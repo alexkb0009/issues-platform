@@ -117,6 +117,58 @@ nav.top-bar ul.title-area li.crumb > a:hover {
   color: #fff;
 }
 
+/** Top Bar Login Block **/
+
+.top-bar .login-block {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  border-top: 3px solid #bbb;
+}
+
+.top-bar .login-block > h4 {
+  background: #e8e8e8;
+  padding: 10px 15px 10px;
+  margin: 0;
+}
+
+.top-bar .login-block .form-container {
+  background: #efefef;
+  padding: 2px 15px 10px 15px;
+}
+
+.top-bar .login-block input {
+  margin-bottom: 15px !important;
+}
+
+.top-bar .login-block a {
+  background: none !important;
+  line-height: initial !important;
+  padding: 0 !important;
+}
+
+.top-bar .login-block .alert-box {
+  margin-bottom: 8px;
+  border-color: #c2c2c2;
+}
+
+.top-bar .login-block .alert-box  a.close {
+  line-height: 0 !important;
+  padding: 9px 6px 4px !important;
+  top: 17px !important;
+}
+
+.top-bar .login-block  .forgot-pass {
+  margin-top: 3px;
+}
+.top-bar .login-block  input[type=submit] {
+  height: 42px;
+}
+
+@media screen and (min-width: 40.063em){
+  .top-bar .login-block { 
+    width: 360px;
+  }
+}
+
 
 
 /** Subheader (Messages, Notices, etc.) **/
@@ -132,6 +184,10 @@ div.main-subheader {
 div.main-subheader.alert-box {
   color: #000;
   border: none;
+  margin-bottom: 0;
+}
+
+div.main-subheader.alert-box:last-child {
   margin-bottom: 5px;
 }
 

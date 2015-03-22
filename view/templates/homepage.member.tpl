@@ -43,22 +43,6 @@
   <span class="inline">Welcome, {{ user.firstname }}!</span>
   <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a>
 </div>
-{% else %}
-  {%- if subheader_message == 'login_failed' -%}
-    <div class="warning main-subheader alert-box" data-alert>
-      <h4>Login failed.</h4>
-      <ul>
-        <li>Check your username & password combination.
-        <li>After three incorrect attempts you will be prevented from accessing the site for 30 minutes.</li>
-      </ul>
-      <a href="#" class="close" style="top: 20px;">×</a>
-    </div>
-  {%- elif subheader_message == 'logged_out' -%}
-    <div class="confirmation main-subheader alert-box" data-alert>
-      You have logged out successfully!
-      <a href="#" class="close">×</a>
-    </div>
-  {%- endif -%}
 {% endif %}
 {%- endblock %}
 
@@ -184,8 +168,12 @@
     
     {# Or login block if not #}
     
-    <div class="large-4 columns login-area">
-      {% include 'components/login-block.tpl' %}
+    <div class="large-4 columns">
+      {#% include 'components/login-block.tpl' %#}
+      <h2>Welcome!</h2>
+      <hr class="smaller">
+      <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
+      If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>
     </div>
     
     {% endif %}

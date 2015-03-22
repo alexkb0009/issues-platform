@@ -73,7 +73,27 @@
     {% include 'view/templates/components/top-bar.tpl' %}
     
     <div class="main-body">
+    
+    {% block sub_menu_messages %}
+      {%- if subheader_message == 'login_failed' -%}
+        <div class="warning main-subheader alert-box" data-alert>
+          <h4>Login failed.</h4>
+          <ul>
+            <li>Check your username & password combination.
+            <li>After three incorrect attempts you will be prevented from accessing the site for 30 minutes.</li>
+          </ul>
+          <a href="#" class="close" style="top: 20px;">×</a>
+        </div>
+      {%- elif subheader_message == 'logged_out' -%}
+        <div class="confirmation main-subheader alert-box" data-alert>
+          You have logged out successfully!
+          <a href="#" class="close">×</a>
+        </div>
+      {%- endif -%}
+    {% endblock %}
     {% block sub_menu_block %}{% endblock %}
+    
+    
     {% block content -%}
       Default Template Content
     {%- endblock %}
