@@ -579,6 +579,12 @@ body.in-search div#main_issues {
 
 /** Issues Big **/
 
+
+
+div.main-body > .main-content.row.issue.full {
+  padding-top: 10px;
+}
+
 .issue.full span.icons {
   font-size: 24px !important;
   padding-top: 10px;
