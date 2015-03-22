@@ -6,27 +6,31 @@ log = logMachine.log
 # If returnUser is set to true, will return user object instead of "True" to minimize DB queries.
 
 def check_sent_auth_info(key, returnUser = False):
+    if key is None: return False # Skip everything if no key
     import base64, datetime, sys
     from passlib.hash import sha256_crypt
 
+    # Decode encoded key from base64 to array of data, incl auth key (at position 1).
     try:
         user_auth_array = base64.b64decode(key).decode('utf-8').split('@')
     except:
-        log('Incorrect encoding or something supplied: ' + str(sys.exc_info()[0]))
+        # Usually means no key.
+        log('Incorrect encoding or something supplied when checking auth info: ' + str(sys.exc_info()[0]))
         return False
+        
     else:
-        if returnUser: 
-            user = db.users.find_one({ 'username': user_auth_array[0] })
-            if user == None:
-                log('User decoded as "' + user_auth_array[0] + '" but not found in database.')
-                return None
-            if sha256_crypt.verify(user['passhash'] + ':::::::' + getCurrentIP(), user_auth_array[1]):
-                log('Authenticated token from ' + user['username'] + ' : ' + user_auth_array[1])
-                #LOlolOlloafsa
-                return user
+        user = db.users.find_one({ 'username': user_auth_array[0] }, None if returnUser else {'passhash' : 1, '_id' : -1})
+        if user is None:
+            log('User decoded as "' + user_auth_array[0] + '" but not found in database.')
+            return False
+        
+        # Verify key
+        if sha256_crypt.verify(user['passhash'] + ':::::::' + getCurrentIP(), user_auth_array[1]):
+            log('Authenticated token from ' + user_auth_array[0] + ' : ' + user_auth_array[1])
+            return user if returnUser else True
         else:
-            user = db.users.find_one({ 'username': user_auth_array[0] }, {'passhash' : 1})
-            return sha256_crypt.verify(user['passhash'] + ':::::::' + getCurrentIP(), user_auth_array[1])
+            log("Couldn't verify submitted password for " + user_auth_array[0])
+            return False
 
             
 # Used directly in login routes, taking POST'd username+password
@@ -75,6 +79,7 @@ def session_auth():
             outputUserDict = {field:authd_user[field] for field in authd_user if field not in ["_id", "passhash", "roles", "meta"]}
             request.user['jsonSerialized'] = json_util.dumps(outputUserDict)
             return True
+            
     return False
     
 def headers_key_auth():

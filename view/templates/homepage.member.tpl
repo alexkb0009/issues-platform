@@ -59,13 +59,13 @@
         {# Title w/ sorting opts #}
     
         <h4 id="main_issues_title" class="major section-header noselect">
-            <a href="#" data-dropdown="main_issues_title_sorting_options" aria-controls="main_issues_title_sorting_options" aria-expanded="false" id="sorted_by_title">
+            <a {# href="#" #}data-dropdown="main_issues_title_sorting_options" aria-controls="main_issues_title_sorting_options" aria-expanded="false" id="sorted_by_title">
                 {{ sort['title'] }}
             </a>
           
             <span class="divider"> / </span>
           
-            <a href="#" data-dropdown="main_issues_title_scale_options" aria-controls="main_issues_title_scale_options" aria-expanded="false" id="scale_title" class="ext">
+            <a {# href="#" #}data-dropdown="main_issues_title_scale_options" aria-controls="main_issues_title_scale_options" aria-expanded="false" id="scale_title" class="ext">
                 {{ current_scale['title'] }}
             </a>
         </h4>
@@ -111,7 +111,7 @@
                                 <input type="text" name="search" placeholder="rising cost of wheat" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
                             </div>
                             <div class="large-1 small-2 columns">
-                                <a href="#" class="button secondary postfix radius clear-search">
+                                <a {# href="#" #}class="button secondary postfix radius clear-search">
                                     &nbsp;<i class="fa fa-times"></i>&nbsp;
                                 </a>
                             </div>
