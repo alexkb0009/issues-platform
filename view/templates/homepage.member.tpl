@@ -54,7 +54,7 @@
 {% block content %}
 
 <div class="main-content row">
-    <div class="large-8{% if user %}  xlarge-9{% endif %} columns">
+    <div class="large-8{% if user %}  xlarge-9{% endif %} columns issues-section">
     
         {# Title w/ sorting opts #}
     
@@ -97,15 +97,15 @@
             {% endfor %}
         </ul>
         
-        {# Main Issues Area #}
+        {# Main Issues Area - Start w. Search Row #}
         
         <div id="search_issues_row" class="{# row #} no-results">
             <form id="search_issues"{% if user %} action="{{ root }}define-issue" method="POST"{% endif %}>
                 <div class="row container">
-                    <div class="large-1 small-2 columns text-center search-icon-container">
+                    <div class="large-1 medium-1 hide-for-small columns text-center search-icon-container">
                         <i class="fa fa-search"></i>
                     </div>
-                    <div class="large-11 small-10 columns">
+                    <div class="large-11 medium-11 small-12 columns">
                         <div class="row collapse postfix-radius">
                             <div class="large-11 small-10 columns">
                                 <input type="text" name="search" placeholder="rising cost of wheat" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
@@ -139,8 +139,8 @@
         {# Pre-render some issues for crawlers #}
         {% for issue in issues %}
             <div class="issue listview row">
-                <div class="large-1 small-2 columns"><h5 class="score text-center">{{ issue['scoring']['score'] }}</h5></div>
-                <div class="large-11 small-10 columns">
+                <div class="large-1 medium-1 hide-for-small columns"><h5 class="score text-center">{{ issue['scoring']['score'] }}</h5></div>
+                <div class="large-11 medium-11 small-12 columns">
                   <div class="content-container">
                     <h5 class="issue-title clearfix">
                         <a class="title" href="{{ root ~ 'is/' ~ issue['_id'] }}">{{ issue['title'] }}</a>

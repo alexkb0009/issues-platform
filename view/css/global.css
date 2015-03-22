@@ -141,7 +141,15 @@ nav.top-bar ul.title-area li.crumb > a:hover {
   /* background: #efefef; */
   background: #344044;
   color: #ccc;
-  padding: 2px 15px 10px 15px;
+  padding: 5px 15px 10px 15px;
+}
+
+@media screen and (max-width: 40.07em){
+
+  .top-bar .login-block .form-container  {
+    padding-top: 15px;
+  }
+
 }
 
 .top-bar .login-block input {
@@ -188,6 +196,18 @@ div.main-subheader {
   background: #fff;
   padding-left: 0.9375em;
   padding-right: 0.9375em;
+}
+
+@media screen and (max-width: 64.07rem){
+
+  div.main-subheader > .row > .columns:first-child {
+    padding-left: 0;
+  }
+
+  div.main-subheader > .row > .columns:last-child {
+    padding-right: 0;
+  }
+
 }
 
 div.main-subheader.alert-box {
@@ -265,6 +285,12 @@ hr.smaller {
   div.main-body > div.main-content.row div.columns:not(:first-child) > .section-header {
     margin-top: 11px;
   }
+}
+
+/** Sections **/
+
+.main-content.row > div.issues-section {
+  margin-bottom: 15px;
 }
 
 /** Title Select Dropdowns **/
@@ -355,9 +381,13 @@ ul.issues-title-dropdown li.active > *:after  {
 
 /** Issues Row **/
 
-.issue.listview div.large-1,
-#search_issues_row div.large-1 {
+.issue.listview div.large-1:first-child,
+#search_issues_row div.large-1:first-child {
     padding-right: 0;
+}
+
+.issue.listview div.large-1 h5.score {
+  padding-top: 12px;
 }
 
 /** Issues Search **/

@@ -46,7 +46,7 @@
       {# Sign-in #}
       
       <li class="has-dropdown">
-        <a href="#sign-in"><i class="fa fa-sign-in fa-fw"></i>Sign In</a>
+        <a><i class="fa fa-sign-in fa-fw"></i>Sign In</a>
         <ul class="dropdown login-area" id="sign-in">
           {% include 'components/login-block.tpl' %}
         </ul>
