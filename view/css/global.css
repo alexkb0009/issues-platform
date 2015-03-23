@@ -674,6 +674,8 @@ div.main-body > .main-content.row.issue.full {
   margin-bottom: 10px;
 }
 
+/** Top Right Icons in Issue **/
+
 .stats-container span.visibility-icon {
   padding: 0 0 0 8px;
   border-left: 1px solid #eee;
@@ -694,8 +696,12 @@ div.main-body > .main-content.row.issue.full {
   opacity: 0.5;
 }
 
-.stats-container span.scale i {
-  /* margin-right: 5px; */
+@media screen and (max-width: 40.07rem){
+
+  .stats-container span.scale i {
+     margin-right: -2px;
+  }
+
 }
 
 .issue.full .info-aside.large-4 {
