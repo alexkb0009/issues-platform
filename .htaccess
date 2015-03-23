@@ -6,7 +6,7 @@
     RewriteEngine On
     
     RewriteCond %{HTTP:X-Forwarded-Proto} !https 
-    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
  
     <IfModule mod_proxy_http.c>
         RewriteCond %{HTTP_USER_AGENT} baiduspider|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora\ link\ preview|showyoubot|outbrain|pinterest|slackbot|vkShare|W3C_Validator [NC,OR]

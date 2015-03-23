@@ -3,6 +3,7 @@
   <head>
     <title>{% block title %}{{ site_name }}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="issues, topics, problems, solutions, solve, USA, participation, citizen, voting, government, e-participation">
     <link rel="shortcut icon" href="/img/assets/mi_logo_0.2.5_white_bg.png">
     <link rel="stylesheet" href="{{ root }}css/vendor/normalize.css">
     <link rel="stylesheet" href="{{ root }}css/vendor/foundation.min.css">
