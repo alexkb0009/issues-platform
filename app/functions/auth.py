@@ -71,7 +71,7 @@ def session_auth():
 
     if 'username' in request.session and 'auth_key' in request.session:
         authd_user = check_sent_auth_info(request.session['auth_key'], True) ## Get user object if auth stuff in session.
-        if authd_user != None and request.session['username'] == authd_user['username']:
+        if authd_user and request.session['username'] == authd_user['username']:
             from bson import json_util
             request.user = authd_user
             request.user['auth_key'] = request.session['auth_key']
