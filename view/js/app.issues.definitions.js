@@ -480,7 +480,7 @@ isApp.Views.IssueView = Backbone.View.extend({
             }
             
             // Send analytics event
-            ga('send', 'event', 'user', 'subscribed', isApp.me.get('username') + ' to ' + t.model.get('title'), this.model.get('meta').get('am_subscribed') ? 1 : -1);
+            ga('send', 'event', 'user', 'subscribed', isApp.me.get('username') + ' to ' + this.model.get('title'), this.model.get('meta').get('am_subscribed') ? 1 : -1);
             
             // Do callback (optional)
             if (callback) callback(resp, status, xhr);
