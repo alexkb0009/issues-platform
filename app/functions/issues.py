@@ -336,18 +336,18 @@ def getIssueVisibilityOptions(key = None):
     visOptions = [
         {
             'key' : 'all',
-            'title' : ("<i class='fa fa-fw fa-globe'></i>","Everyone, including guests"),
-            'description' : "If you want your issue to be seen by a larger audience"
+            'title' : ("<i class='fa fa-fw fa-globe'></i>","Everyone"),
+            'description' : "Includes guests / unregistered users. If you want your issue to be seen and found by largest audience."
         },
         {
             'key' : 'members',
-            'title' : ("<i class='fa fa-fw fa-users'></i>","Only for signed-in members"),
-            'description' : "Only signed-in users will issue in trending views and search results."
+            'title' : ("<i class='fa fa-fw fa-users'></i>","Registered Users"),
+            'description' : "Only signed-in users will see issue in trending views and search results."
         },
         {
             'key' : 'hidden',
-            'title' : ("<i class='fa fa-fw fa-terminal'></i>","Hidden; direct link/URL only."),
-            'description' : "Effectively keeps the issue private except for those with the URL to it. "
+            'title' : ("<i class='fa fa-fw fa-terminal'></i>","Hidden"),
+            'description' : "Issue only accessible by direct URL. Does not appear in trending views or search results. Allows you to distribute the link only to intended audience, but doesn't prevent others from doing the same."
         }
     ]
     

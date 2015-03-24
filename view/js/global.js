@@ -59,7 +59,11 @@ function verticalCenterOffset(parentHeight, childHeight){
 
 /** ------------ **/
 
-/** Global Processing/Setup **/
+
+
+/**
+ * Global Processing + Setup 
+ */
 
 /** - OpenTips Styles **/
 
@@ -75,4 +79,33 @@ Opentip.styles.pop = {
 }
 
 Opentip.defaultStyle = "pop";
+
+
+/** Setup marked markdown renderer **/
+
+if (typeof marked != 'undefined'){
+    (function(){
+        var renderer = new marked.Renderer();
+        renderer.link = function(href, title, text){
+            return '<a href="' + href + '" rel="nofollow"' + (title ? ' title="' + title + '"' : '') + '>' + text + '</a>';
+        }
+        renderer.image = function(src, title, text){
+            if (src.match(/[^/]+(jpg|png|gif)$/)) return '<img src="' + src + '" ' + (title ? ' title="' + title + '" ' : '') + 'alt="' + text + '">';
+            else return '<strong style="color:red;padding:17px 12px 15px;border:1px solid;">NOT AN IMAGE!</strong>'
+        }
+        marked.setOptions({
+            renderer : renderer,
+            sanitize: true
+        });
+    })();
+}
+
+/** Setup tracking of 'hash' links **/
+
+$('a').on('click', function(){
+    var match = $(this).attr('href').match(/#\S+/);
+    if (match){
+      ga('send', 'pageview', location.pathname + match[0]);
+    }
+});
 

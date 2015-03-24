@@ -29,11 +29,6 @@
   
 {% block sub_menu_block -%}
 
-<div class="intro main-subheader">
-  <span class="inline">Welcome, {{ user.firstname }}!</span>
-  <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a>
-</div>
-
 {%- endblock %}
 
 
@@ -81,7 +76,7 @@
                     <span>
                         <strong>Consider: </strong><br>Is this a <em>national</em> or <em>local</em>-scale issue?
                         <br>To be solved within your district or at the national level?
-                        <br><em>Scale cannot be changed once issue is defined.</em>
+                        <br><strong><em>Scale cannot be changed once issue is defined.</em></strong>
                     </span>
                 </div>
             </div>
@@ -91,7 +86,7 @@
             <div class="row">
                 <div class="large-5 columns">
                     <label for"visibility_opts">
-                        <h4>Visibility</h4>
+                        <h4>Visibility <span class="ext">/ Searchability</span></h4>
                         <select name="meta[visibility]" id="visibility_opts"></select>
                     </label>
                 </div>
@@ -209,7 +204,7 @@
                 minimumResultsForSearch: 7, 
                 data: data,
                 templateResult: function(option){
-                    return $('<div><span>' + option.icon + ' &nbsp; ' + option.text + '</span><br><small>' + option.description + '</small></div>');
+                    return $('<div><span>' + option.icon + ' &nbsp; ' + option.text + '</span><div style="font-size: 0.75rem;padding-left: 30px;">' + option.description + '</div></div>');
                 },
                 templateSelection: template
             });
@@ -268,8 +263,12 @@
             isApp.newIssue = new isApp.Models.Issue(formData, {parse: true});
             isApp.newIssue.save({},{
                 success : function(model,response,objects){
-                    var successText = "<h4>Issue Successfully Defined!</h4><p>See it on the <a href=\"{{root}}\">home page</a> under \"Latest\" sorting or at <a href='{{root}}is/" + response.id + "'>http://{{site_domain}}{{root}}is/" + response.id + "</a>.</p>";
+                    var successText = "<h4>Issue Successfully Defined!</h4>";
+                    successText += "<p>See it on the <a href=\"{{root}}\">home page</a> under \"Latest\" sorting or at <a href='{{root}}is/" + response.id + "'>http://{{site_domain}}{{root}}is/" + response.id + "</a>.</p>";
                     $("form#define_issue").html(successText);
+                    ga('send', 'event', 'issue', 'defined', isApp.newIssue.get('title'));
+                }, error: function(model){
+                    ga('send', 'event', 'error', 'defining', isApp.newIssue.get('title'));
                 }
             });
             

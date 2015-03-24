@@ -479,10 +479,15 @@ isApp.Views.IssueView = Backbone.View.extend({
                 this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') - 1);
             }
             
+            // Send analytics event
+            ga('send', 'event', 'user', 'subscribed', isApp.me.get('username') + ' to ' + t.model.get('title'), this.model.get('meta').get('am_subscribed') ? 1 : -1);
+            
             // Do callback (optional)
             if (callback) callback(resp, status, xhr);
+            
         }, this), error: function(issue){
             issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
+            ga('send', 'event', 'error', 'subscribing', issue.get('title'));
         } });
     }
     
@@ -532,11 +537,13 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             this.$el.find('#editbutton').removeClass('disabled').on('click', $.proxy(function(){
                 this.template = _.template($('#backbone_issue_template_full_edit').html());
                 this.render();
+                ga('send', 'pageview', location.pathname + '#edit');
             }, this));
             
             /** Cancel Edit Button **/
             this.$el.find('.cancelbutton').on('click', $.proxy(function(){
                 this.template = _.template($('#backbone_issue_template_full').html());
+                ga('send', 'event', 'button', 'cancel', 'Cancel revision');
                 this.render();
             }, this));
             
@@ -558,9 +565,9 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                     t.template = _.template($('#backbone_issue_template_full').html());
                     t.model.get('meta').set('revisions', t.model.get('meta').get('revisions') + 1);
                     t.render();
+                    ga('send', 'event', 'issue', 'saved', t.model.get('title'));
                 }, this), error: function(issue){
-                    
-                    
+                    ga('send', 'event', 'error', 'saving', 'Revision on: ' + t.model.get('title'));
                 } });
                 
             });
@@ -619,7 +626,11 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                                     scoring.set('num_votes', scoring.get('num_votes') + (t.model.previous('my_vote').vote ? 0 : 1) );
                                 }
                                 votingButtons.each(function(){applyClassesToVoteButton($(this))});
-                            }, this)
+                                ga('send', 'event', 'issue', 'vote', vote + ' on ' + t.model.get('title'));
+                            }, this),
+                            error: function(){
+                                ga('send', 'event', 'error', 'voting', vote + ' on ' + t.model.get('title'));
+                            }
                         })
                     });
                     
