@@ -559,7 +559,7 @@ body.in-search div#main_issues {
 }
 
 .issue.listview:not(.min) h5.issue-title .open-icon {
-  line-height: 1.675em;
+  line-height: 1.5em;
   margin-left: 2px;
 }
 

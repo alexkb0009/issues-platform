@@ -103,9 +103,12 @@ if (typeof marked != 'undefined'){
 /** Setup tracking of 'hash' links **/
 
 $('a').on('click', function(){
-    var match = $(this).attr('href').match(/#\S+/);
-    if (match){
-      ga('send', 'pageview', location.pathname + match[0]);
+    var href = $(this).attr('href');
+    if (href){
+        var match = href.match(/#\S+/);
+        if (match){
+          ga('send', 'pageview', location.pathname + match[0]);
+        }
     }
 });
 
