@@ -210,6 +210,7 @@ isApp.Models.SearchBar = Backbone.Model.extend({
     initialize: function(attributes, options){
         this.input = options.input;
         this.container = options.container; // Must be jQuery object.
+        this.throttledFind = _.throttle(this.find, 750);
         
         /* Bind Key Press to Search */
         
@@ -217,9 +218,7 @@ isApp.Models.SearchBar = Backbone.Model.extend({
             this.set('query' , this.input.val());
             clearTimeout(this.get('time'));
             if (this.get('currentXHR')) this.get('currentXHR').abort();
-            this.time = setTimeout(function(m){
-                m.find();
-            }, 750, this);
+            this.throttledFind();
         }, this));
         
         /* Bind clear button to clear function */
@@ -285,6 +284,9 @@ isApp.Models.SearchBar = Backbone.Model.extend({
                 }
                 this.container.removeClass('no-results');
                 app.ce.body.addClass('in-search');
+                
+                // Analytics
+                ga('send', 'event', 'search', 'query', this.get('query'));
             }, this),
             error: $.proxy(function(xhr, textStatus, error){
                 if (xhr.statusText != 'abort') this.emptyResults();

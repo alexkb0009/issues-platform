@@ -78,6 +78,7 @@ isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(
             this.trigger('changeSet');
           }).fetch();
           isApp.searchBar.find();
+          ga('send', 'event', 'user', 'scale', isApp.me.get('username') + ' set scale', Math.ceil(isApp.me.get('current_scale')));
         }
       }
     });
