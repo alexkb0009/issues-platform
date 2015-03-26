@@ -96,7 +96,8 @@ def patch_issue(issue_id):
             
     # Is this a new revision?
     if request.json.get('title') is not None and request.json.get('description') is not None and request.json.get('body') is not None:
-        from app.functions.issues import saveNewRevisionFromRequestObj, subscribeCurrentUserToIssue
+        from app.functions.issues import subscribeCurrentUserToIssue
+        from app.functions.revisions import saveNewRevisionFromRequestObj
         revisionID = saveNewRevisionFromRequestObj(request.json, issue)
         if not revisionID: 
             response.status = 500
@@ -115,6 +116,15 @@ def patch_issue(issue_id):
         
     returnObj['status'] = 200
     return returnObj
+    
+    
+## Get Issue's Latest Revisions
+@app.route('/' + app.config['app_info.api_request_path'] + 'issue/<issue_id>/revisions', method="GET")
+@app.route('/' + app.config['app_info.api_request_path'] + 'issue/<issue_id>/revisions/<page:int>', method="GET")
+def get_issue_revisions(issue_id, page = 1):
+    from app.functions.revisions import getWellFormedRevisionsOfIssue
+    from bson.json_util import dumps
+    return dumps(getWellFormedRevisionsOfIssue(issue_id, page = page))
     
 ## Search Issues
 @app.route('/' + app.config['app_info.api_request_path'] + 'search/issues', method="POST")

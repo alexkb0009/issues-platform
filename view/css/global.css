@@ -794,6 +794,68 @@ div.main-body > .main-content.row.issue.full {
 .issue.full .social-row.row > .columns a.googleplus:hover i { color: #d62d20; }
 .issue.full .social-row.row > .columns a.reddit:hover i { color: #FF4500; }
 
+/** Revisions **/
+
+.issue.full #revisions_container {
+  position: relative;
+  margin: 0 -0.25rem;
+}
+
+.issue.full #revisions_container li.revision.gridview {
+  /* padding-bottom: 10px; */
+  padding: 0;
+}
+
+.issue.full #revisions_container .heading {
+  padding: 8px 12px 5px;
+  padding: 6px 10px 3px;
+  /* margin: 5px 0; */
+  cursor: pointer;
+}
+
+.issue.full #revisions_container .heading span.light{
+  font-weight: 300;
+}
+
+.issue.full #revisions_container .heading .text-count-difference.negative {
+  color: rgb(221, 0, 0);
+}
+
+.issue.full #revisions_container .heading .text-count-difference.positive {
+  color: rgb(92, 173, 6);
+}
+
+.issue.full #revisions_container .heading:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.issue.full #revisions_container .heading > h6 {
+  margin: 0;
+}
+
+.issue.full #revisions_container .revision-details {
+  width: 100%;
+  max-width: none;
+  float: left;
+  padding-top: 15px;
+}
+
+.issue.full #revisions_container .revision-details h6.detail-header {
+  font-weight: 600;
+}
+
+.issue.full #revisions_container .revision-details ins {
+  background-color: rgb(192, 255, 192);
+}
+
+.issue.full #revisions_container .revision-details del {
+  background-color: rgb(255, 206, 192);
+}
+
+.issue.full #revisions_container .revision-details .time {
+  margin-bottom: 5px;
+}
+
 /** Editing **/
 
 .issue.full.editing:not(.preview-exists) .preview-body-container,

@@ -47,9 +47,9 @@ window.isApp = {
 isApp.Models.User = Backbone.Model.extend({
     
     defaults: {
-        firstname: 'Bill',
-        lastname: 'Murray',
-        username: 'billyg123'
+        firstname: 'G.',
+        lastname: 'Uest',
+        username: 'guest'
     },
     
     validate: function(attributes){
@@ -72,6 +72,38 @@ isApp.Models.User = Backbone.Model.extend({
     
     
 /** Issue **/
+
+/* Revision */
+
+isApp.Models.Revision = Backbone.Model.extend({
+
+    defaults: {
+        title: 'A Title',
+        description: 'A description.',
+        body: 'A body ...',
+        date: new Date(),
+        author: 'billyg123',
+        parentIssue: false,
+        previousRevision: false
+    },
+    
+    getTextCount: function(previous){
+        if (typeof previous != 'undefined') {
+            return previous.body.length + previous.description.length + previous.title.length;
+        } else {
+            return this.get('body').length + this.get('description').length + this.get('title').length;
+        }
+    },
+    
+    getTextCountDifference: function(){
+        if (this.get('previousRevision')){
+            return this.getTextCount() - this.getTextCount(this.get('previousRevision'));
+        } else {
+            return false;
+        }
+    }
+
+});
     
 /** Issue Extended Property Containers **/
 
@@ -302,6 +334,53 @@ isApp.Models.SearchBar = Backbone.Model.extend({
 
 isApp.Collections = {
 
+    Revisions: Backbone.Collection.extend({
+    
+        parse: function(response){
+        
+            if (_.has(response, 'results')){
+                response = response['results'];
+            } 
+            
+            
+            // Set some data from prev revision
+            _.each(response, $.proxy(function(respObj, index, collection){
+                
+                // Set date
+                respObj['date'] = new Date(respObj['date']);
+                
+                if (_.indexOf(_.pluck(collection, '_id'), respObj['previousRevision'])) {
+                    respObj['previousRevision'] = _.find(collection, function(revisionObj){
+                        if (typeof revisionObj['_id'] != 'string' && respObj['previousRevision']) {
+                            return revisionObj['_id']['$oid'] == respObj['previousRevision']['$oid']; 
+                        }
+                        return revisionObj['_id'] == respObj['previousRevision']; 
+                    })
+                    if (respObj['previousRevision']) respObj['previousRevision']['date'] = new Date(respObj['previousRevision']['date']);
+                    
+                } else {
+                    respObj['previousRevision'] = false;
+                }
+            }, this));
+        
+            return response;
+            
+        },
+        
+        parentIssue: false,
+        model : isApp.Models.Revision,
+        url: function(){
+            return app.settings.root + 'api/issue/' + this.parentIssue + '/revisions';
+        },
+        
+        initialize: function(obj, opts){
+            if (_.has(opts, 'parentIssue')) {
+                this.parentIssue = opts.parentIssue;
+            }
+        }
+        
+    }),
+    
     Issues: Backbone.Collection.extend({
     
         parse: function(response){
@@ -321,6 +400,28 @@ isApp.Collections = {
 /********************************/
 /**      Views Definitions     **/
 /********************************/
+
+isApp.Views.RevisionView = Backbone.View.extend({
+    
+    className: "revision listview",
+    tagName: "li",
+    
+    render: function(obj){
+        this.$el.html(this.template( this.model.toJSON() ));
+        var textCountDifElem = this.$el.find('.text-count-difference'); 
+        textCountDifElem.addClass(parseInt(textCountDifElem.text()) > 0 ? 'positive' : 'negative');
+    },
+    
+    initialize: function(options){
+        if (typeof options.templateID != 'undefined'){
+          this.template = _.template($('#' + options.templateID).html());
+        }
+
+        this.render();
+        
+    }
+    
+});
 
 /** Individual Issues View **/
 
@@ -523,6 +624,9 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             '.subscribed-score > h4' : 'subscribed',
             '.num-votes > h4' : 'num_votes'
         });
+        
+        this.setupRevisions();
+        
         return this;
     },
     
@@ -641,6 +745,8 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                 }
             });
             
+            
+            
             this.$el.find('#proposebutton').addClass('disabled');
             this.$el.find('#commentbutton').addClass('disabled');
             
@@ -653,6 +759,24 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             
         }
         return this;
+    },
+    
+    setupRevisions: function(){
+        if (!isApp.me.get('logged_in')) return false;
+        var revisionsContainer = this.$el.find('#revisions_container');
+        if (revisionsContainer.length == 0) return false;
+        var t = this;
+        this.model.set('revisions', new isApp.Collections.Revisions([{},{}], { parentIssue : this.model.get('id') } ));
+        this.model.get('revisions').once('sync', function(){
+            t.model.get('revisions').view = new isApp.Views.RevisionsView({ 
+                el: revisionsContainer, 
+                collection: this.model.get('revisions'), 
+                childTemplateID: 'backbone_revision_template', 
+                childClassName: 'revision gridview' 
+            });
+        }, this);
+        this.model.get('revisions').fetch();
+        
     },
     
     generateToolTipsEnableElements_Full: function(){
@@ -746,17 +870,25 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
 });
     
 /** The collection/list view **/
-    
-isApp.Views.IssuesView = Backbone.View.extend({
-    
+
+isApp.Views.CollectionViewBase = Backbone.View.extend({
+
     render: function(){
+        this.renderInitial(isApp.Views.IssueView);
+    },
+    
+    initialize: function(options){
+        this.initializeInitial(options);
+    },
+    
+    renderInitial: function(itemView){
         this.el.innerHTML = '';
-        this.collection.each($.proxy(function(issue){
-            var optsObj = { model: issue }; // Minimum
+        this.collection.each($.proxy(function(itemModel){
+            var optsObj = { model: itemModel }; // Minimum
             if (typeof this.childTemplateID != 'undefined') optsObj.templateID = this.childTemplateID;
             if (typeof this.childClassName != 'undefined') optsObj.className = this.childClassName;
-            issue.view = new isApp.Views.IssueView(optsObj);
-            this.$el.append(issue.view.el);
+            itemModel.view = new itemView(optsObj);
+            this.$el.append(itemModel.view.el);
         },this));
         if (this.collection.length == 0){
             this.$el.addClass('empty');
@@ -765,16 +897,39 @@ isApp.Views.IssuesView = Backbone.View.extend({
         }
     },
     
-    initialize: function(options){
+    initializeInitial: function(options){
         if (typeof options != 'undefined'){
-          this.childTemplateID = options.childTemplateID;
-          this.childClassName = options.childClassName;
+            this.childTemplateID = options.childTemplateID;
+            this.childClassName = options.childClassName;
         }
         
         this.render();
         
         /* Bind some events */
         this.collection.on('changeSet', this.render, this);
+    }
+
+});
+
+isApp.Views.RevisionsView = isApp.Views.CollectionViewBase.extend({
+    
+    render: function(){
+        this.renderInitial(isApp.Views.RevisionView);
+        $(document).foundation('dropdown', 'reflow');
+    },
+    
+    initialize: function(options){
+        this.initializeInitial(options);
+        this.collection.on('sync', this.render, this);
+    },
+
+});
+
+    
+isApp.Views.IssuesView = isApp.Views.CollectionViewBase.extend({
+    
+    render: function(){
+        this.renderInitial(isApp.Views.IssueView);
     }
 
 });

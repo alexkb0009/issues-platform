@@ -96,22 +96,21 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
         )
         issue['title'] = currentRevision['title']
     
-    # Add "well-formed" (post-relational) JSONified Issue to output list.
     issueWellFormed = {
-      '_id' :         str(issue['_id']),
-      'title' :       issue.get('title'),
-      'description' : currentRevision.get('description'),
-      'scoring' :     issue.get('scoring'),
-      'tags' :        issue.get('tags'),
-      'meta' : {
-        'revision_date' :   currentRevision['date'].isoformat(),
-        'revision_author' : currentRevisionAuthor,
-        'revisions' :       issue['meta'].get('revisions'),
-        'initial_author' :  issue['meta'].get('initial_author'),
-        'scale' :           issue['meta'].get('scale'),
-        'locale' :          getIssuesScaleOptions(issue['meta'].get('scale'), localizeUser = issue, fullGeo = True, stripIssues = True, stripIcons = True)['title'],
-        'visibility' :      issue['meta'].get('visibility')
-      }
+        '_id' :             str( issue['_id'] ),
+        'title' :           issue.get('title'),
+        'description' :     currentRevision.get('description'),
+        'scoring' :         issue.get('scoring'),
+        'tags' :            issue.get('tags'),
+        'meta' : {
+            'revision_date' :   currentRevision['date'].isoformat(),
+            'revision_author' : currentRevisionAuthor,
+            'revisions' :       issue['meta'].get('revisions'),
+            'initial_author' :  issue['meta'].get('initial_author'),
+            'scale' :           issue['meta'].get('scale'),
+            'locale' :          getIssuesScaleOptions(issue['meta'].get('scale'), localizeUser = issue, fullGeo = True, stripIssues = True, stripIcons = True)['title'],
+            'visibility' :      issue['meta'].get('visibility')
+        }
     }
     
     if hasattr(request, 'user'):
@@ -164,21 +163,13 @@ def createIssueID(title, scale):
     else: return False
     
 def saveNewIssueFromRequestObj(issueReq):
-    import datetime
-
     issueId = createIssueID(issueReq['title'], float(issueReq['meta']['scale']))
     if issueId == False: return False
-
-    revision = {
-        'title' : issueReq.get('title'),
-        'description' : issueReq.get('description'),
-        'body' : issueReq.get('body'),
-        'date' : datetime.datetime.utcnow(),
-        'author' : request.user['username'],
-        'parentIssue' : issueId
-    }
     
-    revisionId = db.revisions.insert(revision, check_keys = True)
+    import datetime
+    from app.functions.revisions import revisionFromRequestObj
+    
+    revisionId = db.revisions.insert(revisionFromRequestObj(issueReq, issueId), check_keys = True)
     
     issue = {
         'meta' : {
@@ -207,56 +198,7 @@ def saveNewIssueFromRequestObj(issueReq):
     
     return issueId
     
-def saveNewRevisionFromRequestObj(issueReq, issue):
-    import datetime
-    newRevisionId = db.revisions.insert({
-        'title'             : issueReq.get('title'),
-        'description'       : issueReq.get('description'),
-        'body'              : issueReq.get('body'),
-        'date'              : datetime.datetime.utcnow(),
-        'author'            : request.user.get('username'),
-        'parentIssue'       : issue.get('_id'),
-        'previousRevision'  : issue.get('current_revision')
-    }, safe = True)
-    
-    db.issues.update(
-        {'_id' : issue['_id']}, 
-        {
-            '$inc' : {
-                'meta.revisions' : 1,
-                'scoring.contributions' : 1
-            },
-            '$set' : {
-                'current_revision' : newRevisionId,
-                'title' : issueReq.get('title')
-            }
-        },
-        multi=False
-    )
-    
-    # Cache new page, if setup.
-    def cachepage_prerenderio():
-        if app.config.get('seo.prerender_key'):
-            import os
-            # Make sure is not on a dev site or something.
-            if os.environ.get('OPENSHIFT_APP_NAME') != None:
-                import requests, json
-                url = ('https://' if app.config.get('security.uses_https') else 'http://') + app.config.get('app_info.site_domain') + '/is/' + issue['_id']
-                print('Requesting prerender.io cache of ' + url)
-                r = requests.post(app.config.get('seo.prerender_url'), data = json.dumps({
-                    'prerenderToken' : app.config.get('seo.prerender_key'),
-                    'url'            : url
-                }), headers = {
-                    'X-Prerender-Token' : app.config.get('seo.prerender_key'),
-                    'Content-type' : 'application/json',
-                    'Accept-encoding' : 'gzip'
-                }
-                )
-                print(r.text)
-                return r # response
-    #cachepage_prerenderio()
-    
-    return newRevisionId
+
     
 def subscribeCurrentUserToIssue(issue_id):
     subscribe = True

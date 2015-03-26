@@ -91,7 +91,7 @@
                 {% if disabled == True -%}
                     <span class="disabled">{{ opt['title'] }}</span>
                 {%- else -%}
-                    <a href="#{{ opt['key'] ~ '/' ~ (opt['title']|striptags).split()[0]|lower }}" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
+                    <a href="#{{ issue_scale_options(opt['key'], stripIcons = True, stripIssues = True)['title']|lower }}" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
                 {%- endif %}
             </li>
             {% endfor %}

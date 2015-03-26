@@ -19,6 +19,8 @@
 <meta name="description" content="{{ issue['description']|e }}" />
 
 <script src="{{ root }}js/vendor/marked.js"></script>
+<script src="{{ root }}js/vendor/jsdiff.js"></script>
+
 <link rel="stylesheet" href="{{ root }}css/homepage.css">
 <script>
     window.session = {

@@ -1,6 +1,6 @@
 <div class="row social-row">
     <div class="large-3 small-3 columns">
-        <a href="https://twitter.com/home?status=Check%20out%20{{ site_domain }}{{ path() }}" class="social-icon link twitter new-window">
+        <a href="https://twitter.com/home?status=Issue:%20{{ issue['title'] }}%20at%20{{ site_domain }}{{ path() }}" class="social-icon link twitter new-window">
             <i class="fa fa-fw fa-twitter"></i>
         </a>
     </div>

@@ -98,24 +98,80 @@
         <h4 class="major section-header">Share</h4>
         {% include 'components/social_icons.row.bb.tpl' %}
         
-        <div style="opacity: 0.2">
-            <h3 class="major section-header issue-title">Responses</h3>
+        <div class="hide" style="opacity: 0.2">
+            <h4 class="major section-header issue-title">Responses</h4>
             <div class="row responses-container">
-                <div class="large-12 columns text-center num-votes">
+                <div class="large-12 columns text-center">
                     <a href="#propose" class="button secondary expand small page" id="proposebutton">
                         <i class="fa fa-fw fa-lightbulb-o"></i> Propose
                     </a>
                 </div>
             </div>
-            
+        </div>
+        
+        <h4 class="major section-header revisions-title">Recent Edits</h4>
+        <div class="revisions-container small-block-grid-4 medium-block-grid-6 large-block-grid-5" id="revisions_container" style="margin-bottom: 20px;">
+            <div class="text-center">
+                <i class="fa fa-circle-o-notch fa-spin fa-fw loader-icon" style="margin: 20px auto 0;"></i>
+            </div>
+        </div>
+        
+        
+        <div class="hide" style="opacity: 0.2">
             <h3 class="major section-header issue-title">Discussion</h3>
             <p>[<em>Most active forum-type discussion threads related to issue go here</em>]</p>
             <a href="#comment" class="button secondary expand small page" id="commentbutton">
                 <i class="fa fa-fw fa-comment"></i>&nbsp; Comment
             </a>
         </div>
+        
     </div>
     
+</script>
+
+<script id="backbone_revision_template" type="text/template">
+
+    <div class="heading<% if (typeof firstRevision != 'undefined'){ %> first-revision<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
+        <h6>
+            <strong><%= date.getMonth() + 1 %> / <%= date.getDate() %></strong> <%= date.getFullYear() %>
+        </h6>
+        <% if (previousRevision) { %>
+            <div class="text-right text-count-difference"><%= this.model.getTextCountDifference() %></div>
+        <% } else if (typeof firstRevision != 'undefined'){ %>
+            <div class="text-right text-count-difference"><b><%= this.model.getTextCount() %></b></div>
+        <% } %>
+    </div>
+
+    <div class="revision-details f-dropdown content" data-dropdown-content tabindex="-1" aria-hidden="true" id="rev_<%= _id['$oid'] %>">
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="description">
+                    <% if (previousRevision) { %>
+                        <% if (previousRevision.title != title) { %>
+                            <h6><%= isApp.u.jsdiffExt(previousRevision.title, title) %></h6>
+                        <% } %>
+                        <% if (previousRevision.description != description) { %>
+                            <h6 class="detail-header">Introduction <span class="ext">/ Short Description</span></h6>
+                            <p class="description"><%= isApp.u.jsdiffExt(previousRevision.description, description) %></p>
+                        <% } %>
+                        <% if (previousRevision.body != body) { %>
+                            <h6 class="detail-header">Body <span class="ext">/ Extended Description</span></h6>
+                            <%= isApp.u.jsdiffExt(previousRevision.body, body) %>
+                        <% } %>
+                    <% } else { %>
+                        <% if (typeof firstRevision != 'undefined'){ %><h6 class="detail-header"><em>Original</em></h6><% } %>
+                        <h6><%= title %></h6>
+                        <p class="description"><%= description %></p>
+                        <%= body %>
+                    <% } %>
+                </div>
+            </div>
+            <div class="large-12 columns time">
+                <%= date.toTimeString() %>
+            </div>
+        </div>
+    </div>
+
 </script>
 
 <script id="backbone_issue_template_full_edit" type="text/template">

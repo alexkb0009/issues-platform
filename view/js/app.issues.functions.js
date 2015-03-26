@@ -66,6 +66,12 @@ Backbone.sync = function(method, model, options){
     isApp.u._existingSync.call(this, method, model, options);
 }
 
+isApp.u.jsdiffExt = function(oldText, newText){
+    if (typeof diffString == 'undefined') return false;
+    var diffText = diffString(oldText,newText);
+    return diffText;
+}
+
 /** Adding some jQuery Functions **/
 
 /**

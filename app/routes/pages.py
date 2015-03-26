@@ -75,7 +75,7 @@ def view_issue(issue_slug):
     from app.functions.issues import getIssueByID, getWellFormedIssue, addToIssueViews, getIssueVisibilityOptions
     from app.functions.sort import getIssuesScaleOptions
     from slugify import slugify
-    from bson import json_util
+    from bson.json_util import dumps
     
     status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
     
@@ -88,7 +88,7 @@ def view_issue(issue_slug):
         issue['scoring']['views'] = addToIssueViews(issue['_id'])
         issue = getWellFormedIssue(issue, fullMode = True)
         issue['visibilityExpanded'] = getIssueVisibilityOptions(issue['meta'].get('visibility'))
-        issue['jsonSerialized'] = json_util.dumps(issue)
+        issue['jsonSerialized'] = dumps(issue)
         issue['body'] = markdown.markdown(issue.get('body'))
         scale = getIssuesScaleOptions(float(issue['meta']['scale']), stripIcons = True, stripIssues = False, localizeUser = issue)
     
