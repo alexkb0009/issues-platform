@@ -762,7 +762,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
     },
     
     setupRevisions: function(){
-        if (!isApp.me.get('logged_in')) return false;
+        //if (!isApp.me.get('logged_in')) return false;
         var revisionsContainer = this.$el.find('#revisions_container');
         if (revisionsContainer.length == 0) return false;
         var t = this;
