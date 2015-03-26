@@ -798,7 +798,7 @@ div.main-body > .main-content.row.issue.full {
 
 .issue.full #revisions_container {
   position: relative;
-  margin: 0 -0.25rem;
+  margin: 0;
 }
 
 .issue.full #revisions_container li.revision.gridview {
