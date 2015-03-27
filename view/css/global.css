@@ -709,7 +709,7 @@ div.main-body > .main-content.row.issue.full {
 }
 
 .issue.full .voting-row.row {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .issue.full .voting-row a.button.vote-option {
@@ -796,9 +796,29 @@ div.main-body > .main-content.row.issue.full {
 
 /** Revisions **/
 
+.issue.full > .info-aside.columns {
+  position: static;
+}
+
 .issue.full #revisions_container {
-  position: relative;
+  position: static;
   margin: 0;
+}
+
+a.next-revisions-link,
+a.previous-revisions-link {
+  font-size: 1rem;
+  color: #000;
+  margin-top: 8px;
+}
+
+a.next-revisions-link:hover,
+a.previous-revisions-link:hover {
+  opacity: 0.5;
+}
+
+.issue.full #revisions_container li.revision {
+  list-style-type: none;
 }
 
 .issue.full #revisions_container li.revision.gridview {
@@ -808,7 +828,7 @@ div.main-body > .main-content.row.issue.full {
 
 .issue.full #revisions_container .heading {
   padding: 8px 12px 5px;
-  padding: 6px 10px 3px;
+  padding: 1px 10px 1px;
   /* margin: 5px 0; */
   cursor: pointer;
 }
@@ -825,6 +845,10 @@ div.main-body > .main-content.row.issue.full {
   color: rgb(92, 173, 6);
 }
 
+.issue.full #revisions_container .heading .text-count-difference.positive:before {
+  content: "+";
+}
+
 .issue.full #revisions_container .heading:hover {
   background: rgba(0,0,0,0.05);
 }
@@ -834,10 +858,14 @@ div.main-body > .main-content.row.issue.full {
 }
 
 .issue.full #revisions_container .revision-details {
+/*
   width: 100%;
   max-width: none;
   float: left;
-  padding-top: 15px;
+  */
+  padding: 15px 20px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.075);
+  /* padding-top: 15px; */
 }
 
 .issue.full #revisions_container .revision-details h6.detail-header {

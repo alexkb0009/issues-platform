@@ -127,6 +127,7 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
         issueWellFormed['meta']['state'] = issue['meta'].get('state')
         issueWellFormed['meta']['city'] = issue['meta'].get('city')
         issueWellFormed['meta']['zip'] = issue['meta'].get('zip')
+        issueWellFormed['currentRevision'] = currentRevision['_id']
     
     if len(redactFields) > 0:
         for field in redactFields:

@@ -63,12 +63,13 @@ def getWellFormedRevisionsOfIssue(issueID, page = 1, limit = 20):
     revisions = []
     for revision in revisionsCursor:
         revision['date'] = revision.get('date').isoformat()
-        if revision.get('previousRevision') is None: revision['firstRevision'] = True
+        if revision.get('previousRevision') == None: revision['firstRevision'] = True
+        else: revision['firstRevision'] = False
         revisions.append(revision)
     return revisions
     
 def getRevisionsOfIssueRaw(issueID, page = 1, limit = 20):
-    return db.revisions.find({'parentIssue' : issueID }, skip = (page - 1) * limit, limit = limit, sort = [('date', -1)])
+    return db.revisions.find({'parentIssue' : issueID }, skip = max(0, (page - 1) * limit - 1), limit = limit, sort = [('date', -1)])
     
     
     

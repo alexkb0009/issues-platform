@@ -78,13 +78,15 @@ isApp.Models.User = Backbone.Model.extend({
 isApp.Models.Revision = Backbone.Model.extend({
 
     defaults: {
+        _id : { '$oid' : null },
         title: 'A Title',
         description: 'A description.',
         body: 'A body ...',
         date: new Date(),
-        author: 'billyg123',
-        parentIssue: false,
-        previousRevision: false
+        author: 'billyg123',        // Revision author
+        parentIssue: false,         // ID of rel. issue
+        previousRevision: false,    // Set by backend to _id, set to JSON obj of details in collection parse
+        firstRevision: false        // Set by backend
     },
     
     getTextCount: function(previous){
@@ -338,44 +340,50 @@ isApp.Collections = {
     
         parse: function(response){
         
-            if (_.has(response, 'results')){
-                response = response['results'];
-            } 
-            
+            if (_.has(response, 'results')) response = response['results'];
             
             // Set some data from prev revision
             _.each(response, $.proxy(function(respObj, index, collection){
-                
                 // Set date
                 respObj['date'] = new Date(respObj['date']);
                 
                 if (_.indexOf(_.pluck(collection, '_id'), respObj['previousRevision'])) {
+                    // Find previous revision in list.
                     respObj['previousRevision'] = _.find(collection, function(revisionObj){
                         if (typeof revisionObj['_id'] != 'string' && respObj['previousRevision']) {
                             return revisionObj['_id']['$oid'] == respObj['previousRevision']['$oid']; 
                         }
                         return revisionObj['_id'] == respObj['previousRevision']; 
-                    })
+                    });
                     if (respObj['previousRevision']) respObj['previousRevision']['date'] = new Date(respObj['previousRevision']['date']);
                     
                 } else {
-                    respObj['previousRevision'] = false;
+                    // Most likely next page exists.
+                    respObj['previousRevision'] = true;
                 }
+                
             }, this));
+        
+            if (!response[response.length - 1]['firstRevision']) this.more = true;
+            else this.more = false;
         
             return response;
             
         },
         
         parentIssue: false,
+        page: 1,
         model : isApp.Models.Revision,
         url: function(){
-            return app.settings.root + 'api/issue/' + this.parentIssue + '/revisions';
+            return app.settings.root + 'api/issue/' + this.parentIssue + '/revisions/' + this.page;
         },
         
         initialize: function(obj, opts){
             if (_.has(opts, 'parentIssue')) {
                 this.parentIssue = opts.parentIssue;
+            }
+            if (_.has(opts, 'page')) {
+                this.page = opts.page;
             }
         }
         
@@ -766,13 +774,15 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
         var revisionsContainer = this.$el.find('#revisions_container');
         if (revisionsContainer.length == 0) return false;
         var t = this;
-        this.model.set('revisions', new isApp.Collections.Revisions([{},{}], { parentIssue : this.model.get('id') } ));
+        this.model.set('revisions', new isApp.Collections.Revisions([{},{}], { parentIssue : this.model.get('id'), page : 1 } ));
+        
         this.model.get('revisions').once('sync', function(){
+            // Performed after (first) fetch so loader icon is temp. visible.
             t.model.get('revisions').view = new isApp.Views.RevisionsView({ 
                 el: revisionsContainer, 
                 collection: this.model.get('revisions'), 
                 childTemplateID: 'backbone_revision_template', 
-                childClassName: 'revision gridview' 
+                childClassName: 'revision listview' 
             });
         }, this);
         this.model.get('revisions').fetch();
@@ -916,6 +926,27 @@ isApp.Views.RevisionsView = isApp.Views.CollectionViewBase.extend({
     render: function(){
         this.renderInitial(isApp.Views.RevisionView);
         $(document).foundation('dropdown', 'reflow');
+        
+        if (this.nextLink) this.nextLink.remove();
+        if (this.prevLink) this.prevLink.remove();
+        
+        if (this.collection.more) {
+            $('.revisions-title').append('<a class="next-revisions-link right">&nbsp;<i class="fa fa-fw next-revisions-icon fa-arrow-right"></i>&nbsp;</a>');
+            this.nextLink = $('.revisions-title > .next-revisions-link');
+            this.nextLink.on('click', $.proxy(function(){
+                this.collection.page += 1;
+                this.collection.fetch();
+            }, this));
+        }
+
+        if (!_.find(this.collection.models, function(elem){return elem.get('_id')['$oid'] == isApp.currentIssue.get('currentRevision')['$oid']}, this )) {
+            $('.revisions-title').append('<a class="previous-revisions-link right">&nbsp;<i class="fa fa-fw prev-revisions-icon fa-arrow-left"></i>&nbsp;</a>');
+            this.prevLink = $('.revisions-title > .previous-revisions-link');
+            this.prevLink.on('click', $.proxy(function(){
+                this.collection.page -= 1;
+                this.collection.fetch();
+            }, this));
+        }
     },
     
     initialize: function(options){

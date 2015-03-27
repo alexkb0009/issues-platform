@@ -124,7 +124,7 @@ def patch_issue(issue_id):
 def get_issue_revisions(issue_id, page = 1):
     from app.functions.revisions import getWellFormedRevisionsOfIssue
     from bson.json_util import dumps
-    return dumps(getWellFormedRevisionsOfIssue(issue_id, page = page))
+    return dumps(getWellFormedRevisionsOfIssue(issue_id, page = page, limit = 9))
     
 ## Search Issues
 @app.route('/' + app.config['app_info.api_request_path'] + 'search/issues', method="POST")
