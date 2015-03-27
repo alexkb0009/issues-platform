@@ -131,7 +131,7 @@
 
 <script id="backbone_revision_template" type="text/template">
 
-    <div class="heading<% if (typeof firstRevision != 'undefined'){ %> first-revision<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
+    <div class="heading<% if (typeof firstRevision != 'undefined'){ %> first-revision<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:top; pip:bottom" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
         <h6>
             <strong><%= date.getMonth() + 1 %> / <%= date.getDate() %></strong> <%= date.getFullYear() %>
         </h6>
