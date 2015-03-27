@@ -672,8 +672,21 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             /** Submit Edit Form ... Button **/
             this.$el.find("form#editform").submit(function( event ){
                 event.preventDefault();
+                if ($(this).data('submitted')) return false;
                 var formData = $(this).serializeObject();
-                isApp.u.setLoaderInElem($(this).find('button[type=submit]')).addClass('disabled');
+                var submitButton = $(this).find('button[type=submit]');
+                if (!submitButton.data('orig-html')) submitButton.data('orig-html', submitButton.html());
+                isApp.u.setLoaderInElem(submitButton).addClass('disabled');
+                
+                
+                // Validate edits
+                if (formData.title == t.model.get('title') && formData.description == t.model.get('description') && formData.body == t.model.get('body')){
+                    alert("You must make an edit in order to submit.");
+                    submitButton.removeClass('disabled').html(submitButton.data('orig-html') || 'Submit');
+                    return false;
+                }
+                
+                $(this).data('submitted', true);
                 
                 t.model.save(formData, { patch: true, wait: true, success: $.proxy(function(issue, response, opts){
                     t.template = _.template($('#backbone_issue_template_full').html());
