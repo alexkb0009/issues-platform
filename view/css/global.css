@@ -679,7 +679,7 @@ div.main-body > .main-content.row.issue.full {
 .stats-container span.visibility-icon {
   padding: 0 0 0 8px;
   border-left: 1px solid #eee;
-  /* margin-left: 1px; */
+  margin-left: 8px;
 }
 
 .stats-container span.scale {
@@ -829,8 +829,13 @@ a.previous-revisions-link:hover {
 .issue.full #revisions_container .heading {
   padding: 8px 12px 5px;
   padding: 1px 10px 1px;
+  border: 1px solid transparent;
   /* margin: 5px 0; */
   cursor: pointer;
+}
+
+.issue.full #revisions_container .heading.active {
+  border: 1px dashed #9B9B9B;
 }
 
 .issue.full #revisions_container .heading span.light{
@@ -868,6 +873,12 @@ a.previous-revisions-link:hover {
   /* padding-top: 15px; */
 }
 
+@media screen and (min-width: 40.063rem) and (max-width: 64.07rem) {
+  .issue.full #revisions_container .revision-details {
+    max-width: 96% !important;
+  }
+}
+
 .issue.full #revisions_container .revision-details h6.detail-header {
   font-weight: 600;
 }
@@ -882,6 +893,10 @@ a.previous-revisions-link:hover {
 
 .issue.full #revisions_container .revision-details .time {
   margin-bottom: 5px;
+}
+
+.issue.full #revisions_container .revision-details .info .refid {
+  opacity: 0.5;
 }
 
 /** Editing **/

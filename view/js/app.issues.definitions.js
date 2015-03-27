@@ -86,7 +86,8 @@ isApp.Models.Revision = Backbone.Model.extend({
         author: 'billyg123',        // Revision author
         parentIssue: false,         // ID of rel. issue
         previousRevision: false,    // Set by backend to _id, set to JSON obj of details in collection parse
-        firstRevision: false        // Set by backend
+        firstRevision: false,        // Set by backend
+        active: false               // Set here
     },
     
     getTextCount: function(previous){
@@ -362,9 +363,11 @@ isApp.Collections = {
                     respObj['previousRevision'] = true;
                 }
                 
+                if (isApp.currentIssue && respObj['_id']['$oid'] == isApp.currentIssue.get('currentRevision')['$oid']) respObj['active'] = true;
+                
             }, this));
         
-            if (!response[response.length - 1]['firstRevision']) this.more = true;
+            if (response[response.length - 1] && !response[response.length - 1]['firstRevision']) this.more = true;
             else this.more = false;
         
             return response;
@@ -813,9 +816,9 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
         }
         
         /* Scale Icon */
-        var scale_icon = $('div.stats-container .scale');
+        var scale_icon = $('div.intro .scale');
         if (scale_icon.length > 0 && typeof scale_icon.data('tooltip') == 'undefined'){
-            scale_icon.data('tooltip', new Opentip(scale_icon, "Issue locale is <b>" + t.model.get('meta').get('locale') + "</b>", {tipJoint: "top right", offset: [5,7]} ));
+            scale_icon.data('tooltip', new Opentip(scale_icon, "Issue locale is <b>" + t.model.get('meta').get('locale') + "</b>", {tipJoint: "top left", offset: [5,7]} ));
         }
     
         /* Edit Button */ 

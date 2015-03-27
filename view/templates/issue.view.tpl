@@ -45,15 +45,17 @@
 <div class="intro main-subheader">
     <div class="row">
         <div class="large-12 columns">
-          <span class="inline">Viewing Issue</span>
-          <div class="right stats-container">
-          <span class="views-number"><b>{{ issue['scoring']['views'] }}</b> <em>Views</em>&nbsp;</span>
+          <span class="inline">
           <span class="scale icon-container">
             {#<a href="{{ root }}?scale={{ issue['meta']['scale'] }}">#}
             {% set scaleTitle = issue_scale_options(issue['meta']['scale'], stripIssues = True, localizeUser = issue, fullGeo = True, separateTitle = True)['title'] %}
             {{ scaleTitle[0] }} <span class="hide-for-small">{{ scaleTitle[1] }}</span>
             {#</a>#}
           </span>
+          </span>
+          <div class="right stats-container">
+          <span class="views-number"><b>{{ issue['scoring']['views'] }}</b> <em>Views</em>&nbsp;</span>
+          
           {%- if issue['visibilityExpanded'] -%}
             <span class="visibility-icon icon-container">{{ issue['visibilityExpanded']['title'][0] }}</span>
           {%- endif -%}

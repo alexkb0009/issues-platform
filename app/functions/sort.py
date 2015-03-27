@@ -45,8 +45,10 @@ def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, s
     city = "City"
     state = "State"
     zip = "District"
+    country = "National"
     if localizeUser:
         from app.utilities.generic_data import getStates
+        country = localizeUser['meta'].get('country') or 'United States'
         state = getStates(localizeUser['meta']['state'])
         city = localizeUser['meta']['city'].title()
         zip = localizeUser['meta']['zip']
@@ -64,7 +66,7 @@ def getIssuesScaleOptions(key = False, localizeUser = None, stripTags = False, s
         #{'key' : 1,   'title' : "Worldwide"},
         {
             'key' : 2,   
-            'title' : ("<i class='fa fa-fw fa-plane'></i>", "National", " <span class='light'>Issues</span>"), 
+            'title' : ("<i class='fa fa-fw fa-plane'></i>", country, " <span class='light'>Issues</span>"), 
             'class' : 'primary',
             'guest_enabled' : True
         },
