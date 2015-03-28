@@ -68,11 +68,13 @@ Backbone.sync = function(method, model, options){
 
 isApp.u.jsdiffExt = function(oldText, newText){
     if (typeof diffString == 'undefined') return false;
-    var diff = (diffString(oldText,newText)).match(/[\s\S]{0,100}(<ins>[^<>]+<\/ins>|<del>[\s\S][^<>]+<\/del>)+((\s[^<>\s]+)+\s){0,5}/g);
+    var fullDiff = diffString(oldText,newText);
+    var diff = (fullDiff).match(/[\s\S]{0,100}(<ins>[^<>]+<\/ins>|<del>[\s\S][^<>]+<\/del>)+((\s[^<>\s]+)+\s){0,5}/g);
+    console.log(diff);
     var diffText = '<ul class="diffText-items">';
     if (diff){
         for (var i = 0; i < diff.length; i++){
-            diffText += '<li>' + diff[i] + '</li>';
+            diffText += '<li><span class="char">' + fullDiff.indexOf(diff[i]) + '</span> : ' + diff[i] + '</li>';
         }
     }
     diffText += '</ul>';

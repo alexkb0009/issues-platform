@@ -918,6 +918,12 @@ a.previous-revisions-link:hover {
   border-bottom: none;
 }
 
+.issue.full #revisions_container .revision-details ul li .char {
+  display:inline-block;
+  background-color: rgb(255, 215, 141);
+  padding: 1px 5px 0px;
+}
+
 .issue.full #revisions_container .revision-details h6.detail-header {
   font-weight: 600;
 }
