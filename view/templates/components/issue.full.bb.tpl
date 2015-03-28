@@ -150,8 +150,8 @@
         <div class="description">
             <% if (previousRevision) { %>
                 <% if (previousRevision.title != title) { %>
-                    <small class="left">Title &nbsp;</small>
-                    <h6><%= diffString(previousRevision.title, title) %></h6>
+                    <small>Title</small>
+                    <h6 style="margin-top: -5px;"><%= diffString(previousRevision.title, title) %></h6>
                 <% } %>
                 <% if (previousRevision.description != description) { %>
                     <h6 class="detail-header">Introduction <span class="ext">/ Short Description</span></h6>
