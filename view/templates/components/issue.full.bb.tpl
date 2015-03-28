@@ -150,12 +150,12 @@
         <div class="description">
             <% if (previousRevision) { %>
                 <% if (previousRevision.title != title) { %>
-                    <small>Title</small>
-                    <h6 style="margin-top: -5px;"><%= diffString(previousRevision.title, title) %></h6>
+                    <h6 class="detail-header" style="margin-bottom: 3px;">Title</h6>
+                    <h6 style="margin-top: 0px;"><%= diffString(previousRevision.title, title) %></h6>
                 <% } %>
                 <% if (previousRevision.description != description) { %>
                     <h6 class="detail-header">Introduction <span class="ext">/ Short Description</span></h6>
-                    <p class="description"><%= isApp.u.jsdiffExt(previousRevision.description, description) %></p>
+                    <%= isApp.u.jsdiffExt(previousRevision.description, description) %>
                 <% } %>
                 <% if (previousRevision.body != body) { %>
                     <h6 class="detail-header">Body <span class="ext">/ Extended Description</span></h6>
@@ -164,7 +164,7 @@
             <% } else if (firstRevision) { %>
                 <h6 class="detail-header"><em>Original</em></h6>
                 <h6><%= title %></h6>
-                <p class="description"><%= description %></p>
+                <%= description %>
                 <span class=""><%= body %></span>
             <% } %>
         </div>
