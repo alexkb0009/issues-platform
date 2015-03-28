@@ -885,6 +885,27 @@ a.previous-revisions-link:hover {
   }
 }
 
+.issue.full #revisions_container .revision-details .description {
+  margin-bottom: 10px;
+}
+
+.issue.full #revisions_container .revision-details ul {
+  list-style-type: decimal;
+  margin-bottom: 12px;
+}
+
+.issue.full #revisions_container .revision-details ul li {
+  background: none;
+  cursor: initial;
+  border-bottom: 1px dotted rgba(0,0,0,0.2);
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.issue.full #revisions_container .revision-details ul li:last-child {
+  border-bottom: none;
+}
+
 .issue.full #revisions_container .revision-details h6.detail-header {
   font-weight: 600;
 }
