@@ -815,6 +815,12 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             visibility_icon.data('tooltip', new Opentip(visibility_icon, "Searchability: " + this.model.get('visibilityExpanded')['title'][1], {tipJoint: "top right", offset: [5,7]} ));
         }
         
+        /* Age Icon */
+        var age_icon = $('div.stats-container .age-number');
+        if (age_icon.length > 0 && typeof age_icon.data('tooltip') == 'undefined'){
+            age_icon.data('tooltip', new Opentip(age_icon, this.model.get('meta').get('age')[0] + ' ' + this.model.get('meta').get('age')[1] + ' since initial issue definition.', {tipJoint: "top right", offset: [5,7]} ));
+        }
+        
         /* Scale Icon */
         var scale_icon = $('div.intro .scale');
         if (scale_icon.length > 0 && typeof scale_icon.data('tooltip') == 'undefined'){

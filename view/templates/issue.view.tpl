@@ -56,9 +56,14 @@
           <div class="right stats-container">
           <span class="views-number"><b>{{ issue['scoring']['views'] }}</b> <em>Views</em>&nbsp;</span>
           
-          {%- if issue['visibilityExpanded'] -%}
+          {%- if issue.get('visibilityExpanded') -%}
             <span class="visibility-icon icon-container">{{ issue['visibilityExpanded']['title'][0] }}</span>
           {%- endif -%}
+          
+          {%- if issue['meta'].get('age') -%}
+            <span class="age-number icon-container"><i class="fa fa-fw fa-clock-o"></i> {{ issue['meta'].get('age')[0] }}</span>
+          {%- endif -%}
+          
           </div>
         </div>
     </div>

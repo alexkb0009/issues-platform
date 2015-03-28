@@ -123,11 +123,14 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
                 break
         
     if fullMode:
+        import datetime
         issueWellFormed['body'] = currentRevision['body']
         issueWellFormed['meta']['state'] = issue['meta'].get('state')
         issueWellFormed['meta']['city'] = issue['meta'].get('city')
         issueWellFormed['meta']['zip'] = issue['meta'].get('zip')
         issueWellFormed['currentRevision'] = currentRevision['_id']
+        age = datetime.datetime.now() - issue['meta'].get('created_date')
+        issueWellFormed['meta']['age'] = (age.days, "Days")
     
     if len(redactFields) > 0:
         for field in redactFields:

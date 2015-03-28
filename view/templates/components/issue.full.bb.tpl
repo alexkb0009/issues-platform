@@ -147,6 +147,7 @@
     </div>
 
     <div class="revision-details f-dropdown f-dropdown large" data-dropdown-content tabindex="-1" aria-hidden="true" id="rev_<%= _id['$oid'] %>">
+        
         <div class="description">
             <% if (previousRevision) { %>
                 <% if (previousRevision.title != title) { %>
@@ -170,8 +171,8 @@
         </div>
         
         <div class="time info">
-            <%= date.toTimeString() %><br>
-            <span class="refid"><b>refid:</b> <%= _id['$oid'] %></span>
+            <%= date.toTimeString() %>
+            <span class="refid right"><b>ref:</b> <%= _id['$oid'] %></span>
         </div>
     </div>
 

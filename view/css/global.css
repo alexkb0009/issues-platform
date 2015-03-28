@@ -681,7 +681,7 @@ div.main-body > .main-content.row.issue.full {
 
 /** Top Right Icons in Issue **/
 
-.stats-container span.visibility-icon {
+.stats-container span.icon-container {
   padding: 0 0 0 8px;
   border-left: 1px solid #eee;
   margin-left: 8px;
@@ -869,19 +869,31 @@ a.previous-revisions-link:hover {
 }
 
 .issue.full #revisions_container .revision-details {
-/*
-  width: 100%;
-  max-width: none;
-  float: left;
-  */
   padding: 15px 20px 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.075);
-  /* padding-top: 15px; */
 }
 
 @media screen and (min-width: 40.063rem) and (max-width: 64.07rem) {
   .issue.full #revisions_container .revision-details {
     max-width: 96% !important;
+  }
+}
+
+@media screen and (min-width: 64.063rem) and (max-width: 1239px) {
+  .issue.full #revisions_container .revision-details {
+    max-width: 650px !important;
+  }
+}
+
+@media screen and (min-width: 1240px) and (max-width: 1719px) {
+  .issue.full #revisions_container .revision-details {
+    max-width: 782px !important;
+  }
+}
+
+@media screen and (min-width: 1720px) {
+  .issue.full #revisions_container .revision-details {
+    max-width: 900px !important;
   }
 }
 
