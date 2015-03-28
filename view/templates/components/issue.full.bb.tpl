@@ -133,7 +133,7 @@
 
     <% if (!firstRevision && !previousRevision) { return; } // Skip those w/o worthwhile comparisons. %>
 
-    <div class="heading clearfix<% if (firstRevision){ %> first-revision<% } %><% if (active){ %> active<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:left; pip:bottom" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
+    <div class="heading clearfix<% if (firstRevision){ %> first-revision<% } %><% if (active){ %> active<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:left; pip: right" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
         <span class="left">
             <strong><%= date.getMonth() + 1 %> / <%= date.getDate() %> /</strong> <%= date.getFullYear() %>
         </span>
@@ -158,13 +158,13 @@
                 <% } %>
                 <% if (previousRevision.body != body) { %>
                     <h6 class="detail-header">Body <span class="ext">/ Extended Description</span></h6>
-                    <%= isApp.u.jsdiffExt(previousRevision.body, body) %>
+                    <span class=""><%= isApp.u.jsdiffExt(previousRevision.body, body) %></span>
                 <% } %>
             <% } else if (firstRevision) { %>
                 <% if (firstRevision){ %><h6 class="detail-header"><em>Original</em></h6><% } %>
                 <h6><%= title %></h6>
                 <p class="description"><%= description %></p>
-                <%= body %>
+                <span class=""><%= body %></span>
             <% } %>
         </div>
         

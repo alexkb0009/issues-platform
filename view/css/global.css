@@ -13,6 +13,11 @@ body {
   user-select: none;
 }
 
+.precontent {
+  white-space: pre-wrap;
+  white-space: pre-line;
+}
+
 /** Top Menu **/
 
 .top-bar-container {
@@ -854,7 +859,8 @@ a.previous-revisions-link:hover {
   content: "+";
 }
 
-.issue.full #revisions_container .heading:hover {
+.issue.full #revisions_container .heading:hover,
+.issue.full #revisions_container .heading.open {
   background: rgba(0,0,0,0.05);
 }
 
