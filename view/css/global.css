@@ -22,7 +22,7 @@ body {
 
 .top-bar-container {
   background: #2A424A;
-  box-shadow: 0 0 15px rgba(0,0,0,0.25);
+  /* box-shadow: 0 0 15px rgba(0,0,0,0.25); */
 }
 
 .top-bar { 
@@ -814,7 +814,7 @@ a.next-revisions-link,
 a.previous-revisions-link {
   font-size: 1rem;
   color: #000;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 a.next-revisions-link:hover,
@@ -920,7 +920,8 @@ a.previous-revisions-link:hover {
 
 .issue.full #revisions_container .revision-details ul li .char {
   display:inline-block;
-  background-color: rgb(255, 215, 141);
+  background-color: rgb(255, 227, 174);
+  border-radius: 3px;
   padding: 1px 5px 0px;
 }
 
