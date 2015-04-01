@@ -12,12 +12,13 @@
 ##     - Beaker 1.6.5
 ##          Session management
 ##     - wsgi-request-logger (Used 0.4.2)
-##     
-##     ## - pycrypto 2.6.1
-##     ##- beaker_mongodb (0.3)
 ##     - redis (2.10.3)
 ##     - beaker-extensions-0.2.0.dev0
-##     - CherryPy 
+##     - requests
+##     - lxml
+##     - Markdown
+##     - python-slugify
+##     - CherryPy (Only for dev/local installs)
 ##          WSGI-Compliant Multi-Threaded Webserver. May be replaced on production.
 ##
 ##   If you want to install this as a Windows service, run 'python installAsWinService.py install'
