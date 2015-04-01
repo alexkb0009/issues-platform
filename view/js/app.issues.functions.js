@@ -23,9 +23,9 @@ isApp.u.getCurrentIssuesEndpointURL = function(){
  */
 
 isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle){
-    if (typeof replace == 'undefined') replace = false;
-    if (typeof color == 'undefined') color = 'inherit';
-    if (typeof extraClassName == 'undefined') extraClassName = '';
+    if (typeof replace == 'undefined' || !replace) replace = false;
+    if (typeof color == 'undefined' || !color) color = 'inherit';
+    if (typeof extraClassName == 'undefined' || extraClassName) extraClassName = '';
     var rawElement;
     if (!(element instanceof jQuery)) element = $(element);
     var loadElem = document.createElement('i');
@@ -69,7 +69,7 @@ Backbone.sync = function(method, model, options){
 isApp.u.jsdiffExt = function(oldText, newText){
     if (typeof diffString == 'undefined') return false;
     var fullDiff = diffString(oldText,newText);
-    var diff = (fullDiff).match(/(\s?[^<>\s]+\s+){0,7}(<ins>[^<>]+<\/ins>|<del>[^<>]+<\/del>)+(\s?[^<>\s]+\s+){0,7}/g);
+    var diff = (fullDiff).match(/(\s?[^<>\s]+\s+){0,7}((<ins>[^<>]+<\/ins>|<del>[^<>]+<\/del>)+(\s?[^<>\s]+\s+){0,7})+/g);
     var diffText = '<ul class="diffText-items">';
     if (diff){
         for (var i = 0; i < diff.length; i++){

@@ -957,6 +957,7 @@ isApp.Views.RevisionsView = isApp.Views.CollectionViewBase.extend({
             this.nextLink = $('.revisions-title > .next-revisions-link');
             this.nextLink.on('click', $.proxy(function(){
                 this.collection.page += 1;
+                isApp.u.setLoaderInElem(this.$el, false, false, 'margin: 18px auto; display: block;');
                 this.collection.fetch();
             }, this));
         }
@@ -966,6 +967,7 @@ isApp.Views.RevisionsView = isApp.Views.CollectionViewBase.extend({
             this.prevLink = $('.revisions-title > .previous-revisions-link');
             this.prevLink.on('click', $.proxy(function(){
                 this.collection.page -= 1;
+                isApp.u.setLoaderInElem(this.$el, false, false, 'margin: 18px auto; display: block;');
                 this.collection.fetch();
             }, this));
         }

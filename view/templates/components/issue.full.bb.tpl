@@ -147,7 +147,10 @@
     </div>
 
     <div class="revision-details f-dropdown f-dropdown large" data-dropdown-content tabindex="-1" aria-hidden="true" id="rev_<%= _id['$oid'] %>">
-        
+        <div class="rev-rating icons-container right">
+            <i class="fa fa-fw fa-thumbs-up"></i> 
+            <i class="fa fa-fw fa-ban"></i>
+        </div>
         <div class="description">
             <% if (previousRevision) { %>
                 <% if (previousRevision.title != title) { %>

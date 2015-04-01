@@ -873,6 +873,10 @@ a.previous-revisions-link:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.075);
 }
 
+.issue.full #revisions_container .revision-details:not(.open) {
+  display: none;
+}
+
 @media screen and (min-width: 40.063rem) and (max-width: 64.07rem) {
   .issue.full #revisions_container .revision-details {
     max-width: 96% !important;
@@ -895,6 +899,27 @@ a.previous-revisions-link:hover {
   .issue.full #revisions_container .revision-details {
     max-width: 900px !important;
   }
+}
+
+.issue.full #revisions_container .revision-details .rev-rating.icons-container {
+  margin-right: -5px;
+}
+
+.issue.full #revisions_container .revision-details .rev-rating.icons-container i.fa.fa-fw {
+  opacity: 0.25;
+}
+
+.issue.full #revisions_container .revision-details .rev-rating.icons-container i.fa.fa-fw:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.issue.full #revisions_container .revision-details .rev-rating.icons-container i.fa.fa-fw.fa-ban:hover {
+  color: red;
+}
+
+.issue.full #revisions_container .revision-details .rev-rating.icons-container i.fa.fa-fw.fa-thumbs-up:hover {
+  color: green;
 }
 
 .issue.full #revisions_container .revision-details .description {
