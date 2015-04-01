@@ -1,4 +1,4 @@
-# README #
+# ReadMe #
 
 [_My Issues_](https://myissues.us) is a prototypical citizen-centric e-participation platform which aims to enhance the quantity and quality of communication between citizens and their representatives in legislature.
 
