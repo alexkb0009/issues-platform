@@ -608,6 +608,7 @@ div.main-body > .main-content.row.issue.full {
 .issue.full.editing input,
 .issue.full.editing textarea {
   margin-top: 5px;
+  color: #000;
 }
 
 .issue.full .subscribe-icon {
