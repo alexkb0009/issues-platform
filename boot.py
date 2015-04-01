@@ -72,7 +72,7 @@ def application():
     TEMPLATE_PATH.insert(0, './view/templates/')
     import app.template_setup
 
-    # Set Up Sessions
+    # Set Up Sessions 
     from beaker.middleware import SessionMiddleware
     # Common 
     session_opts = {
