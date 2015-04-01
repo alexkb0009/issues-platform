@@ -31,7 +31,8 @@ Module dependencies are listed in both the OpenShift-specific _setup.py_ file as
 
 ### Who do I talk to? ###
 
-* alexkb0009
+* Alex Balashov
+    * BitBucket: [alexkb0009](https://bitbucket.org/alexkb0009)
     * alex.balashov@gmail.com
     * alexander.balashov@the-bac.edu
     * http://akb.productions
