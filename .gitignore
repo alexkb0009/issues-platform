@@ -3,3 +3,4 @@ logs/*
 Thumbs.db
 *.bak
 web.config
+settings.ini

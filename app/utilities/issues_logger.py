@@ -9,7 +9,10 @@ class LogMachine():
 
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read('settings.ini');
+        try:
+            config.read('settings.default.ini');
+            config.read('settings.ini');
+        except: pass
         
         if os.environ.get('OPENSHIFT_LOGMACHINE') is None or os.environ.get('OPENSHIFT_LOGMACHINE') == True:
             self.writeLog = open(config['app_info']['log_dir'] + 'service.write.log', 'a+')

@@ -49,7 +49,12 @@ def application():
     # Setup Bottle
     from app.includes.bottle import Bottle, run, TEMPLATE_PATH, url, response, request, app as s_bottle_app
     globals.app = Bottle()
-    globals.app.config.load_config('./settings.ini') # Read config/settings, e.g. for MongoDB connection
+    try:
+        globals.app.config.load_config('./settings.default.ini') # Read config/settings, e.g. for MongoDB connection. Defaults first.
+        # Overwrite defaults w/ custom info. 
+        # If not using settings.ini, make sure all environment variables are set to overwrite "..." fields in settings.ini
+        globals.app.config.load_config('./settings.ini')
+    except: pass
 
     # Connect to MongoDB Instance
     from pymongo import MongoClient
@@ -64,6 +69,8 @@ def application():
     if os.environ.get('REDIS_DB_KEY') != None: globals.app.config['security.redis_password'] = os.environ.get('REDIS_DB_KEY')
     if os.environ.get('SENDGRID_USERNAME') != None: globals.app.config['email.sendgrid_api_user'] = os.environ.get('SENDGRID_USERNAME')
     if os.environ.get('SENDGRID_PASSWORD') != None: globals.app.config['email.sendgrid_api_key'] = os.environ.get('SENDGRID_PASSWORD')
+    if os.environ.get('EMAIL_REPLYTO') != None: globals.app.config['email.replyto_email'] = os.environ.get('EMAIL_REPLYTO')
+    if os.environ.get('GOOGLE_RECAPTCHA_KEY') != None: globals.app.config['security.google_recaptcha_key'] = os.environ.get('GOOGLE_RECAPTCHA_KEY')
         
     globals.mongo_client = MongoClient(globals.mongo_url)
     globals.db = globals.mongo_client[globals.app.config['security.mongo_db']]
