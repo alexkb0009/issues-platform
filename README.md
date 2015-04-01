@@ -2,7 +2,7 @@
 
 [_My Issues_](https://myissues.us) is a prototypical citizen-centric e-participation platform which aims to enhance the quantity and quality of communication between citizens and their representatives in legislature.
 
-This is the repository of the code which runs it! This readme is a brief overview of implementation details & requirements.
+This is the repository of the code which runs it! This readme is a brief overview of implementation details & requirements. Please browse through the repository's _Source_ if you would like to get acquainted with and understand the code a little.
 
 
 ### How do I get set up? ###
@@ -20,7 +20,7 @@ This is geared to run on OpenShift and thus has a couple of OpenShift-specific f
 * setup.py
 * wsgi.py
 
-The real 'entry-point' is _boot.py_, which initializes and launches the application. It is enough to simply run that file to initialize the application - it is configured to use CherryPy Python server by default when run directly or as service. To run the application locally, on whichever port is configured in your settings.ini, simply type in your command-line: `python boot.py` from the directory _boot.py is in. Files such as wsgi.py are run by OpenShift which simply run _boot.py_ but rely on Apache's mod_wsgi instead of CherryPy server.
+The real 'entry-point' is _boot.py_, which initializes and launches the application. It is enough to simply run that file to initialize the application - it is configured to use CherryPy Python server by default when run directly or as service. To run the application locally, on whichever port is configured in your settings.ini, simply type in your command-line: `python boot.py` from the directory _boot.py_ is in. Files such as wsgi.py are run by OpenShift which simply run _boot.py_ but rely on Apache's mod_wsgi instead of CherryPy server.
 
 Though now not particularly recommended, it is possible to install on Windows as a service and then manage it like all others in your _services.msc_. This requires PyWin32. May be installed by running `python installAsWinService.py install` from root directory of application.
 
