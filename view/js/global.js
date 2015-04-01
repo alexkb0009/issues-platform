@@ -38,7 +38,7 @@ $(window).load(function(){
 });
 
 function resizeBody(){
-  app.cd.innerBodyMinHeight = Math.max(window.innerHeight - app.ce.footer.outerHeight() - app.ce.topBar.outerHeight(), 360 + (app.ce.mainBody.children('div.main-subheader').outerHeight() || 0));
+  app.cd.innerBodyMinHeight = Math.max(Math.max(window.innerHeight, app.ce.body.height()) - app.ce.footer.outerHeight() - app.ce.topBar.outerHeight(), 360 + (app.ce.mainBody.children('div.main-subheader').outerHeight() || 0));
     app.ce.mainBody.css('min-height', app.cd.innerBodyMinHeight);
 }
 

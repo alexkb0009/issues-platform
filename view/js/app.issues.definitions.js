@@ -971,6 +971,8 @@ isApp.Views.RevisionsView = isApp.Views.CollectionViewBase.extend({
                 this.collection.fetch();
             }, this));
         }
+        
+        resizeBody();
     },
     
     initialize: function(options){

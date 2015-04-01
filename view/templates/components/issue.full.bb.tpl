@@ -133,7 +133,7 @@
 
     <% if (!firstRevision && !previousRevision) { return; } // Skip those w/o worthwhile comparisons. %>
 
-    <div class="heading clearfix<% if (firstRevision){ %> first-revision<% } %><% if (active){ %> active<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:left; pip: bottom" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
+    <div class="heading clearfix<% if (firstRevision){ %> first-revision<% } %><% if (active){ %> active<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:left; pip: bottom;" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
         <span class="left">
             <strong><%= date.getMonth() + 1 %> / <%= date.getDate() %> /</strong> <%= date.getFullYear() %>
         </span>

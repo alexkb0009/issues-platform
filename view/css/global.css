@@ -838,10 +838,12 @@ a.previous-revisions-link:hover {
   border: 1px solid transparent;
   /* margin: 5px 0; */
   cursor: pointer;
+  border-radius: 3px;
 }
 
 .issue.full #revisions_container .heading.active {
-  border: 1px dashed #9B9B9B;
+  border: 1px solid #cfcfcf;
+  background-color: #E3E5EC;
 }
 
 .issue.full #revisions_container .heading span.light{
@@ -872,6 +874,17 @@ a.previous-revisions-link:hover {
 .issue.full #revisions_container .revision-details {
   padding: 15px 20px 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.075);
+  margin-bottom: 15px;
+}
+
+.issue.full #revisions_container .revision-details.f-dropdown.drop-left:before {
+  top: auto;
+  bottom: 8px;
+}
+
+.issue.full #revisions_container .revision-details.f-dropdown.drop-left:after {
+  top: auto;
+  bottom: 5px;
 }
 
 .issue.full #revisions_container .revision-details:not(.open) {
