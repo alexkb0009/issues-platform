@@ -9,11 +9,11 @@ This is the repository of the code which runs it! This readme is a brief overvie
 
 #### Minimum Requirements ####
 
-To run this platform on a machine, at minimum, Windows or Linux with a Python (3.3+) installation and dependent modules are required, along with access to either a local or remotely-hosted (e.g. through MongoLabs) MongoDB instance. If running on one machine, in your _settings.ini_ file set `sessions_type` to `cookie`; if running multiple instances (e.g. in scalable cloud hosting), access to a redis or memcached (untested) instance are required for session storage, setting `session_type` appropriately. 
+To run this platform on a machine, at minimum, Windows or Linux with a Python (3.3+) installation and dependent modules are required, along with access to either a local or remotely-hosted (e.g. through MongoLabs) MongoDB instance. If running on one machine, in your _settings.ini_ file set `sessions_type` to `file` (it will then use the _tmp_data_ directory for storing sessions); if running multiple instances (e.g. in scalable cloud hosting), access to a redis or memcached (untested) instance are required for session storage, setting `sessions_type` appropriately. 
 
 #### Running ####
 
-This is geared to run on OpenShift and thus has a couple of OpenShift-specific files/directory which are not really needed for development  or running on local. These include:
+This is geared to run on OpenShift and thus has a couple of OpenShift-specific files/directory which are not really needed for development  or running on own/local machine. These include:
 
 * .openshift
 * requirements.txt
