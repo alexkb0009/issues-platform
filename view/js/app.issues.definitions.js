@@ -466,8 +466,10 @@ isApp.Views.IssueView = Backbone.View.extend({
         this.$el.html(this.template( this.model.toJSON() ));
         
         if (minimize){ 
-          this.toggleDescriptionOpen(null, false); // evt = null, transition = false
+          this.toggleDescriptionOpenRaw(null, false); // evt = null, transition = false
         }
+        
+        this.toggleDescriptionOpen = _.throttle(this.toggleDescriptionOpenRaw, 500, {trailing: false});
         
         this.stickit(this.model.get('meta'), {
             '.subscribed-container' : {
@@ -508,7 +510,7 @@ isApp.Views.IssueView = Backbone.View.extend({
         return this;
     },
     
-    toggleDescriptionOpen: function(evt, transition){
+    toggleDescriptionOpenRaw : function(evt, transition){
         var descriptionBox  = this.$el.find('.description');
         if (typeof transition == 'undefined') transition = true;
         if (descriptionBox.hasClass('closed')){
