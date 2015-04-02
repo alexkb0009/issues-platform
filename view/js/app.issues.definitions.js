@@ -458,12 +458,16 @@ isApp.Views.RevisionView = Backbone.View.extend({
             }
         }
         
+        $('.active-versus').removeClass('active-versus');
+        this.$el.children('.heading').addClass('active-versus');
+        
         app.ce.issueContentContainer.children('.revision-view-label').append('<i class="fa fa-fw fa-times revert-to-original right"></i>');
         app.ce.issueContentContainer.children('.revision-view-label').children('i.revert-to-original').on('click', function(){
             app.ce.issueContentContainer.children('.revision-view-label').remove();
             if (app.ce.issueTitle) app.ce.issueTitle.html(app.ce.issueTitle.data('realContent'));
             if (app.ce.issueDescription) app.ce.issueDescription.html(app.ce.issueDescription.data('realContent'));
             if (app.ce.issueBody) app.ce.issueBody.html(app.ce.issueBody.data('realContent'));
+            $('.active-versus').removeClass('active-versus');
         });
     }
     

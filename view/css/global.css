@@ -852,6 +852,11 @@ a.previous-revisions-link:hover {
   background-color: #E3E5EC;
 }
 
+.issue.full #revisions_container .heading.active-versus {
+  border: 1px solid #797878;
+  background-color: #BABBBD;
+}
+
 .issue.full #revisions_container .heading span.light{
   font-weight: 300;
 }
