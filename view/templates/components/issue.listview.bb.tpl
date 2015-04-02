@@ -22,7 +22,7 @@
     </div>
     <div class="large-11 medium-11 small-12 columns">
       <div class="content-container">
-        <h5 class="issue-title clearfix">
+        <h5 class="issue-title clearfix noselect">
             <a class="title" href="<%= path %>"><%= title %></a>
             <span class="icons right">
               <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
