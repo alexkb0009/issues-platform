@@ -79,9 +79,9 @@ isApp.Models.Revision = Backbone.Model.extend({
 
     defaults: {
         _id : { '$oid' : null },
-        title: 'A Title',
-        description: 'A description.',
-        body: 'A body ...',
+        title: '',
+        description: '',
+        body: '',
         date: new Date(),
         author: 'billyg123',        // Revision author
         parentIssue: false,         // ID of rel. issue
@@ -417,6 +417,10 @@ isApp.Views.RevisionView = Backbone.View.extend({
     className: "revision listview",
     tagName: "li",
     
+    events: {
+        "click .revision-view-inline" : "setRevision"
+    },
+    
     render: function(obj){
         this.$el.html(this.template( this.model.toJSON() ));
         var textCountDifElem = this.$el.find('.text-count-difference'); 
@@ -430,6 +434,37 @@ isApp.Views.RevisionView = Backbone.View.extend({
 
         this.render();
         
+    },
+    
+    setRevision : function(e){
+    
+        if (app.ce.issueTitle && diffString){
+            app.ce.issueContentContainer.children('.revision-view-label').remove();
+            if (!this.$el.children('.heading').hasClass('active')){
+                app.ce.issueContentContainer.prepend('<div class="revision-view-label">viewing difference of <b>revision</b> @ ' + this.model.get('date') + ' to <b>current</b> </strong>');
+            } 
+            app.ce.issueTitle.html(diffString((this.model.get('title') || ""), app.ce.issueTitle.data('realContent')));
+        }
+        
+        if (app.ce.issueDescription && diffString){
+            app.ce.issueDescription.html(diffString((this.model.get('description') || ""), app.ce.issueDescription.data('realContent')));
+        }
+        
+        if (app.ce.issueBody && isApp.currentIssue && diffString){
+            if (!this.$el.children('.heading').hasClass('active')){
+                app.ce.issueBody.html(diffString((this.model.get('body') || ""), isApp.currentIssue.get('body')) + '<br><br>');
+            } else {
+                app.ce.issueBody.html(app.ce.issueBody.data('realContent'));
+            }
+        }
+        
+        app.ce.issueContentContainer.children('.revision-view-label').append('<i class="fa fa-fw fa-times revert-to-original right"></i>');
+        app.ce.issueContentContainer.children('.revision-view-label').children('i.revert-to-original').on('click', function(){
+            app.ce.issueContentContainer.children('.revision-view-label').remove();
+            if (app.ce.issueTitle) app.ce.issueTitle.html(app.ce.issueTitle.data('realContent'));
+            if (app.ce.issueDescription) app.ce.issueDescription.html(app.ce.issueDescription.data('realContent'));
+            if (app.ce.issueBody) app.ce.issueBody.html(app.ce.issueBody.data('realContent'));
+        });
     }
     
 });
@@ -973,11 +1008,22 @@ isApp.Views.RevisionsView = isApp.Views.CollectionViewBase.extend({
                 this.collection.fetch();
             }, this));
         }
+       
         
     },
     
     initialize: function(options){
         this.initializeInitial(options);
+        
+        window.app.ce.issueContentContainer = $('#current_issue .large-8');
+        window.app.ce.issueDescription = app.ce.issueContentContainer.find('.description');
+        window.app.ce.issueBody = app.ce.issueContentContainer.find('article');
+        window.app.ce.issueTitle = app.ce.issueContentContainer.find('.issue-title > .title-text');
+        
+        app.ce.issueTitle.data('realContent', app.ce.issueTitle.html());
+        app.ce.issueDescription.data('realContent', app.ce.issueDescription.html());
+        app.ce.issueBody.data('realContent', app.ce.issueBody.html());
+        
         this.collection.on('sync', this.render, this);
     },
 

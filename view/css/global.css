@@ -710,6 +710,12 @@ div.main-body > .main-content.row.issue.full {
 
 }
 
+/** Discussions **/
+
+.issue.full #disqus_thread {
+  min-height: 328px;
+}
+
 .issue.full .info-aside.large-4 {
   padding-top: 9px;
 }
@@ -968,11 +974,27 @@ a.previous-revisions-link:hover {
   font-weight: 600;
 }
 
-.issue.full #revisions_container .revision-details ins {
+.issue.full .content-container .revision-view-label {
+  padding-top: 3px;
+  border-bottom: 1px dotted #aaa;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+}
+
+.issue.full  .revision-view-label .revert-to-original {
+  padding-top: 3px;
+}
+
+.issue.full .revision-view-label .revert-to-original:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.issue.full ins {
   background-color: rgb(192, 255, 192);
 }
 
-.issue.full #revisions_container .revision-details del {
+.issue.full del {
   background-color: rgb(255, 206, 192);
 }
 

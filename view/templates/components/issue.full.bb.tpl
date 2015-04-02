@@ -4,22 +4,26 @@
     
     <div class="large-8 xlarge-9 columns">
         <div class="content-container page clearfix">
+        
             <div class="large-12 columns">
                 <h2 class="major section-header issue-title">
-                    <%= title %>
+                    <span class="title-text"><%= title %></span>
                     <span class="icons">
                         <span class="subscribed-container"></span>
                     </span>
                 </h2>
             </div>
+            
             <div class="large-11 small-10 columns">
                 <div class="description">
                     <%= description %>
                 </div>
             </div>
+            
             <div class="large-1 small-2 columns right description-dropdown-icon-container">
                  <i class="open-icon fa fa-fw fa-angle-up right" title="Show/hide description"></i>
             </div>
+            
         </div>
         
         <% if (body.length > 0) { %>
@@ -47,8 +51,27 @@
                     <i class="fa fa-fw fa-pencil"></i> Revise
                 </a>
             </div>
-            <!--<div class="large-3 columns text-right views-number"></div>-->
+            
         </div>
+        
+        <div id="disqus_thread">
+        {% if not user %}
+        <div class="panel" style="padding-bottom: 16px;">
+            <h6> Please sign-in to discuss or comment. </h6> 
+        </div>
+        {% endif %}
+        </div>
+           
+        {% if user %}
+        <%    
+            var disqus_shortname = 'myissuesapp';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        %>
+        {% endif %}
         
         <div class="row issue-footer-row">
             <div class="large-12 columns">
@@ -175,6 +198,7 @@
         
         <div class="time info">
             <%= date.toTimeString() %>
+            <% if (!active){ %><a class="revision-view-inline right">&nbsp; View difference with current revision in-line</a><% } %>
             <span class="refid right"><b>ref:</b> <%= _id['$oid'] %></span>
         </div>
     </div>
