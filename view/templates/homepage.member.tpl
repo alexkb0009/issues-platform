@@ -54,7 +54,23 @@
 {% block content %}
 
 <div class="main-content row">
-    <div class="large-8{% if user %}  xlarge-9{% endif %} columns issues-section">
+
+    {% if not user %}
+    
+    {# Welcome block if not logged in  #}
+    
+    <div class="large-6 columns">
+      <h2>Find, Improve what matters.</h2>
+      <hr class="smaller">
+      <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
+      If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>
+      <img src="/img/large/front_diagram_issues_sorted_2.jpg">
+      
+    </div>
+    
+    {% endif %}
+
+    <div class="{% if user %}large-8 xlarge-9{% else %}large-6{% endif %} columns issues-section">
     
         {# Title w/ sorting opts #}
     
@@ -168,17 +184,6 @@
         <div id="my_issues"></div>
     </div>
     
-    {% else %}      
-    
-    {# Or login block if not #}
-    
-    <div class="large-4 columns">
-      {#% include 'components/login-block.tpl' %#}
-      <h2>Welcome!</h2>
-      <hr class="smaller">
-      <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
-      If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>
-    </div>
     
     {% endif %}
     

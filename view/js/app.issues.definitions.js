@@ -498,6 +498,9 @@ isApp.Views.IssueView = Backbone.View.extend({
         // Else minimize if small screen or is set in init classSize.
         if (typeof obj == 'undefined' && (this.className.indexOf('min') >= 0 || window.innerWidth <= 600)) minimize = true;
         
+        // Or if guest.
+        if (!isApp.me.get('logged_in') && this.$el.hasClass('listview')) minimize = true;
+        
         this.$el.html(this.template( this.model.toJSON() ));
         
         if (minimize){ 
