@@ -7,14 +7,16 @@ DISQUS_PUBLIC_KEY = app.config['discussions.disqus_public_key']
  
 def get_disqus_sso_js(user):
     if not user: return ''
+    import hashlib
     session = request.environ['beaker.session']
     currentAuthToken = session.get('disqus_token')
-    print('Current token:' + str(currentAuthToken))
 
     if currentAuthToken is None:
         currentAuthToken = get_new_disqus_message_token(user)
         session['disqus_token'] = currentAuthToken
         session.save()
+    
+    hasher = hashlib.md5()
  
 # return a script tag to insert the sso message
     return """
@@ -29,7 +31,7 @@ def get_disqus_sso_js(user):
     }
     """ % dict(
         auth_token=currentAuthToken,
-        pub_key=DISQUS_PUBLIC_KEY,
+        pub_key=DISQUS_PUBLIC_KEY
     )
     
 def get_new_disqus_message_token(user):
@@ -40,11 +42,16 @@ def get_new_disqus_message_token(user):
     import hashlib
     import time
     
+    # Gravatar
+    gravatarHash = hashlib.md5(user['email'].strip().lower().encode('utf-8')).hexdigest()
+    gravatarURL = 'http://www.gravatar.com/avatar/' + gravatarHash + '.jpg'
+    
     # create a JSON packet of our data attributes
     data = dumps({
-        'id': str(user['_id']),
-        'username': user['firstname'] + ' ' + user['lastname'],
-        'email': user['email'],
+        'id' : str(user['_id']),
+        'username' : user['firstname'] + ' ' + user['lastname'],
+        'email' : user['email'],
+        'avatar' : gravatarURL
     })
     # encode the data to base64
     message = base64.b64encode(data.encode('utf-8')).decode('utf-8')
@@ -52,6 +59,5 @@ def get_new_disqus_message_token(user):
     timestamp = int(time.time())
     # generate our hmac signature
     sig = hmac.HMAC(DISQUS_SECRET_KEY.encode('utf-8'), ('%s %s' % (message, timestamp)).encode('utf-8'), hashlib.sha1).hexdigest()
-    
     return message + ' ' + sig + ' ' + str(timestamp)
     
