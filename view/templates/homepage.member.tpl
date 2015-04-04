@@ -60,7 +60,9 @@
     {# Welcome block if not logged in  #}
     
     <div class="large-12 xlarge-8 columns">
-      <h2>Find, Improve what matters.</h2>
+      <h1 style="font-weight: 700; margin: 15px 0 0;">Politics : Nice and Accessible</h1>
+      <h4>We're all affected by common sets of issues. Lets build solutions to them, together.</h4>
+      <h3>Today</h3>
       <hr class="smaller">
       
       <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary">

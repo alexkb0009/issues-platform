@@ -60,7 +60,7 @@
         
         <div id="disqus_thread">
         {% if not user %}
-            <div class="panel page" style="padding: 12px 12px 4px;margin-top: 12px; border: 3px dashed rgba(0,0,0,0.33);">
+            <div style="padding: 12px 12px 4px;margin-top: 12px; border: 3px dashed rgba(0,0,0,0.33);">
                 <h5 class="subheader"> Please sign-in to revise, discuss, or propose a solution or response to this issue. </h5> 
             </div>
         {% endif %}
@@ -71,6 +71,7 @@
         <%  
             
             var disqus_shortname = 'myissuesapp';
+            var disqus_identifier = '{{ site_domain ~ path() }}';
             (function() {
                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';

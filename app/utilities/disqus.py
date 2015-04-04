@@ -8,10 +8,11 @@ DISQUS_PUBLIC_KEY = app.config['discussions.disqus_public_key']
 def get_disqus_sso_js(user):
     if not user: return ''
     import hashlib
+    import datetime
     session = request.environ['beaker.session']
     currentAuthToken = session.get('disqus_token')
 
-    if currentAuthToken is None:
+    if currentAuthToken is None or (datetime.datetime.now() - datetime.datetime.fromtimestamp(int(currentAuthToken.split()[2]))).total_seconds() > 30 * 60:
         currentAuthToken = get_new_disqus_message_token(user)
         session['disqus_token'] = currentAuthToken
         session.save()
