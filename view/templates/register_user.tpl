@@ -15,22 +15,15 @@
   </style>
 {%- endblock %} 
 
-{% block sub_menu_block -%}
+{% block sub_menu_messages -%}
   {% if status == 'error' %}
-  <div class="intro main-subheader warning">
-    <div class="row">
-      <div class="large-12 columns">
-        <h4>Error</h4>
-      </div>
-    </div>
+  <div class="warning main-subheader alert-box" data-alert>
+      <h4>Error</h4>
+      <a href="#" class="close" style="top: 20px;">×</a>
   </div>
   {% elif status == 'registered' %}
-  <div class="intro main-subheader confirmation">
-    <div class="row">
-      <div class="large-12 columns">
-        You are now registered.
-      </div>
-    </div>
+  <div class="main-subheader alert-box confirmation success" data-alert>
+      You are now registered.
   </div>
   {% else %}
   <div class="intro main-subheader">

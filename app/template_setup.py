@@ -1,6 +1,7 @@
 from app.includes.bottle import Jinja2Template, url, request
 from app.state import app
 from app.functions import sort, issues
+from app.functions.user import getGravatar
 from app.utilities import disqus
 
 Jinja2Template.defaults = {
@@ -12,6 +13,7 @@ Jinja2Template.defaults = {
     'issue_scale_options' : sort.getIssuesScaleOptions,
     'issue_sort_options' : sort.getIssuesSortOptions,
     'issue_visibility_options' : issues.getIssueVisibilityOptions,
+    'gravatar' : getGravatar,
     'disqus_sso_js' : disqus.get_disqus_sso_js
     
 }

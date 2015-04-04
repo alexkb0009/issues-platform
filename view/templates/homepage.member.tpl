@@ -66,7 +66,7 @@
       <hr class="smaller">
       
       <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary">
-      <div class="panel first-info" style="margin-top: -80px; display: block; z-index: 4; position: relative;">
+      <div class="panel first-info" style="margin-top: 15px; display: block; z-index: 4; position: relative;">
         <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
         If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>
       </div>

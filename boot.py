@@ -71,6 +71,7 @@ def application():
     if os.environ.get('SENDGRID_USERNAME')          != None:   globals.app.config['email.sendgrid_api_user']         =   os.environ.get('SENDGRID_USERNAME')
     if os.environ.get('SENDGRID_PASSWORD')          != None:   globals.app.config['email.sendgrid_api_key']          =   os.environ.get('SENDGRID_PASSWORD')
     if os.environ.get('EMAIL_REPLYTO')              != None:   globals.app.config['email.replyto_email']             =   os.environ.get('EMAIL_REPLYTO')
+    if os.environ.get('GLOBAL_BCC_EMAIL')           != None:   globals.app.config['email.global_bcc_email']          =   os.environ.get('GLOBAL_BCC_EMAIL')
     
     if os.environ.get('GOOGLE_RECAPTCHA_KEY')       != None:   globals.app.config['security.google_recaptcha_key']   =   os.environ.get('GOOGLE_RECAPTCHA_KEY')
     

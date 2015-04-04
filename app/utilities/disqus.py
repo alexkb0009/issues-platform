@@ -42,17 +42,15 @@ def get_new_disqus_message_token(user):
     from json import dumps
     import hashlib
     import time
-    
-    # Gravatar
-    gravatarHash = hashlib.md5(user['email'].strip().lower().encode('utf-8')).hexdigest()
-    gravatarURL = 'http://www.gravatar.com/avatar/' + gravatarHash + '.jpg'
+    from app.functions.user import getGravatar
+
     
     # create a JSON packet of our data attributes
     data = dumps({
         'id' : str(user['_id']),
         'username' : user['firstname'] + ' ' + user['lastname'],
         'email' : user['email'],
-        'avatar' : gravatarURL
+        'avatar' : getGravatar(user)
     })
     # encode the data to base64
     message = base64.b64encode(data.encode('utf-8')).decode('utf-8')

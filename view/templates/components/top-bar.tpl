@@ -31,7 +31,7 @@
       {# <li><a href="#">Right Button Active</a></li> #}
       {% if user %}
       <li class="has-dropdown">
-        <a href="#"><i class="fa fa-user fa-fw"></i>My Account</a>
+        <a href="#">{# <i class="fa fa-user fa-fw"></i> #}<img src="{{ gravatar(user, 27) }}" style="height: 27px; width: 27px; border-radius: 30%; margin-right: 10px;">My Account</a>
         <ul class="dropdown">
           <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a></li>
           <li><a href="{{ root }}do/logout"><i class="fa fa-power-off fa-fw"></i>Log Out</a></li>
