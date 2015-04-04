@@ -2,7 +2,7 @@
 
     <% this.$el.addClass('row').addClass('issue').addClass('full') %>
     
-    <div class="large-8 xlarge-9 columns">
+    <div class="large-8 xlarge-9 columns right">
         <div class="content-container page clearfix">
         
             <div class="large-12 columns">
@@ -57,7 +57,6 @@
         </div>
         {% endif %}
         
-        
         <div id="disqus_thread">
         {% if not user %}
             <div style="padding: 12px 12px 4px;margin-top: 12px; border: 3px dashed rgba(0,0,0,0.33);">
@@ -79,6 +78,7 @@
             })();
         %>
         {% endif %}
+
         
         <div class="row issue-footer-row">
             <div class="large-12 columns">
@@ -87,7 +87,7 @@
         </div>
     </div>
     
-    <div class="large-4 xlarge-3 columns info-aside">
+    <div class="large-4 xlarge-3 columns info-aside left">
         
         <!--<h2 style="margin: 2px 0 5px;">Vote</h2>-->
         <h4 class="major section-header voting-title">Importance of Issue</h4>
@@ -157,13 +157,19 @@
         
     </div>
     
+    {#
+    <div class="large-12 columns disqus-container">
+        
+    </div>
+    #}
+    
 </script>
 
 <script id="backbone_revision_template" type="text/template">
 
     <% if (!firstRevision && !previousRevision) { return; } // Skip those w/o worthwhile comparisons. %>
 
-    <div class="heading clearfix<% if (firstRevision){ %> first-revision<% } %><% if (active){ %> active<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:left; pip: bottom;" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
+    <div class="heading clearfix<% if (firstRevision){ %> first-revision<% } %><% if (active){ %> active<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:right; pip: bottom;" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
         <span class="left">
             <strong><%= date.getMonth() + 1 %> / <%= date.getDate() %> /</strong> <%= date.getFullYear() %>
         </span>
@@ -215,6 +221,10 @@
 <script id="backbone_issue_template_full_edit" type="text/template">
 
     <% this.$el.addClass('row').addClass('issue').addClass('full').addClass('editing') %>
+    
+    {% set extraClasses = "" %}
+    {% include 'components/_aside.edit-guidelines.tpl' %}
+    
     <form id="editform" data-abide>
     <div class="large-8 columns">
         <h3 class="edit-title"><i class="fa fa-fw fa-arrow-circle-left cancelbutton" style="cursor: pointer;"></i> Editing <span class="ext"><%= title %></span></h3>
@@ -280,8 +290,5 @@
     </div>
     </form>
     
-    {% set extraClasses = "" %}
-    {% include 'components/_aside.edit-guidelines.tpl' %}
-
     
 </script>
