@@ -675,6 +675,10 @@ div.main-body > .main-content.row.issue.full {
   font-size: 1.25em;
 }
 
+.issue.full .issue-footer-row a.button {
+  margin-bottom: 0;
+}
+
 .issue.full.editing .issue-footer-row a.button,
 .issue.full.editing .issue-footer-row button {
   margin-bottom: 10px;

@@ -18,3 +18,26 @@ div.main-subheader h4 {
   border-bottom: 1px dotted rgba(0,0,0,0.7);
   padding-bottom: 7px;
 }
+
+
+div.main-content.row .large-12.xlarge-8 img.primary {
+  display: block;
+  margin: -7px auto 0;
+  max-width: 990px;
+}
+
+div.main-content.row .large-12.xlarge-8 div.first-info {
+  margin-top: -80px; 
+  display: block; 
+  z-index: 4; 
+  position: relative;
+}
+
+@media screen and (max-width: 64.07rem){
+  div.main-content.row .large-12.xlarge-8 img.primary {
+    max-width: 100%;
+  }
+  div.main-content.row .large-12.xlarge-8 div.first-info {
+    margin-top: -25px; 
+  }
+}

@@ -38,6 +38,8 @@
         </div>
         <% } %>
         
+        
+        {% if user %}
         <div class="row issue-footer-row small-columns">
         
             <div class="large-10 small-8 columns">
@@ -53,14 +55,17 @@
             </div>
             
         </div>
+        {% endif %}
+        
         
         <div id="disqus_thread">
         {% if not user %}
-        <div class="panel" style="padding-bottom: 16px;">
-            <h6> Please sign-in to discuss or comment. </h6> 
-        </div>
+            <div class="panel page" style="padding: 12px 12px 4px;margin-top: 12px; border: 3px dashed rgba(0,0,0,0.33);">
+                <h5 class="subheader"> Please sign-in to revise, discuss, or propose a solution or response to this issue. </h5> 
+            </div>
         {% endif %}
         </div>
+        
            
         {% if user %}
         <%  
