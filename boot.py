@@ -64,20 +64,26 @@ def application():
     elif os.environ.get('MONGODB_DB_URL')           != None:   globals.app.config['security.mongo_url']              =   os.environ.get('MONGODB_DB_URL')
     if os.environ.get('OPENSHIFT_MONGODB_DB_DB')    != None:   globals.app.config['security.mongo_db']               =   os.environ.get('OPENSHIFT_MONGODB_DB_DB')
     elif os.environ.get('MONGODB_DB_DB')            != None:   globals.app.config['security.mongo_db']               =   os.environ.get('MONGODB_DB_DB')
+    
     if os.environ.get('REDIS_DB_URL')               != None:   globals.app.config['security.redis_url']              =   os.environ.get('REDIS_DB_URL')
     if os.environ.get('REDIS_DB_KEY')               != None:   globals.app.config['security.redis_password']         =   os.environ.get('REDIS_DB_KEY')
+    
     if os.environ.get('SENDGRID_USERNAME')          != None:   globals.app.config['email.sendgrid_api_user']         =   os.environ.get('SENDGRID_USERNAME')
     if os.environ.get('SENDGRID_PASSWORD')          != None:   globals.app.config['email.sendgrid_api_key']          =   os.environ.get('SENDGRID_PASSWORD')
     if os.environ.get('EMAIL_REPLYTO')              != None:   globals.app.config['email.replyto_email']             =   os.environ.get('EMAIL_REPLYTO')
+    
     if os.environ.get('GOOGLE_RECAPTCHA_KEY')       != None:   globals.app.config['security.google_recaptcha_key']   =   os.environ.get('GOOGLE_RECAPTCHA_KEY')
+    
+    if os.environ.get('DISQUS_PRIVATE_KEY')         != None:   globals.app.config['discussions.disqus_private_key']  =   os.environ.get('DISQUS_PRIVATE_KEY')
+    if os.environ.get('DISQUS_PUBLIC_KEY')          != None:   globals.app.config['discussions.disqus_public_key']   =   os.environ.get('DISQUS_PUBLIC_KEY')
+    if os.environ.get('DISQUS_ACCESS_NAME')         != None:   globals.app.config['discussions.disqus_access_name']  =   os.environ.get('DISQUS_ACCESS_NAME')
+    if os.environ.get('DISQUS_ACCESS_TOKEN')        != None:   globals.app.config['discussions.disqus_access_token']   =   os.environ.get('DISQUS_ACCESS_TOKEN')
      
+    # Set up MongoDB connection
     globals.mongo_url = globals.app.config['security.mongo_url']
     globals.mongo_client = MongoClient(globals.mongo_url)
     globals.db = globals.mongo_client[globals.app.config['security.mongo_db']]
     
-    # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
-    TEMPLATE_PATH.insert(0, './view/templates/')
-    import app.template_setup
 
     # Set Up Sessions 
     from beaker.middleware import SessionMiddleware
@@ -122,6 +128,10 @@ def application():
 
     # Schedule Any Tasks
     import app.schedule_tasks
+    
+    # Setup Jinja2 Templates. Jinja2 appears to be nearly identical to Twig, so it was chosen.
+    TEMPLATE_PATH.insert(0, './view/templates/')
+    import app.template_setup
 
     # Route Up
     import app.routing

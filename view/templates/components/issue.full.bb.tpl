@@ -63,7 +63,8 @@
         </div>
            
         {% if user %}
-        <%    
+        <%  
+            
             var disqus_shortname = 'myissuesapp';
             (function() {
                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

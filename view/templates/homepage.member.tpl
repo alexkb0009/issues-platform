@@ -59,18 +59,21 @@
     
     {# Welcome block if not logged in  #}
     
-    <div class="large-6 columns">
+    <div class="large-12 xlarge-8 columns">
       <h2>Find, Improve what matters.</h2>
       <hr class="smaller">
-      <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
-      If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>
-      <img src="/img/large/front_diagram_issues_sorted_2.jpg">
+      
+      <img src="/img/large/front_diagram_issues_sorted_2.jpg" style="display: block; margin: -7px auto 0; max-width: 990px;">
+      <div class="panel" style="margin-top: -80px; display: block; z-index: 4; position: relative;">
+        <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
+        If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>
+      </div>
       
     </div>
     
     {% endif %}
 
-    <div class="{% if user %}large-8 xlarge-9{% else %}large-6{% endif %} columns issues-section">
+    <div class="{% if user %}large-8 xlarge-9{% else %}large-12 xlarge-4{% endif %} columns issues-section">
     
         {# Title w/ sorting opts #}
     

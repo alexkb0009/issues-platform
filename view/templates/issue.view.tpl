@@ -27,6 +27,9 @@
         sort: {{ sort }}
     };
     isApp.me.set('current_sort', {{ sort }});
+    
+    {{ disqus_sso_js(user) }}
+    
 </script>
 
 {%- endblock %} 
