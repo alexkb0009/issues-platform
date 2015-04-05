@@ -715,9 +715,10 @@ div.main-body > .main-content.row.issue.full {
 }
 
 /** Discussions **/
-
-.issue.full #disqus_thread {
-  min-height: 328px;
+@media screen and (min-width: 64.07rem){
+  .issue.full #disqus_thread {
+    min-height: 328px;
+  }
 }
 
 .issue.full .info-aside.large-4 {
