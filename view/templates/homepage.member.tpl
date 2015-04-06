@@ -60,15 +60,16 @@
     {# Welcome block if not logged in  #}
     
     <div class="large-12 xlarge-8 columns">
-      <h1 style="font-weight: 700; margin: 15px 0 0;">Politics : Nice and Accessible</h1>
-      <h4>We're all affected by common sets of issues. Lets build solutions to them, together.</h4>
-      <h3>Today</h3>
+      <h1 style="font-weight: 700; margin: 15px 0 0;">Politics <span class="ext"> on <del>Steroid</del></span><ins>Technology</ins></h1>
       <hr class="smaller">
       
       <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary">
       <div class="panel first-info" style="margin-top: 15px; display: block; z-index: 4; position: relative;">
-        <p>This platform is currently in DEVELOPMENT and only open to a few beta users. 
-        If you would like access, please <a href="{{ root }}register">request an account</a> and include a thorough "About Me" section.</p>
+        <p>
+        This platform is currently in development and only open to beta users. 
+        If you would like access, please <a href="{{ root }}register">request an account</a> and include an identifiable "About Me" section.
+        If you were invited to join, this is not needed.
+        </p>
       </div>
       
     </div>

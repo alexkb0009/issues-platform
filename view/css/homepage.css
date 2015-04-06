@@ -23,7 +23,7 @@ div.main-subheader h4 {
 div.main-content.row .large-12.xlarge-8 img.primary {
   display: block;
   margin: -7px auto 0;
-  max-width: 990px;
+  max-width: 900px;
 }
 
 div.main-content.row .large-12.xlarge-8 div.first-info {
@@ -40,4 +40,13 @@ div.main-content.row .large-12.xlarge-8 div.first-info {
   div.main-content.row .large-12.xlarge-8 div.first-info {
     margin-top: -25px; 
   }
+}
+
+ins {
+  background-color: rgb(192, 255, 192);
+  text-decoration: none;
+}
+
+del {
+  background-color: rgb(255, 206, 192);
 }
