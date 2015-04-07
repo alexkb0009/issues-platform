@@ -31,7 +31,8 @@
       {# <li><a href="#">Right Button Active</a></li> #}
       {% if user %}
       <li class="has-dropdown">
-        <a title="{{ user['username'] }}">{# <i class="fa fa-user fa-fw"></i> #}<img src="{{ gravatar(user, 27) }}" style="height: 27px; width: 27px; border-radius: 30%; margin-right: 10px;">{{ user['firstname'] }} {{ user['lastname'] }}</a>
+        <a title="{{ user['username'] }}">{# <i class="fa fa-user fa-fw"></i> #}
+        <img data-ot="Avatars set via <a href='http://gravatar.com' target='_blank'>Gravatar</a>" data-ot-show-on="click" data-ot-hide-on="['keydown','click']" data-ot-hide-trigger="closeButton" data-ot-tip-joint="top right" data-ot-offset="[0, 5]" src="{{ gravatar(user, 27) }}" style="height: 27px; width: 27px; border-radius: 30%; margin-right: 10px;">{{ user['firstname'] }} {{ user['lastname'] }}</a>
         <ul class="dropdown">
           <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a></li>
           <li><a href="{{ root }}do/logout"><i class="fa fa-power-off fa-fw"></i>Log Out</a></li>
