@@ -60,7 +60,7 @@
     {# Welcome block if not logged in  #}
     
     <div class="large-12 xlarge-8 columns">
-      <h1 style="font-weight: 700; margin: 15px 0 0;">Politics <span class="ext"> on <del>Steroid</del></span><ins>Technology</ins></h1>
+      <h1 style="font-weight: 700; margin: 15px 0 35px;">Politics <span class="ext"> on <del>Steroid</del></span><ins>Technology</ins></h1>
       <hr class="smaller">
       
       <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary">
