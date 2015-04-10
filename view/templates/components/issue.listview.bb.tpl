@@ -2,7 +2,7 @@
 
     <% this.$el.addClass('content-container') %>
 
-    <h5 class="issue-title">
+    <h5 class="issue-title clearfix noselect">
         <a class="title" href="<%= path %>"><%= title %></a>
         <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
         <span class="subscribed-container"></span>

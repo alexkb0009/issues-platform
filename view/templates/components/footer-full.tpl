@@ -15,7 +15,7 @@
         <a href="{{ root }}about/privacy-policy">Privacy Policy</a>
       </li>
       <li>
-        <a href="http://the-bac.edu">Boston Architectural College</a>
+        <a href="http://the-bac.edu" target="_blank">Boston Architectural College</a>
       </li>
     </ul>
   </div>

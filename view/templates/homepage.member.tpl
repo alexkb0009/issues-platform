@@ -97,7 +97,7 @@
         <ul id="main_issues_title_sorting_options" class="f-dropdown issues-title-dropdown" data-dropdown-content aria-hidden="true" tabindex="1">
             {% for opt in issue_sort_options() %}
             <li class="{% if current_scale['key'] == opt['key'] %} active{% endif %}">
-                <a href="#" name="{{ opt['key'] }}">{{ opt['title'] }}</a>
+                <a name="{{ opt['key'] }}">{{ opt['title'] }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -125,12 +125,12 @@
             <form id="search_issues"{% if user %} action="{{ root }}define-issue" method="POST"{% endif %}>
                 <div class="row container">
                     <div class="large-1 medium-1 hide-for-small columns text-center search-icon-container">
-                        <i class="fa fa-search"></i>
+                        <i class="fa fa-arrow-circle-right"></i>
                     </div>
                     <div class="large-11 medium-11 small-12 columns">
                         <div class="row collapse postfix-radius">
                             <div class="large-11 small-10 columns">
-                                <input type="text" name="search" placeholder="rising cost of wheat" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
+                                <input type="text" name="search" placeholder="Search for an issue or define one here" class="radius" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
                             </div>
                             <div class="large-1 small-2 columns">
                                 <a {# href="#" #}class="button secondary postfix radius clear-search">
