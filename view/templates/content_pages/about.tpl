@@ -25,8 +25,11 @@
         <h2>{{ route[route|length - 1][0] }}</h2>
         <hr class="smaller">
         <p>
-        This is a product of a BAC (Boston Architectural College) thesis project started by Alexander Balashov.
-        The primary goal is to create a citizen-centric e-participation platform.
+        <em>My Issues</em> is a product of a BAC (Boston Architectural College) thesis/capstone project started by Alexander Balashov, a BDS: Digital Design & Visualization Candidate.
+        </p>
+        <p>
+        The goal of the project is to create a prototypical citizen-centric e-participation platform which aims to enhance quantity and quality of communications between constituents and constituents{{ "'" }} representatives
+        by providing an aggregate visualization of a constituency{{ "'"}}s popular preferences regarding an issue and simultaneously enabling crowd-sourced coalition and representation for issues affecting constituents.
         </p>
         
       </div>

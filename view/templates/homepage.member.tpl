@@ -13,7 +13,7 @@
 {# Template Begins #}
 {% extends "exoskeletons/default.tpl" %}
 
-{% block title %}{{ site_name }} > Home{% endblock %} 
+{% block title %}Collaborative Issue-Based Politics | {{ site_name }}{% endblock %} 
 
 
 {% block additionalheader -%}

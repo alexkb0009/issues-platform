@@ -11,8 +11,8 @@
 
 {% extends "exoskeletons/default.tpl" %}
 
-{% set scaleTitle = issue_scale_options(issue['meta']['scale'], stripIssues = True, localizeUser = issue, fullGeo = True, separateTitle = True)['title'] %}
-{% block title %}{{ issue['title'] }} in {{ scaleTitle[1] }} | {{ site_name }}{% endblock %} 
+{% set issueScale = issue_scale_options(issue['meta']['scale'], stripIssues = True, localizeUser = issue, fullGeo = True, separateTitle = True)['title'] %}
+{% block title %}{{ issue['title'] }}{% if issueScale[0] != 2 %} in {{ issueScale[1] }}{% endif %} | {{ site_name }}{% endblock %} 
 
 
 {% block additionalheader -%}
@@ -52,7 +52,7 @@
           <span class="inline">
           <span class="scale icon-container">
             {#<a href="{{ root }}?scale={{ issue['meta']['scale'] }}">#}
-            {{ scaleTitle[0] }} <span class="hide-for-small">{{ scaleTitle[1] }}</span>
+            {{ issueScale[0] }} <span class="hide-for-small">{{ issueScale[1] }}</span>
             {#</a>#}
           </span>
           </span>
