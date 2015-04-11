@@ -14,7 +14,7 @@ def email(to, subject, message, toName = None, fromEmail = 'messages@myissues.us
         params['toname']    = toName
         params['from']      = fromEmail
         params['fromname']  = fromName or app.config.get('app_info.site_name')
-        params['bcc']       = app.config['email.global_bcc_email']
+        if app.config.get('email.global_bcc_email') and app.config.get('email.global_bcc_email') != "..." : params['bcc'] = app.config['email.global_bcc_email']
         
         if isHTML:
             params['html']  = message
