@@ -12,7 +12,7 @@
 {% extends "exoskeletons/default.tpl" %}
 
 {% set scaleTitle = issue_scale_options(issue['meta']['scale'], stripIssues = True, localizeUser = issue, fullGeo = True, separateTitle = True)['title'] %}
-{% block title %}{{ issue['title'] }} in {{ scaleTitle[1] }}{% endblock %} 
+{% block title %}{{ issue['title'] }} in {{ scaleTitle[1] }} | {{ site_name }}{% endblock %} 
 
 
 {% block additionalheader -%}
@@ -64,7 +64,15 @@
           {%- endif -%}
           
           {%- if issue['meta'].get('age') -%}
-            <span class="age-number icon-container"><i class="fa fa-fw fa-clock-o"></i> {{ issue['meta'].get('age')[0] }}</span>
+            <span class="age-number icon-container"><i class="fa fa-fw fa-clock-o"></i> 
+            {% if issue['meta'].get('age')[0] == -1 -%}
+              Today
+            {%- elif issue['meta'].get('age')[0] == 0 -%}
+              Yesterday
+            {%- elif issue['meta'].get('age')[1] == "Days" -%}
+              {{ issue['meta'].get('age')[0] }}
+            {%- endif -%}
+            </span>
           {%- endif -%}
           
           </div>
