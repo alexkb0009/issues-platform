@@ -52,3 +52,16 @@ def email(to, subject, message, toName = None, fromEmail = 'messages@myissues.us
             print('Couldnt send email.')
             print(exc)
             return False
+    
+    
+def buildMessage(key, options = {}):
+    ''' 
+    Return (subject, message) tuples. 
+    '''
+    if key == 'subscribed':
+        message = 'Someone has created a new revision for <strong>' + options.get('title') + '</strong> (' + options.get('url') + ').'
+        #message = '<br><br> The following has changed: <br>'
+        #message = 
+        return ('Revised: ' + options.get('title'), message)
+    
+    
