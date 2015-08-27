@@ -60,24 +60,46 @@
     {# Welcome block if not logged in  #}
     
     <div class="large-12 xlarge-8 columns">
-      <h1 style="font-weight: 700; margin: 15px 0 35px;">Politics <span class="ext"> on <del>Steroids </del></span><ins>Technology</ins></h1>
-      <hr class="smaller">
+    
+      <h1 style="font-weight: 700; margin: 15px 0 27px;">
+        <span class="ext">Politics  on 
+        <del style="font-size: 0.55em; padding: 7px 0 2px 5px; position: relative; left: -5px; top: -3px;">Steroids</del></span><ins style="padding: 8px 12px 5px 0; position: relative; left: -10px;">Technology</ins>
+      </h1>
+      
+      {# <h4 style="padding-left: 18px;">Interests & Preferences of Constituencies</h4> #}
+      
+      {# <hr class="smaller"> #}
+      
+      {# <div class="row"> #}
+      
+        <div class="columns intro-section xlarge-11">
+          <p>
+            The goal of <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> is to facilitate succinct representation and visualization of constituencies' preferences. 
+          </p>
+          <hr>
+          <p>      
+            Anyone has the ability to define issue(s) relevant to any locale of which they are a constituent. 
+            <br>Constituency ranks the relative importance of defined issues through voting,
+            with preferences regarding potential responses to those issues aggregated similarly.
+          </p>
+        </div>
+        
+      {#  <div class="columns large-2 hide-for-small hide-for-medium">&nbsp;</div> #}
+      {# </div> #}
       
       <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary">
       
-      <div class="row first-info" style="margin-top: -69px;">
-        <div class="large-8 columns">
+      <div class="row first-info" style="margin-top: -5px;">
+        <div class="large-6 columns">
           <div class="panel clearfix" style="display: block; z-index: 4; position: relative;">
             <p>
-            The goal of <em>My Issues</em> is to facilitate representation of constituencies' interests and preferences.
-            </p>
-            <p>
-            <em>My Issues</em> is currently in development and open to beta users. If you'd like access (in exchange for your feedback), please <a href="{{ root }}register">request an account</a> and include an identifiable "About Me" section.
-            If you were invited to join, this is not needed.
+              <em>{{ site_name }}</em> is currently in development and open to beta users.<br>
+              If you'd like access (in exchange for your feedback), please <a href="{{ root }}register">request an account</a> and include an identifiable "About Me" section.
+              If you were invited to join, this is not needed.
             </p>
           </div>
         </div>
-        <div class="large-4 columns">
+        <div class="large-6 columns">
           {% include 'components/donate-button.tpl' %}
         </div>
       </div>

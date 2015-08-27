@@ -7,5 +7,5 @@
     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
     </form>
     
-    Please consider making a donation of $10 or more (or less) to support further development of My Issues!
+    Please consider making a donation of $10 or more (or less) to support further development of <em>{{ site_name }}</em>!
 </div>
