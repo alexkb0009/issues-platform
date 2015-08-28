@@ -123,20 +123,23 @@
       
       <div id="main-tab-content" class="tabs-content" style="margin-bottom: 18px;">
         <section role="tabpanel" aria-hidden="false" class="content active" id="panel1-for-constituents">
-        <h4>Build coalitions <span class="ext">around common causes, be represented, and</span> accomplish things.</h4>
+        <h4>Build coalitions <span class="ext">around common causes; be represented</span></h4>
+        
+        {#
         <p>
           On average, there are over 750,000 constituents for each U.S. Representative &mdash; and growing. 
           At a scale this large and with time so valuable, getting face-time to discuss issues with a representative is almost unthinkable to many constituents.
           Effectively, large portions of constituencies are arguably under-represented in legislature.   
-        </p> 
+        </p>
+        #}
         <p>
-          Today, people habitually collaborate on-line to generate troves of information from which ready-accessible aggregates of popular opinion, preference, or understanding are the end product. 
+          Today, people habitually collaborate on-line to generate troves of information from which readily-accessible aggregates of popular opinion, preference, or understanding are the end product. 
           Reddit's front page consists of Reddit's most popular posts &mdash; those which the Reddit community as a whole has voted to be most interesting or appealing.
           Yelp and TripAdvisor produce aggregate ratings and rankings of popular consumer destinations near any particular location. 
           Wikipedia articles are the manifestations of consensuses of what contributors to those articles agree is the most correct and useful information regarding a particular topic.
         </p>
         <p>
-          Why not adopt these mechanisms to improve representation of our interests within our own government and the integrity of our political system as a whole?
+          Why not adopt these mechanisms to improve representation of our interests within legislature and the integrity of our political system?
         </p>
         <div style="font-size: 1.125rem; margin-bottom: 5px;">
           <strong>Below:</strong> How to utilize <em>{{ site_name }}</em> to form a coalition and produce legislative action (left-to-right).
@@ -281,7 +284,7 @@
             <form id="search_issues"{% if user %} action="{{ root }}define-issue" method="POST"{% endif %}>
                 <div class="row container">
                     <div class="large-1 medium-1 hide-for-small columns text-center search-icon-container">
-                        <i class="fa fa-arrow-circle-right"></i>
+                        <i class="fa fa-search"></i>
                     </div>
                     <div class="large-11 medium-11 small-12 columns">
                         <div class="row collapse postfix-radius">
