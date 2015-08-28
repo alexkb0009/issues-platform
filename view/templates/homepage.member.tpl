@@ -59,7 +59,7 @@
     
     {# Welcome block if not logged in  #}
     
-    <div class="large-12 xlarge-8 columns">
+    <div class="large-12 xlarge-7 columns left-guest-side">
     
       <h1 style="font-weight: 700; margin: 15px 0 27px;">
         <span class="ext">Politics  on 
@@ -84,7 +84,7 @@
           </p>
           <hr>
           <p>      
-            Anyone has the ability to define issues relevant to any locale of which they are a constituent. 
+            Anyone may define issues relevant to locales of which they are a constituent. 
             <br>Constituency ranks the relative importance of defined issues through voting,
             with preferences regarding potential responses to those issues aggregated similarly.
           </p>
@@ -123,7 +123,7 @@
       
       <div id="main-tab-content" class="tabs-content" style="margin-bottom: 18px;">
         <section role="tabpanel" aria-hidden="false" class="content active" id="panel1-for-constituents">
-        <h4>Build coalitions <span class="ext">around common causes, get represented, and</span> accomplish things.</h4>
+        <h4>Build coalitions <span class="ext">around common causes, be represented, and</span> accomplish things.</h4>
         <p>
           On average, there are over 750,000 constituents for each U.S. Representative &mdash; and growing. 
           At a scale this large, and with time so valuable, getting face-time to discuss issues with a representative is almost unthinkable to many constituents.
@@ -132,12 +132,14 @@
         <p>
           Today, people habitually collaborate on-line to generate troves of information from which ready-accessible aggregates of popular opinion, preference, or understanding are the end product. 
           Reddit's front page consists of Reddit's most popular posts &mdash; those which the Reddit community as a whole has voted to be most interesting or appealing.
-          Yelp and TripAdvisor produce aggregate ratings and rankings of popular consumer destinations near any particular location(s). 
-          Wikipedia articles are the manifestations of consensuses of what contributors to those articles agree is the most correct and useful information regarding some particular topic.
-          Why not adopt these mechanisms to improve our representation within our own government, and the integrity of the political system as a whole?
+          Yelp and TripAdvisor produce aggregate ratings and rankings of popular consumer destinations near any particular location. 
+          Wikipedia articles are the manifestations of consensuses of what contributors to those articles agree is the most correct and useful information regarding a particular topic.
+        </p>
+        <p>
+          Why not adopt these mechanisms to improve representation of our interests within our own government and the integrity of our political system as a whole?
         </p>
         <div style="font-size: 1.125rem; margin-bottom: 5px;">
-          <strong>Below:</strong> How to utilize <em>{{ site_name }}</em> to form a coalition and effect legislative change (left to right).
+          <strong>Below:</strong> How to utilize <em>{{ site_name }}</em> to form a coalition and produce legislative action (left-to-right).
         </div>
         <div class="row collapse constituents-coalition-story" data-equalizer="ccs_1">
           <div class="medium-4 columns" data-equalizer-watch="ccs_1">
@@ -230,7 +232,7 @@
     
     {% endif %}
 
-    <div class="{% if user %}large-8 xlarge-9{% else %}large-12 xlarge-4{% endif %} columns issues-section">
+    <div class="{% if user %}large-8 xlarge-9{% else %}large-12 xlarge-5{% endif %} columns issues-section">
     
         {# Title w/ sorting opts #}
     
