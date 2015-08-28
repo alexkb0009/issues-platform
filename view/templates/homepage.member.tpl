@@ -68,28 +68,149 @@
       
       {# <h4 style="padding-left: 18px;">Interests & Preferences of Constituencies</h4> #}
       
-      {# <hr class="smaller"> #}
+      <hr class="smaller xlarge-10" style="margin-bottom: 18px;">
       
-      {# <div class="row"> #}
-      
-        <div class="columns intro-section xlarge-11">
+        <div class="columns xlarge-1 large-1 hide-for-medium-down text-left" style="font-size: 1.7em; opacity: 0.24;">
+          <i class="fa fa-bar-chart" style="margin-top: 17px;"></i>
+          <hr class="smaller" style="margin-top: 15px;">
+          <i class="fa fa-globe" style="margin-top: 10px;"></i>
+          <i class="fa fa-sort-amount-desc" style="margin-top: 15px;"></i>
+        </div>
+        
+        <div class="columns intro-section xlarge-10 large-11 medium-12">
           <p>
-            The goal of <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> is to facilitate succinct representation and visualization of constituencies' preferences. 
+            <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> aims to facilitate succinct representation and visualization of constituencies' preferences. 
           </p>
           <hr>
           <p>      
-            Anyone has the ability to define issue(s) relevant to any locale of which they are a constituent. 
+            Anyone has the ability to define issues relevant to any locale of which they are a constituent. 
             <br>Constituency ranks the relative importance of defined issues through voting,
             with preferences regarding potential responses to those issues aggregated similarly.
           </p>
         </div>
         
-      {#  <div class="columns large-2 hide-for-small hide-for-medium">&nbsp;</div> #}
-      {# </div> #}
+        <div class="columns xlarge-1 show-for-xlarge-only">
+          <i class="fa fa-angle-right" style="font-size: 9rem; margin-top: -78px; margin-left: 12px; opacity: 0.12;"></i>
+        </div>
+
       
-      <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary">
+      <hr class="smaller" style="margin-bottom: 18px;">
       
-      <div class="row first-info" style="margin-top: -5px;">
+      <div class="row">
+        
+        <div class="medium-6 columns menu-label text-right" role="presentation">
+            <em>{{ site_name }} is for</em>
+        </div>
+        
+        <div class="medium-6 columns">
+        
+          <ul class="tabs row collapse menu-front-tabs" data-tab role="tablist">
+            <li class="tab-title medium-6 columns text-center active" role="presentation" style="border-right: 1px solid #ddd;">
+              <a href="#panel1-for-constituents" role="tab" tabindex="0" aria-selected="true" aria-controls="panel1-for-constituents">
+                <h5>Citizens</h5>
+              </a>
+            </li>
+            <li class="tab-title medium-6 columns text-center" role="presentation">
+              <a href="#panel2-for-legislature" role="tab" tabindex="0" aria-selected="false" aria-controls="panel2-for-legislature">
+                <h5>Leaders</h5>
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+      
+      <div id="main-tab-content" class="tabs-content" style="margin-bottom: 18px;">
+        <section role="tabpanel" aria-hidden="false" class="content active" id="panel1-for-constituents">
+        <h4>Build coalitions <span class="ext">around common causes, get represented, and</span> accomplish things.</h4>
+        <p>
+          On average, there are over 750,000 constituents for each U.S. Representative &mdash; and growing. 
+          At a scale this large, and with time so valuable, getting face-time to discuss issues with a representative is almost unthinkable to many constituents.
+          Arguably, large portions of constituencies are effectively under-represented in legislature.   
+        </p> 
+        <p>
+          Today, people habitually collaborate on-line to generate troves of information from which ready-accessible aggregates of popular opinion, preference, or understanding are the end product. 
+          Reddit's front page consists of Reddit's most popular posts &mdash; those which the Reddit community as a whole has voted to be most interesting or appealing.
+          Yelp and TripAdvisor produce aggregate ratings and rankings of popular consumer destinations near any particular location(s). 
+          Wikipedia articles are the manifestations of consensuses of what contributors to those articles agree is the most correct and useful information regarding some particular topic.
+          Why not adopt these mechanisms to improve our representation within our own government, and the integrity of the political system as a whole?
+        </p>
+        <div style="font-size: 1.125rem; margin-bottom: 5px;">
+          <strong>Below:</strong> How to utilize <em>{{ site_name }}</em> to form a coalition and effect legislative change (left to right).
+        </div>
+        <div class="row collapse constituents-coalition-story" data-equalizer="ccs_1">
+          <div class="medium-4 columns" data-equalizer-watch="ccs_1">
+            <img src="/img/large/user_story_sections/1.jpg">
+            <span>
+              Joe discovers that online poker, an activity which he enjoys, is outlawed in the United States.
+            </span>
+          </div>
+          <div class="medium-4 columns" data-equalizer-watch="ccs_1">
+            <img src="/img/large/user_story_sections/2.jpg">
+            <span>
+              Joe defines an issue on <em>{{ site_name }}</em> that makes his problem
+              &mdash; not having access to online poker &mdash; take a visible & written form to become known to others.
+            </span>
+          </div>
+          <div class="medium-4 columns" data-equalizer-watch="ccs_1">
+            <img src="/img/large/user_story_sections/3.jpg">
+            <span>
+              Bill notices the issue regarding lack of access to online poker on <em>{{ site_name }}</em>
+              and feels that he agrees that it is an important issue. 
+              He votes 'up' for the issue, and contributes to the definition by adding some of his knowledge and references to the document.
+            </span>
+          </div>
+        </div>
+        <div class="row collapse constituents-coalition-story" data-equalizer="ccs_2">
+          <div class="medium-4 columns" data-equalizer-watch="ccs_2"> 
+            <img src="/img/large/user_story_sections/4.jpg">
+            <span>
+              Both Joe and Bill spread awareness of the issue through their social networks via conversations and social media platforms.
+              Their friends notice, and perhaps agreeing on issue's importance, start to contribute to the issue definition, start a debate, propose a response, or vote on one.
+              Communicating the group-formed issue definition to friends and acquaintances may be done as simply as distributing any link or URL.
+            </span>
+          </div>
+          <div class="medium-4 columns" data-equalizer-watch="ccs_2">
+            <img src="/img/large/user_story_sections/5.jpg">
+            <span>
+              As more people contribute, visibility of the issue regarding online poker legality grows from votes and views,
+              the amount of users engaging with the issue cascades upwards. 
+              A sort of article, which is the definition and supporting knowledge & references of an issue, begins to take coherent form.
+              Responses begin to appear, voted on, and ranked. 
+            </span>
+          </div>
+          <div class="medium-4 columns" data-equalizer-watch="ccs_2">
+            <img src="/img/large/user_story_sections/6.jpg">
+            <span>
+              As the issue (and responses) mature and become more presentable, participants in issue definition's creation may 
+              communicate the issue, via its URL, and along with its top response(s) &mdash; especially if the ideal response is legislative action &mdash;
+              to their representatives.  
+            </span>
+          </div>
+        </div>
+        
+          {# <img src="/img/large/user_story_build_coalition_lowres.jpg" class="primary"> #}
+        
+        </section>
+        
+        <section role="tabpanel" aria-hidden="true" class="content row collapse" id="panel2-for-legislature">
+          <div class="columns large-2">
+            <p>
+            As community leaders &mdash; representatives, government officials, politicians, as well as entrepreneurs & business owners &mdash; 
+            <br>can benefit from a clearer image of what concerns their constituency the most, as well as various ideas for resolving those issues.
+            </p>
+          </div>
+          <div class="columns large-10">
+            <img src="/img/large/front_diagram_issues_sorted_3.jpg" class="primary">
+          </div>
+        </section>
+      </div>
+      
+      <hr class="smaller">
+      
+      {# <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary"> #}
+      
+      <div class="row first-info" style="margin-top: 16px;">
         <div class="large-6 columns">
           <div class="panel clearfix" style="display: block; z-index: 4; position: relative;">
             <p>

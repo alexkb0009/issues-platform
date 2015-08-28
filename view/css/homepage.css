@@ -20,15 +20,10 @@ div.main-subheader h4 {
 }
 
 div.main-content.row .large-12.xlarge-8 div.intro-section {
-
-  /* padding-left: 18px; */
-  /* padding-top: 12px;  */
-  /* padding-bottom: 12px; */
-  padding: 16px 24px 17px;
+  padding: 16px 27px 17px;
   background-color: #fff;
   background-color: rgba(255,255,255,0.25);
-  margin-bottom: 12px;
-  /* margin-left: 32px; */
+  margin-bottom: 18px;
 }
 
 div.main-content.row .large-12.xlarge-8 div.intro-section p {
@@ -38,10 +33,65 @@ div.main-content.row .large-12.xlarge-8 div.intro-section p:last-child {
   margin-bottom: 0;
 }
 
+@media only screen and (max-width: 1719px) {
+  
+  .show-for-xlarge-only,
+  .hide-for-large-down,
+  .hide-for-large {
+    display: none !important;  
+  }
+
+}
+
+div.main-content.row .large-12.xlarge-8 div.menu-label {
+  list-style: none; 
+  padding: 0.8rem 2rem 0; 
+  font-size: 1.2rem;
+}
+
+div.main-content.row .large-12.xlarge-8 ul.menu-front-tabs li a h5 {
+  margin: 0;
+}
+
+div.main-content.row .large-12.xlarge-8 div#main-tab-content > section.content {
+  background: #fff;
+  padding-left: 24px;
+  padding-right: 24px;  
+}
+
 div.main-content.row .large-12.xlarge-8 img.primary {
   display: block;
   margin: 0 auto 0;
-  max-width: 900px;
+  max-width: 100%;
+}
+
+div.main-content.row .large-12.xlarge-8 div.constituents-coalition-story .medium-4 {
+  height: 421px;
+  padding-bottom: 5px;
+}
+
+div.main-content.row .large-12.xlarge-8 div.constituents-coalition-story:last-child .medium-4 {
+  height: 488px;
+  padding-bottom: 2px;
+}
+
+div.main-content.row .large-12.xlarge-8 div.constituents-coalition-story .medium-4:not(:first-child) {
+  border-left: 1px dotted #ccc;
+}
+
+div.main-content.row .large-12.xlarge-8 div.constituents-coalition-story:not(:first-child) .medium-4 {
+  border-top: 1px dotted #ccc;
+}
+
+div.main-content.row .large-12.xlarge-8 div.constituents-coalition-story .medium-4 img {
+  display: block;
+}
+
+div.main-content.row .large-12.xlarge-8 div.constituents-coalition-story .medium-4 > span {
+  display: block;
+  padding: 8px 10px 3px;
+  font-size: 0.875rem;
+  border-top: 1px solid #a2a2a2;
 }
 
 div.main-content.row .large-12.xlarge-8 div.first-info {

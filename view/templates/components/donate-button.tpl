@@ -8,4 +8,5 @@
     </form>
     
     Please consider making a donation of $10 or more (or less) to support further development of <em>{{ site_name }}</em>!
+    Every dollar helps free up time for development or obtain resources as well as provide motivation!
 </div>
