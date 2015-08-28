@@ -126,7 +126,7 @@
         <h4>Build coalitions <span class="ext">around common causes, be represented, and</span> accomplish things.</h4>
         <p>
           On average, there are over 750,000 constituents for each U.S. Representative &mdash; and growing. 
-          At a scale this large, and with time so valuable, getting face-time to discuss issues with a representative is almost unthinkable to many constituents.
+          At a scale this large and with time so valuable, getting face-time to discuss issues with a representative is almost unthinkable to many constituents.
           Effectively, large portions of constituencies are arguably under-represented in legislature.   
         </p> 
         <p>
