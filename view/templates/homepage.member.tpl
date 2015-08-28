@@ -79,7 +79,8 @@
         
         <div class="columns intro-section xlarge-10 large-11 medium-12">
           <p>
-            <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> aims to facilitate succinct representation and visualization of constituencies' preferences. 
+            <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> 
+            aims to succinctly represent constituencies' aggregate preferences. 
           </p>
           <hr>
           <p>      
@@ -98,11 +99,11 @@
       
       <div class="row">
         
-        <div class="medium-6 columns menu-label text-right" role="presentation">
+        <div class="medium-4 columns menu-label text-left" role="presentation">
             <em>{{ site_name }} is for</em>
         </div>
         
-        <div class="medium-6 columns">
+        <div class="medium-8 columns">
         
           <ul class="tabs row collapse menu-front-tabs" data-tab role="tablist">
             <li class="tab-title medium-6 columns text-center active" role="presentation" style="border-right: 1px solid #ddd;">
@@ -126,7 +127,7 @@
         <p>
           On average, there are over 750,000 constituents for each U.S. Representative &mdash; and growing. 
           At a scale this large, and with time so valuable, getting face-time to discuss issues with a representative is almost unthinkable to many constituents.
-          Arguably, large portions of constituencies are effectively under-represented in legislature.   
+          Effectively, large portions of constituencies are arguably under-represented in legislature.   
         </p> 
         <p>
           Today, people habitually collaborate on-line to generate troves of information from which ready-accessible aggregates of popular opinion, preference, or understanding are the end product. 
