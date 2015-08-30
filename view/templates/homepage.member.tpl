@@ -85,7 +85,7 @@
           <i class="fa fa-sort-amount-desc" style="margin-top: 15px;"></i>
         </div>
       #}
-        <div class="columns intro-section xlarge-10 large-11 medium-12">
+        <div class="columns intro-section xlarge-10 large-12 medium-12">
           <p>
             <i class="fa fa-sort-amount-desc" style="margin-right: 10px; position: relative; top: 3px; font-size: 1.5em; color: #bbb;"></i>
             <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> 
