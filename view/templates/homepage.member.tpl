@@ -226,7 +226,7 @@
           
             $('.constituents-coalition-story').slick({
               infinite: false,
-              slidesToShow: 3,
+              slidesToShow: 2,
               slidesToScroll: 1,
               prevArrow: '<div class="arrow previous slick-prev"><i class="fa fa-arrow-circle-o-left"></i></div>',
               nextArrow: '<div class="arrow next slick-next"><i class="fa fa-arrow-circle-o-right"></i></div>',

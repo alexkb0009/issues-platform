@@ -93,6 +93,11 @@ div.main-content.row .left-guest-side div.constituents-coalition-story div.slick
   background-color: #fff;
 }
 
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide img {
+  width: 100%;
+  height: auto;
+}
+
 div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not(:first-child) {
   /* border-left: 1px dotted #ccc; */
 }
@@ -124,15 +129,23 @@ div.main-content.row .left-guest-side div.constituents-coalition-story div.slick
   top: 342px;
 }
 
-div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not([data-slick-index="5"]):after {
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not([data-slick-index="0"]):before {
   content: '';
   width: 1px;
   height: 120%;
   background-color: #bbb;
   position: absolute;
-  right: -1px;
+  left: 0px;
   top: 0px;
   z-index: 2;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide.slick-current:before {
+  opacity: 0;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide.slick-current > span {
+  border-left: none;
 }
 
 div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide > div.copy {
