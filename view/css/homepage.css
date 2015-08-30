@@ -60,57 +60,6 @@ div.main-content.row .left-guest-side div#main-tab-content > section.content {
   padding-top: 18px;
 }
 
-div.main-content.row .left-guest-side img.primary {
-  display: block;
-  margin: 0 auto 0;
-  max-width: 100%;
-}
-
-div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4 {
-  height: 421px;
-  padding-bottom: 5px;
-}
-
-div.main-content.row .left-guest-side div.constituents-coalition-story:last-child .medium-4 {
-  height: 488px;
-  padding-bottom: 2px;
-}
-
-div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4:not(:first-child) {
-  border-left: 1px dotted #ccc;
-}
-
-div.main-content.row .left-guest-side div.constituents-coalition-story:not(:first-child) .medium-4 {
-  border-top: 1px dotted #ccc;
-}
-
-div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4 img {
-  display: block;
-}
-
-div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4 > span {
-  display: block;
-  padding: 8px 10px 3px;
-  font-size: 0.875rem;
-  border-top: 1px solid #a2a2a2;
-}
-
-div.main-content.row .left-guest-side div.first-info {
-  margin-top: -80px; 
-  display: block; 
-  z-index: 4; 
-  position: relative;
-}
-
-@media screen and (max-width: 64.07rem){
-  div.main-content.row .left-guest-side img.primary {
-    max-width: 100%;
-  }
-  div.main-content.row .left-guest-side div.first-info {
-    margin-top: -25px; 
-  }
-}
-
 ins {
   background-color: rgb(192, 255, 192);
   text-decoration: none;

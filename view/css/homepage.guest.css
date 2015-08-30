@@ -1,243 +1,128 @@
-body.guest {
-  background: #333;
+div.main-content.row .left-guest-side img.primary {
+  display: block;
+  margin: 0 auto 0;
+  max-width: 100%;
 }
 
-body.guest div.main-body > #bgImg {
-  background-image: url('../img/large/golden-gate.jpg');
-  background-size: cover;
-  background-position: 50% 25%;
-  transition: 5s;
-  top: 0;
-  opacity: 0;
-  height: 100%;
-  width: 100%;
+/** Older **/
+
+/**
+
+div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4 {
+  height: 421px;
+  padding-bottom: 5px;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story:last-child .medium-4 {
+  height: 488px;
+  padding-bottom: 2px;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4:not(:first-child) {
+  border-left: 1px dotted #ccc;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story:not(:first-child) .medium-4 {
+  border-top: 1px dotted #ccc;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4 img {
+  display: block;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4 > span {
+  display: block;
+  padding: 8px 10px 3px;
+  font-size: 0.875rem;
+  border-top: 1px solid #a2a2a2;
+}
+
+**/
+
+div.main-content.row .left-guest-side div.constituents-coalition-story .slick-arrow {
+  font-size: 2.6rem;
   position: absolute;
+  z-index: 10;
+  top: -42px;
+  text-align: center;
+  width: 57px;
+  height: 57px;
+  border-radius: 50%;
+  background: #fff;
+  /* background: rgba(255,255,255,0.5); */
+  color: #555;
 }
 
-body.guest.loaded div.main-body > #bgImg {
-  opacity: 1;
+div.main-content.row .left-guest-side div.constituents-coalition-story .slick-arrow:hover {
+  background: #fff;
+  color: #000;
+  cursor: pointer;
 }
 
-body.guest div.main-body > #bgImgOverlay {
-  top: 0;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  opacity: 0;
-  background-image: url('../img/assets/transparent-bg-layer.png');
-  background-size: cover;
-  background-position: 50% 0%;
-  transition: 5s;
+div.main-content.row .left-guest-side div.constituents-coalition-story .slick-arrow.previous {
+  left: -18px;
+  border-radius: 0 50% 50% 0;
 }
 
-body.guest.loaded div.main-body > #bgImgOverlay {
-  opacity: 0.8;
+div.main-content.row .left-guest-side div.constituents-coalition-story .slick-arrow.next {
+  right: -18px;
+  border-radius: 50% 0 0 50%;
 }
 
-body.guest.loaded div.main-body > #bgImgOverlay:hover {
-  opacity: 0.5;
-}
-
-body.guest footer {
-  background-color: #333;
-  color: #aaa;
-}
-
-/** Stylistic stuff included **/
-
-body.guest #introContainer {
-  opacity: 0;
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide {
+  box-sizing: border-box;
   position: relative;
-  padding-top: 13px;
-  padding-bottom: 11px;
-  padding-left: 25px;
-  padding-right: 25px;
-  max-width: 600px;
 }
 
-body.guest #introContainer > div.clone {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not(:first-child) {
+  /* border-left: 1px dotted #ccc; */
 }
 
-body.guest.loaded #introContainer {
-  opacity: 1;
-  transition: opacity 5s 1s, background 2.5s;
-}
-
-body.guest #introContainer:after,
-body.guest #introContainer:before {
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide > span {
   display: block;
-  content: ' ';
-  width: 2px;
-  height: 0%;
+  padding: 8px 10px 3px;
+  font-size: 0.875rem;
+  border-top: 1px solid #a2a2a2;
   background-color: #fff;
+  z-index: 5;
+  position: relative;
+  
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  margin-right: -1px;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide[data-slick-index="0"] > span {
+  border-left: none;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide[data-slick-index="5"] > span {
+  border-right: none;
+}
+
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not([data-slick-index="5"]) > span {
   position: absolute;
-  transition: height 4s 5s, opacity 1s 8s;
-  opacity: 0.3;
+  top: 342px;
 }
 
-body.guest #introContainer:before {
-  left: -2px;
-  top: 0;
-}
-
-body.guest #introContainer:after {
-  bottom: 0px;
-  right: -2px;
-  transition: height 4s 6s, opacity 1s 8s;
-}
-
-body.guest #introContainer > div.clone:after,
-body.guest #introContainer > div.clone:before {
-  display: block;
-  content: ' ';
-  left: 0px;
-  width: 0%;
-  height: 2px;
-  background-color: #fff;
-  position: absolute;
-  transition: width 5s 1s, opacity 1s 8s;
-  opacity: 0.3;
-}
-
-body.guest #introContainer > div.clone:before {
-  top: 0px;
-  transition: width 4.5s 1.5s, opacity 1s 8s;
-}
-
-body.guest #introContainer > div.clone:after {
-  bottom: 0px;
-}
-
-body.guest.loaded #introContainer:after,
-body.guest.loaded #introContainer:before {
-  height: 100%;
+div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide > div.copy {
+  padding: 8px 10px 3px;
+  font-size: 0.875rem;
   opacity: 0;
 }
 
-body.guest.loaded #introContainer > div.clone:after,
-body.guest.loaded #introContainer > div.clone:before {
-  width: 100%;
-  opacity: 0;
+div.main-content.row .left-guest-side div.first-info {
+  margin-top: -80px; 
+  display: block; 
+  z-index: 4; 
+  position: relative;
 }
 
-body.guest.loaded #introContainer:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-body.guest.loaded #introContainer:hover:after,
-body.guest.loaded #introContainer:hover:before {
-  opacity: 0.3;
-  transition: height 5s 1s, opacity 1s;
-}
-
-body.guest.loaded #introContainer:hover > div.clone:after,
-body.guest.loaded #introContainer:hover > div.clone:before {
-  opacity: 0.3;
-  transition: width 5s 1s, opacity 1s;
-}
-
-/** Typography **/
-
-body.guest div.main-body .main-content.row h1.intro,
-body.guest div.main-body .main-content.row h4.intro {
-  color: #fff;
-}
-
-body.guest div.main-body .main-content.row h1.intro {
-  font-size: 4em;
-  margin-bottom: -10px;
-}
-
-body.guest div.main-body .main-content.row h1.intro .lighter {
-  font-weight: 100;
-  /* font-size: 1em; */
-  /* margin-right: -0.175em; */ 
-}
-
-body.guest div.main-body .main-content.row h4.intro {
-  margin-top: 0;
-}
-
-/** Login Block **/
-
-div.main-body div.large-4 > .login-block {
-  background: #333;
-  background: rgba(200,200,200,0.1);
-  margin-bottom: 20px;
-  padding-top: 13px;
-  padding-bottom: 13px;
-  border-radius: 3px;
-}
-
-div.main-body div.large-4 > h2 {
-  margin: 24px 0 5px 0;
-  font-weight: 300;
-  color: #fff;
-}
-
-div.main-body div.large-4 > .login-block > h6 {
-  margin-bottom: 12px;
-  margin-top: 4px;
-  border-bottom: 1px dotted #888;
-  padding-bottom: 8px;
-  color: #ddd;
-}
-
-div.main-body div.large-4 > .login-block .request-invite.button {
-  margin-bottom: 0; 
-  position: relative; 
-  top: -2px; 
-  font-size: .9em;
-  margin-left: 5px;
-  border-bottom: 2px solid #0C6F8C;
-  background-color: #CB922B;
-  border-bottom-color: #8C550C;
-  background-color: #96CB2B;
-  border-bottom-color: #5D8C0C;
-  padding-left: 14px;
-  padding-right: 14px;
-  font-weight: 400;
-}
-div.main-body div.large-4 > .login-block .request-invite.button:hover {
-  background-color: #71A012;
-}
-
-div.main-body div.large-4 > .login-block input.button.radius {
-  margin: 0;
-  border-bottom: 2px solid #0C6F8C;
-  padding-bottom: 1rem;
-  font-weight: 500;
-}
-
-/** Mobile Adjustments **/
-
-@media only screen and (max-width: 1000px){
-
-  body.guest div.main-body .main-content.row {
-    padding-bottom: 0;
+@media screen and (max-width: 64.07rem){
+  div.main-content.row .left-guest-side img.primary {
+    max-width: 100%;
   }
-
-  div.main-body div.large-4.login-block {
-    margin-top: 17px;
-    margin-bottom: 0;
-    border-radius: 0;
-    padding-top: 18px;
-    background-color: rgba(255,255,255,0.9);
+  div.main-content.row .left-guest-side div.first-info {
+    margin-top: -25px; 
   }
-  
-  div.main-body div.large-4.login-block > h2 {
-    color: #444;
-  }
-  
-  div.main-body div.large-4.login-block > h6 {
-    text-align: left !important;
-    color: #888;
-  }
-
 }
-

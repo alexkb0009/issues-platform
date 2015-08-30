@@ -19,6 +19,13 @@
 {% block additionalheader -%}
 
 <link rel="stylesheet" href="{{ root }}css/homepage.css">
+
+{% if not user %}
+<link rel="stylesheet" href="{{ root }}css/homepage.guest.css">
+<script type="text/javascript" src="{{ root }}js/vendor/slick.min.js"></script>
+<link rel="stylesheet" href="{{ root }}css/vendor/slick.css">
+{% endif %}
+
 <script>
     window.session = {
         sort: {{ sort }}
@@ -141,43 +148,50 @@
         <p>
           Why not adopt these mechanisms to improve representation of our interests within legislature and the integrity of our political system?
         </p>
-        <div style="font-size: 1.125rem; margin-bottom: 5px;">
-          <strong>Below:</strong> How to utilize <em>{{ site_name }}</em> to form a coalition and produce legislative action (left-to-right).
-        </div>
-        <div class="row collapse constituents-coalition-story" data-equalizer="ccs_1">
-          <div class="medium-4 columns" data-equalizer-watch="ccs_1">
+        
+        <h5 style="border-bottom: 1px solid #ccc; padding: 0 60px 8px; margin-bottom: 12px; text-align: center;">
+          How to utilize <em>{{ site_name }}</em> <span class="ext">to start a coalition and produce legislative action</span>
+        </h5>
+        
+        {# Comic Strip #}
+        
+        <div class="row collapse constituents-coalition-story">
+        
+          <div class="slick-slide">
             <img src="/img/large/user_story_sections/1.jpg">
             <span>
               Joe discovers that online poker, an activity which he enjoys, is outlawed in the United States.
             </span>
           </div>
-          <div class="medium-4 columns" data-equalizer-watch="ccs_1">
+          
+          <div class="slick-slide">
             <img src="/img/large/user_story_sections/2.jpg">
             <span>
               Joe defines an issue on <em>{{ site_name }}</em> that makes his problem
               &mdash; not having access to online poker &mdash; take a visible & written form to become known to others.
             </span>
           </div>
-          <div class="medium-4 columns" data-equalizer-watch="ccs_1">
-            <img src="/img/large/user_story_sections/3.jpg">
+          
+          <div class="slick-slide">
+            <img src="/img/large/user_story_sections/3.jpg" style="margin-top: 12px;">
             <span>
               Bill notices the issue regarding lack of access to online poker on <em>{{ site_name }}</em>
               and feels that he agrees that it is an important issue. 
               He votes 'up' for the issue, and contributes to the definition by adding some of his knowledge and references to the document.
             </span>
           </div>
-        </div>
-        <div class="row collapse constituents-coalition-story" data-equalizer="ccs_2">
-          <div class="medium-4 columns" data-equalizer-watch="ccs_2"> 
-            <img src="/img/large/user_story_sections/4.jpg">
+        
+          <div class="slick-slide"> 
+            <img src="/img/large/user_story_sections/4.jpg" style="margin-top: 24px;">
             <span>
               Both Joe and Bill spread awareness of the issue through their social networks via conversations and social media platforms.
               Their friends notice, and perhaps agreeing on issue's importance, start to contribute to the issue definition, start a debate, propose a response, or vote on one.
               Communicating the group-formed issue definition to friends and acquaintances may be done as simply as distributing any link or URL.
             </span>
           </div>
-          <div class="medium-4 columns" data-equalizer-watch="ccs_2">
-            <img src="/img/large/user_story_sections/5.jpg">
+          
+          <div class="slick-slide">
+            <img src="/img/large/user_story_sections/5.jpg" style="margin-top: 26px;">
             <span>
               As more people contribute, visibility of the issue regarding online poker legality grows from votes and views,
               the amount of users engaging with the issue cascades upwards. 
@@ -185,15 +199,55 @@
               Responses begin to appear, voted on, and ranked. 
             </span>
           </div>
-          <div class="medium-4 columns" data-equalizer-watch="ccs_2">
+          
+          <div class="slick-slide">
             <img src="/img/large/user_story_sections/6.jpg">
             <span>
               As the issue (and responses) mature and become more presentable, participants in issue definition's creation may 
               communicate the issue, via its URL, and along with its top response(s) &mdash; especially if the ideal response is legislative action &mdash;
               to their representatives.  
             </span>
+            {#
+            <div class="copy">
+              As the issue (and responses) mature and become more presentable, participants in issue definition's creation may 
+              communicate the issue, via its URL, and along with its top response(s) &mdash; especially if the ideal response is legislative action &mdash;
+              to their representatives.  
+            </div>
+            #}
           </div>
+          
         </div>
+        
+        <script>
+        
+          $(document).ready(function(){
+          
+            $('.constituents-coalition-story').slick({
+              infinite: false,
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              prevArrow: '<div class="arrow previous slick-prev"><i class="fa fa-arrow-circle-o-left"></i></div>',
+              nextArrow: '<div class="arrow next slick-next"><i class="fa fa-arrow-circle-o-right"></i></div>',
+            });
+            
+            var slides = $('div.slick-slide');
+            
+            $(window).resize(function(){
+            
+              function resize(){
+                slides.not('[data-slick-index="5"]').find('span').css('top', slides.find('img').height() + 'px');
+              }
+              setTimeout(resize, 150);
+              
+            });
+            
+            $(window).resize();
+            
+          });
+          
+          
+          
+        </script>
         
           {# <img src="/img/large/user_story_build_coalition_lowres.jpg" class="primary"> #}
         
