@@ -132,7 +132,7 @@ div.main-content.row .left-guest-side div.constituents-coalition-story div.slick
 div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not([data-slick-index="0"]):before {
   content: '';
   width: 1px;
-  height: 120%;
+  height: 112%;
   background-color: #bbb;
   position: absolute;
   left: 0px;

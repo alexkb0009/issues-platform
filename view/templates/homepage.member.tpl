@@ -228,6 +228,7 @@
               infinite: false,
               slidesToShow: 2,
               slidesToScroll: 1,
+              adaptiveHeight: true,
               prevArrow: '<div class="arrow previous slick-prev"><i class="fa fa-arrow-circle-o-left"></i></div>',
               nextArrow: '<div class="arrow next slick-next"><i class="fa fa-arrow-circle-o-right"></i></div>',
               responsive: [
