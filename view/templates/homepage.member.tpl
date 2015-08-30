@@ -77,15 +77,17 @@
       
       <hr class="smaller xlarge-10" style="margin-bottom: 18px;">
       
+      {#
         <div class="columns xlarge-1 large-1 hide-for-medium-down text-left" style="font-size: 1.7em; opacity: 0.24;">
           <i class="fa fa-bar-chart" style="margin-top: 17px;"></i>
           <hr class="smaller" style="margin-top: 15px;">
           <i class="fa fa-globe" style="margin-top: 10px;"></i>
           <i class="fa fa-sort-amount-desc" style="margin-top: 15px;"></i>
         </div>
-        
+      #}
         <div class="columns intro-section xlarge-10 large-11 medium-12">
           <p>
+            <i class="fa fa-sort-amount-desc" style="margin-right: 10px; position: relative; top: 3px; font-size: 1.5em; color: #bbb;"></i>
             <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> 
             aims to succinctly represent constituencies' aggregate preferences. 
           </p>
@@ -149,7 +151,7 @@
           Why not adopt these mechanisms to improve representation of our interests within legislature and the integrity of our political system?
         </p>
         
-        <h5 style="border-bottom: 1px solid #ccc; padding: 0 60px 8px; margin-bottom: 12px; text-align: center;">
+        <h5 style="border-bottom: 1px solid #ddd; padding: 0 60px 8px; margin-bottom: 18px; text-align: center;">
           How to utilize <em>{{ site_name }}</em> <span class="ext">to start a coalition and produce legislative action</span>
         </h5>
         
@@ -232,16 +234,30 @@
             
             var slides = $('div.slick-slide');
             
+            function resize(){
+              slides.not('[data-slick-index="5"]').find('span').css('top', slides.find('img').height() + 'px');
+            }
+            
             $(window).resize(function(){
             
-              function resize(){
-                slides.not('[data-slick-index="5"]').find('span').css('top', slides.find('img').height() + 'px');
-              }
-              setTimeout(resize, 150);
+              setTimeout(function(){
+                resize();
+              }, 150);
               
             });
             
-            $(window).resize();
+            resize();
+           
+            var throttledTabResize = _.throttle(function (tab){
+              if ($(tab[0]).attr('id') == 'panel1-for-constituents') {
+                $('.constituents-coalition-story').slick('setPosition');
+                resize();
+              }
+            }, 250);
+            
+            $('ul.menu-front-tabs').on('toggled', function (event, tab) {
+              throttledTabResize(tab);
+            });
             
           });
           
@@ -249,26 +265,22 @@
           
         </script>
         
-          {# <img src="/img/large/user_story_build_coalition_lowres.jpg" class="primary"> #}
-        
         </section>
         
         <section role="tabpanel" aria-hidden="true" class="content row collapse" id="panel2-for-legislature">
-          <div class="columns large-2">
+          <div class="columns large-2 medium-12 xlarge-12" style="border-bottom: 1px solid #ddd;">
             <p>
-            As community leaders &mdash; representatives, government officials, politicians, as well as entrepreneurs & business owners &mdash; 
-            <br>can benefit from a clearer image of what concerns their constituency the most, as well as various ideas for resolving those issues.
+            Community leaders such as representatives, government officials, politicians, as well as entrepreneurs & business owners
+            can benefit from a clearer image of what concerns their constituency the most, as well as various ideas for resolving those issues.
             </p>
           </div>
-          <div class="columns large-10">
+          <div class="columns large-10 medium-12 xlarge-12">
             <img src="/img/large/front_diagram_issues_sorted_3.jpg" class="primary">
           </div>
         </section>
       </div>
       
       <hr class="smaller">
-      
-      {# <img src="/img/large/front_diagram_issues_sorted_2.jpg" class="primary"> #}
       
       <div class="row first-info" style="margin-top: 16px;">
         <div class="large-6 columns">
