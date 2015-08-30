@@ -230,6 +230,20 @@
               slidesToScroll: 1,
               prevArrow: '<div class="arrow previous slick-prev"><i class="fa fa-arrow-circle-o-left"></i></div>',
               nextArrow: '<div class="arrow next slick-next"><i class="fa fa-arrow-circle-o-right"></i></div>',
+              responsive: [
+                {
+                  breakpoint: 1240,
+                  settings: {
+                    slidesToShow: 2
+                  }
+                },
+                {
+                  breakpoint: 1800,
+                  settings: {
+                    slidesToShow: 3
+                  }
+                }
+              ]
             });
             
             var slides = $('div.slick-slide');
