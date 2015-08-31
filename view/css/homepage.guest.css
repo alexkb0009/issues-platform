@@ -39,6 +39,11 @@ div.main-content.row .left-guest-side div.constituents-coalition-story .medium-4
 
 **/
 
+div.main-content.row .left-guest-side div.constituents-coalition-story .slick-list {
+  transition: height 0.5s;
+  height: 520px;
+}
+
 div.main-content.row .left-guest-side div.constituents-coalition-story .slick-arrow {
   font-size: 2.6rem;
   position: absolute;
@@ -122,6 +127,7 @@ div.main-content.row .left-guest-side div.constituents-coalition-story div.slick
 
 div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide[data-slick-index="5"] > span {
   border-right: none;
+  top: 0;
 }
 
 div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not([data-slick-index="5"]) > span {
@@ -132,7 +138,7 @@ div.main-content.row .left-guest-side div.constituents-coalition-story div.slick
 div.main-content.row .left-guest-side div.constituents-coalition-story div.slick-slide:not([data-slick-index="0"]):before {
   content: '';
   width: 1px;
-  height: 112%;
+  height: 100%;
   background-color: #bbb;
   position: absolute;
   left: 0px;

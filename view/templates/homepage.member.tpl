@@ -224,7 +224,12 @@
         
           $(document).ready(function(){
           
-            $('.constituents-coalition-story').slick({
+            window.ce = {
+              slidesContainer : $('.constituents-coalition-story'),
+              slides : $('div.slick-slide')
+            };
+          
+            ce.slidesContainer.slick({
               infinite: false,
               slidesToShow: 2,
               slidesToScroll: 1,
@@ -247,31 +252,64 @@
               ]
             });
             
-            var slides = $('div.slick-slide');
-            
-            function resize(){
-              slides.not('[data-slick-index="5"]').find('span').css('top', slides.find('img').height() + 'px');
+            function adjustSlideContainerHeight(nextSlide){
+              var firstSlide = $(ce.slides[nextSlide]);
+              var secondSlide = $(ce.slides[nextSlide + 1]);
+              var thirdSlide = (function(){
+                if ($(document.body).width() < 1800 && $(document.body).width() >= 1240) {
+                  return $(ce.slides[nextSlide + 1]);
+                } else return false;
+              })();
+              
+              var maxHeight = Math.max(
+                Math.max(
+                  parseInt(firstSlide.children('span').css('top')) + parseInt(firstSlide.children('span').outerHeight()), 
+                  parseInt(firstSlide.outerHeight())
+                ),
+                Math.max(
+                  parseInt(secondSlide.children('span').css('top')) + parseInt(secondSlide.children('span').outerHeight()),
+                  parseInt(secondSlide.outerHeight())
+                )
+              );
+             
+              if (thirdSlide != false) { 
+                maxHeight = Math.max(maxHeight, Math.max(
+                  parseInt(thirdSlide.children('span').css('top')) + thirdSlide.children('span').outerHeight(),
+                  thirdSlide.outerHeight()
+                ));
+              }
+              
+              ce.slidesContainer.find('.slick-list').height(maxHeight);
             }
             
-            $(window).resize(function(){
-            
-              setTimeout(function(){
-                resize();
-              }, 150);
-              
-            });
-            
-            resize();
+            function resize(){
+              ce.slides.not('[data-slick-index="5"]').find('span').css('top', ce.slides.find('img').height() + 'px');
+              adjustSlideContainerHeight(ce.slidesContainer.slick('slickCurrentSlide'));
+            }
            
             var throttledTabResize = _.throttle(function (tab){
               if ($(tab[0]).attr('id') == 'panel1-for-constituents') {
-                $('.constituents-coalition-story').slick('setPosition');
+                ce.slidesContainer.slick('setPosition');
                 resize();
               }
             }, 250);
             
-            $('ul.menu-front-tabs').on('toggled', function (event, tab) {
+            /** Execution **/
+            
+            resize();
+            
+            /** Event Bindings **/
+            
+            $('ul.menu-front-tabs').on('toggled', function(event, tab) {
               throttledTabResize(tab);
+            });
+           
+            ce.slidesContainer.on('beforeChange', function(event, slick, currentSlide, nextSlide){
+              adjustSlideContainerHeight(nextSlide);
+            });
+            
+            $(window).resize(function(){
+              setTimeout(resize, 150);
             });
             
           });
