@@ -100,7 +100,7 @@
         </div>
         
         <div class="columns xlarge-1 show-for-xlarge-only">
-          <i class="fa fa-angle-right" style="font-size: 9rem; margin-top: -78px; margin-left: 12px; opacity: 0.12;"></i>
+          <i class="fa fa-arrow-right" style="font-size: 7.2rem; margin-top: -30px; margin-left: 24px; opacity: 0.12;"></i>
         </div>
 
       
