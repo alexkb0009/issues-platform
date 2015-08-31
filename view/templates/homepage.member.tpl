@@ -263,16 +263,29 @@
               
               /** Finds max height of visible slides and applies it to parent slideshow container **/
               
-              ce.slidesContainer.find('.slick-list').height(_.max(_.map(
+              var maxHeight = _.max(_.map(
                 [firstSlide, secondSlide, thirdSlide], 
                 function(slide){
                   if (!slide) return 0;
                   return Math.max(
-                    parseInt(slide.children('span').css('top')) + parseInt(slide.children('span').outerHeight()), 
+                    parseInt(slide.children('span').css('top')) + parseInt(slide.children('span').height()) + 15, 
                     parseInt(slide.outerHeight())
                   );
                 }
-              )));
+              ));
+              
+              ce.slidesContainer.find('.slick-list').height(maxHeight);
+              
+              _.each(
+                [firstSlide, secondSlide, thirdSlide],
+                function(slide){
+                  if (!slide) return;
+                  var span = slide.children('span');
+                  var spanTop = parseInt(span.css('top'));
+                  if (typeof spanTop !== 'number' || spanTop == 0) return;
+                  span.css('padding-bottom', maxHeight - spanTop + 7 + 'px');
+                }
+              );
               
             }
             
