@@ -257,29 +257,23 @@
               var secondSlide = $(ce.slides[nextSlide + 1]);
               var thirdSlide = (function(){
                 if ($(document.body).width() < 1800 && $(document.body).width() >= 1240) {
-                  return $(ce.slides[nextSlide + 1]);
+                  return $(ce.slides[nextSlide + 2]);
                 } else return false;
               })();
               
-              var maxHeight = Math.max(
-                Math.max(
-                  parseInt(firstSlide.children('span').css('top')) + parseInt(firstSlide.children('span').outerHeight()), 
-                  parseInt(firstSlide.outerHeight())
-                ),
-                Math.max(
-                  parseInt(secondSlide.children('span').css('top')) + parseInt(secondSlide.children('span').outerHeight()),
-                  parseInt(secondSlide.outerHeight())
-                )
-              );
-             
-              if (thirdSlide != false) { 
-                maxHeight = Math.max(maxHeight, Math.max(
-                  parseInt(thirdSlide.children('span').css('top')) + thirdSlide.children('span').outerHeight(),
-                  thirdSlide.outerHeight()
-                ));
-              }
+              /** Finds max height of visible slides and applies it to parent slideshow container **/
               
-              ce.slidesContainer.find('.slick-list').height(maxHeight);
+              ce.slidesContainer.find('.slick-list').height(_.max(_.map(
+                [firstSlide, secondSlide, thirdSlide], 
+                function(slide){
+                  if (!slide) return 0;
+                  return Math.max(
+                    parseInt(slide.children('span').css('top')) + parseInt(slide.children('span').outerHeight()), 
+                    parseInt(slide.outerHeight())
+                  );
+                }
+              )));
+              
             }
             
             function resize(){
