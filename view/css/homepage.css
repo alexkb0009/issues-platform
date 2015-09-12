@@ -11,6 +11,9 @@ body.logged_in div.main-body > #bgImgOverlay {
   display: none;
 }
 
+div.main-content.row .left-guest-side {
+  margin-bottom: 3px;
+}
 
 /** Subheader Messages, etc. **/
 
@@ -19,46 +22,28 @@ div.main-subheader h4 {
   padding-bottom: 7px;
 }
 
-div.main-content.row .left-guest-side div.intro-section {
-  padding: 16px 27px 17px;
-  background-color: #fff;
-  background-color: rgba(255,255,255,0.25);
-  margin-bottom: 18px;
+div.main-content.row .left-guest-side img.primary {
+  display: block;
+  margin: 0 auto 0;
+  max-width: 100%;
 }
 
-div.main-content.row .left-guest-side div.intro-section p {
-  font-size: 1.125rem; 
-}
-div.main-content.row .left-guest-side div.intro-section p:last-child {
-  margin-bottom: 0;
+div.main-content.row div.first-info {
+  margin-top: -80px; 
+  display: block; 
+  z-index: 4; 
+  position: relative;
 }
 
-@media only screen and (max-width: 1719px) {
-  
-  .show-for-xlarge-only,
-  .hide-for-large-down,
-  .hide-for-large {
-    display: none !important;  
+@media screen and (max-width: 64.07rem){
+  div.main-content.row img.primary {
+    max-width: 100%;
   }
-
+  div.main-content.row div.first-info {
+    margin-top: -25px; 
+  }
 }
 
-div.main-content.row .left-guest-side div.menu-label {
-  list-style: none; 
-  padding: 0.8rem 2rem 0; 
-  font-size: 1.2rem;
-}
-
-div.main-content.row .left-guest-side ul.menu-front-tabs li a h5 {
-  margin: 0;
-}
-
-div.main-content.row .left-guest-side div#main-tab-content > section.content {
-  background: #fff;
-  padding-left: 24px;
-  padding-right: 24px;  
-  padding-top: 18px;
-}
 
 ins {
   background-color: rgb(192, 255, 192);

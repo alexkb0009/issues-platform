@@ -244,6 +244,27 @@ div.main-subheader > h4 {
   margin: 4px 0 0;
 }
 
+div.main-content.row div.intro-section {
+  padding: 16px 27px 17px;
+  background-color: #fff;
+  background-color: rgba(255,255,255,0.25);
+  margin-bottom: 18px;
+}
+
+div.main-content.row div.intro-section p {
+  font-size: 1.125rem; 
+}
+div.main-content.row div.intro-section p:last-child {
+  margin-bottom: 0;
+}
+
+div.main-content.row div.intro-section .button.bigside {
+  height: 100%;
+  margin: -16px -27px -17px 12px; /* Opposite of div.intro-section padding, except for left */
+  font-size: 1.45rem;
+  font-weight: 100;
+}
+
 
 
 /** Footer **/
@@ -285,6 +306,8 @@ hr.smaller {
   margin: 10px 0 12px;
 }
 
+
+
 /* responsive edits */
 @media screen and (max-width: 1025px){
   div.main-body > div.main-content.row div.columns:not(:first-child) > .section-header {
@@ -292,11 +315,23 @@ hr.smaller {
   }
 }
 
+@media only screen and (max-width: 1719px) {
+  
+  .show-for-xlarge-only,
+  .hide-for-large-down,
+  .hide-for-large {
+    display: none !important;  
+  }
+
+}
+
+
 /** Sections **/
 
 .main-content.row > div.issues-section {
   margin-bottom: 15px;
 }
+
 
 /** Title Select Dropdowns **/
 
@@ -456,7 +491,7 @@ ul.issues-title-dropdown li.active > *:after  {
   margin: 0;
 }
 
-/* Issues */
+/** Issues **/
 
 .issue .issue-title  .subscribe-icon.subscribed {
   opacity: 1 !important;
@@ -596,9 +631,9 @@ body.in-search div#main_issues {
   border-top: 1px solid #eee;
 }
 
-/** Issues Big **/
 
 
+/** Issues Big / Full-Size **/
 
 div.main-body > .main-content.row.issue.full {
   padding-top: 10px;
@@ -729,6 +764,7 @@ div.main-body > .main-content.row.issue.full {
 }
 
 /** Discussions **/
+
 @media screen and (min-width: 64.07rem){
   .issue.full #disqus_thread {
     min-height: 328px;

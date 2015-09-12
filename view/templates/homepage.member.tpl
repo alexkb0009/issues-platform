@@ -20,12 +20,6 @@
 
 <link rel="stylesheet" href="{{ root }}css/homepage.css">
 
-{% if not user %}
-<link rel="stylesheet" href="{{ root }}css/homepage.guest.css">
-<script type="text/javascript" src="{{ root }}js/vendor/slick.min.js"></script>
-<link rel="stylesheet" href="{{ root }}css/vendor/slick.css">
-{% endif %}
-
 <script>
     window.session = {
         sort: {{ sort }}
@@ -64,304 +58,115 @@
 
     {% if not user %}
     
-    {# Welcome block if not logged in  #}
+    {# Title for Guests #}
     
-    <div class="large-12 xlarge-7 columns left-guest-side">
+    <div class="large-12 xlarge-12 columns">
     
-      <h1 style="font-weight: 700; margin: 15px 0 27px;">
-        <span class="ext">Politics  on 
-        <del style="font-size: 0.55em; padding: 7px 0 2px 5px; position: relative; left: -5px; top: -3px;">Steroids</del></span><ins style="padding: 8px 12px 5px 0; position: relative; left: -10px;">Technology</ins>
-      </h1>
-      
-      {# <h4 style="padding-left: 18px;">Interests & Preferences of Constituencies</h4> #}
-      
-      <hr class="smaller xlarge-10" style="margin-bottom: 18px;">
-      
-      {#
-        <div class="columns xlarge-1 large-1 hide-for-medium-down text-left" style="font-size: 1.7em; opacity: 0.24;">
-          <i class="fa fa-bar-chart" style="margin-top: 17px;"></i>
-          <hr class="smaller" style="margin-top: 15px;">
-          <i class="fa fa-globe" style="margin-top: 10px;"></i>
-          <i class="fa fa-sort-amount-desc" style="margin-top: 15px;"></i>
-        </div>
-      #}
-        <div class="columns intro-section xlarge-10 large-12 medium-12">
-          <p>
-            <i class="fa fa-sort-amount-desc" style="margin-right: 10px; position: relative; top: 3px; font-size: 1.5em; color: #bbb;"></i>
-            <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> 
-            aims to succinctly represent constituencies' aggregate preferences. 
-          </p>
-          <hr>
-          <p>      
-            Anyone may define issues relevant to locales of which they are a constituent. 
-            <br>Constituency ranks the relative importance of defined issues through voting,
-            with preferences regarding potential responses to those issues aggregated similarly.
-          </p>
-        </div>
+        <h1 style="font-weight: 700; margin: 15px 0 27px;">
+            <span class="ext">Politics  on 
+            <del style="font-size: 0.55em; padding: 7px 0 2px 5px; position: relative; left: -5px; top: -3px;">Steroids</del></span><ins style="padding: 8px 12px 5px 0; position: relative; left: -10px;">Technology</ins>
+        </h1>
         
-        <div class="columns xlarge-1 show-for-xlarge-only">
-          <i class="fa fa-arrow-right" style="font-size: 7.2rem; margin-top: -30px; margin-left: 24px; opacity: 0.12;"></i>
-        </div>
+        {# <h4 style="padding-left: 18px;">Interests & Preferences of Constituencies</h4> #}
+      
+        {# <hr class="smaller" style="margin-bottom: 18px;"> #}
+    
+    </div>
+    
+    {# Guest section w/ title, welcome content, etc. if not logged in  #}
+    
+    <div class="large-12 xlarge-3 right columns left-guest-side">
+        
+        <div class="columns intro-section xlarge-12 large-12 medium-12">
+        
+            <a href="/about" class="button right bigside" style="height: 65px; padding-top: 18px;">
+                Read More <i class="fa fa-fw fa-arrow-right right" style="font-size: 1.75rem; margin: -1px 0 0 7px;"></i>
+            </a>
+            
+            <div class="hide-for-medium hide-for-large show-for-xlarge" style="height: 78px;">
+            &nbsp;
+            </div>
+            
+            <script>
+              $(document).ready(function(){
+                if (typeof ce == 'undefined') window.ce = {};
+                window.ce.bigIntroButton = $('.button.bigside');
 
-      
-      <hr class="smaller" style="margin-bottom: 18px;">
-      
-      <div class="row">
-        
-        <div class="medium-4 columns menu-label text-left" role="presentation">
-            <em>{{ site_name }} is for</em>
+                function resizeBigIntroButton(){
+                  var parentElemHeight = ce.bigIntroButton.parent().children('.content').outerHeight();
+                  
+                  if (ce.bigIntroButton.parent().outerWidth() > 594) {
+                  
+                    ce.bigIntroButton.css({
+                      'height' : parentElemHeight - parseInt(ce.bigIntroButton.css('margin-top')) - parseInt(ce.bigIntroButton.css('margin-bottom')) + 'px',
+                      'padding-top' : parseInt((parentElemHeight - parseInt(ce.bigIntroButton.css('margin-top'))) / 2) - 6 + 'px',
+                      'margin' : '',
+                      'width' : ''
+                    });
+                  
+                  } else {
+                  
+                    ce.bigIntroButton.css({
+                      'height' : '',
+                      'padding-top' : '',
+                      'margin' : '0px',
+                      'width'  : '100%'
+                    });
+                  
+                  }
+                  
+                }
+                
+                resizeBigIntroButton();
+                
+                $(window).resize(function(){
+                  setTimeout(resizeBigIntroButton, 250);
+                });
+                
+              });
+            </script>
+            
+            <p class="content">
+                <i class="fa fa-sort-amount-desc" style="margin-right: 10px; position: relative; top: 3px; font-size: 1.5em; color: #bbb;"></i>
+                <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> 
+                aims to succinctly represent constituencies' aggregate preferences. 
+            </p>
+            
         </div>
-        
-        <div class="medium-8 columns">
-        
-          <ul class="tabs row collapse menu-front-tabs" data-tab role="tablist">
-            <li class="tab-title medium-6 columns text-center active" role="presentation" style="border-right: 1px solid #ddd;">
-              <a href="#panel1-for-constituents" role="tab" tabindex="0" aria-selected="true" aria-controls="panel1-for-constituents">
-                <h5>Citizens</h5>
-              </a>
-            </li>
-            <li class="tab-title medium-6 columns text-center" role="presentation">
-              <a href="#panel2-for-legislature" role="tab" tabindex="0" aria-selected="false" aria-controls="panel2-for-legislature">
-                <h5>Leaders</h5>
-              </a>
-            </li>
-          </ul>
-        </div>
-        
-      </div>
-      
-      <div id="main-tab-content" class="tabs-content" style="margin-bottom: 18px;">
-        <section role="tabpanel" aria-hidden="false" class="content active" id="panel1-for-constituents">
-        <h4>Build coalitions <span class="ext">around common causes; be represented</span></h4>
         
         {#
-        <p>
-          On average, there are over 750,000 constituents for each U.S. Representative &mdash; and growing. 
-          At a scale this large and with time so valuable, getting face-time to discuss issues with a representative is almost unthinkable to many constituents.
-          Effectively, large portions of constituencies are arguably under-represented in legislature.   
-        </p>
+        <div class="columns xlarge-1 show-for-xlarge-only">
+            <i class="fa fa-arrow-right" style="font-size: 7.2rem; margin-top: -30px; margin-left: 24px; opacity: 0.12;"></i>
+        </div>
         #}
-        <p>
-          Today, people habitually collaborate on-line to generate troves of information from which readily-accessible aggregates of popular opinion, preference, or understanding are the end product. 
-          Reddit's front page consists of Reddit's most popular posts &mdash; those which the Reddit community as a whole has voted to be most interesting or appealing.
-          Yelp and TripAdvisor produce aggregate ratings and rankings of popular consumer destinations near any particular location. 
-          Wikipedia articles are the manifestations of consensuses of what contributors to those articles agree is the most correct and useful information regarding a particular topic.
-        </p>
-        <p>
-          Why not adopt these mechanisms to improve representation of our interests within legislature and the integrity of our political system?
-        </p>
-        
-        <h5 style="border-bottom: 1px solid #ddd; padding: 0 60px 8px; margin-bottom: 18px; text-align: center;">
-          How to utilize <em>{{ site_name }}</em> <span class="ext">to start a coalition and produce legislative action</span>
-        </h5>
-        
-        {# Comic Strip #}
-        
-        <div class="row collapse constituents-coalition-story">
-        
-          <div class="slick-slide">
-            <img src="/img/large/user_story_sections/1.jpg">
-            <span>
-              Joe discovers that online poker, an activity which he enjoys, is outlawed in the United States.
-            </span>
-          </div>
-          
-          <div class="slick-slide">
-            <img src="/img/large/user_story_sections/2.jpg">
-            <span>
-              Joe defines an issue on <em>{{ site_name }}</em> that makes his problem
-              &mdash; not having access to online poker &mdash; take a visible & written form to become known to others.
-            </span>
-          </div>
-          
-          <div class="slick-slide">
-            <img src="/img/large/user_story_sections/3.jpg" style="margin-top: 12px;">
-            <span>
-              Bill notices the issue regarding lack of access to online poker on <em>{{ site_name }}</em>
-              and feels that he agrees that it is an important issue. 
-              He votes 'up' for the issue, and contributes to the definition by adding some of his knowledge and references to the document.
-            </span>
-          </div>
-        
-          <div class="slick-slide"> 
-            <img src="/img/large/user_story_sections/4.jpg" style="margin-top: 24px;">
-            <span>
-              Both Joe and Bill spread awareness of the issue through their social networks via conversations and social media platforms.
-              Their friends notice, and perhaps agreeing on issue's importance, start to contribute to the issue definition, start a debate, propose a response, or vote on one.
-              Communicating the group-formed issue definition to friends and acquaintances may be done as simply as distributing any link or URL.
-            </span>
-          </div>
-          
-          <div class="slick-slide">
-            <img src="/img/large/user_story_sections/5.jpg" style="margin-top: 26px;">
-            <span>
-              As more people contribute, visibility of the issue regarding online poker legality grows from votes and views,
-              the amount of users engaging with the issue cascades upwards. 
-              A sort of article, which is the definition and supporting knowledge & references of an issue, begins to take coherent form.
-              Responses begin to appear, voted on, and ranked. 
-            </span>
-          </div>
-          
-          <div class="slick-slide">
-            <img src="/img/large/user_story_sections/6.jpg">
-            <span>
-              As the issue (and responses) mature and become more presentable, participants in issue definition's creation may 
-              communicate the issue, via its URL, and along with its top response(s) &mdash; especially if the ideal response is legislative action &mdash;
-              to their representatives.  
-            </span>
-            {#
-            <div class="copy">
-              As the issue (and responses) mature and become more presentable, participants in issue definition's creation may 
-              communicate the issue, via its URL, and along with its top response(s) &mdash; especially if the ideal response is legislative action &mdash;
-              to their representatives.  
+      
+        <hr class="smaller">
+      
+        <div class="panel clearfix columns large-12 xlarge-12">
+            <div class="row" data-equalizer="first-info">
+                <div class="medium-6 large-6 xlarge-12 columns" data-equalizer-watch="first-info">
+                    <h6 style="border-bottom: 1px dotted #ccc; padding-bottom: 15px;"><em>{{ site_name }}</em> is currently in development and open to beta users.</h6>
+                    <p>
+                        If you'd like access (in exchange for your feedback), please <a href="{{ root }}register">request an account</a> and include an identifiable "About Me" section.
+                        If you were invited to join, this is not needed.
+                    </p>
+                </div>
+            
+                <div class="medium-6 large-6 xlarge-12 columns" data-equalizer-watch="first-info">
+                    {% include 'sections/marketing/donate-button.tpl' %}
+                </div>
             </div>
-            #}
-          </div>
-          
         </div>
-        
-        <script>
-        
-          $(document).ready(function(){
-          
-            window.ce = {
-              slidesContainer : $('.constituents-coalition-story'),
-              slides : $('div.slick-slide')
-            };
-          
-            ce.slidesContainer.slick({
-              infinite: false,
-              slidesToShow: 2,
-              slidesToScroll: 1,
-              adaptiveHeight: true,
-              prevArrow: '<div class="arrow previous slick-prev"><i class="fa fa-arrow-circle-o-left"></i></div>',
-              nextArrow: '<div class="arrow next slick-next"><i class="fa fa-arrow-circle-o-right"></i></div>',
-              responsive: [
-                {
-                  breakpoint: 1240,
-                  settings: {
-                    slidesToShow: 2
-                  }
-                },
-                {
-                  breakpoint: 1800,
-                  settings: {
-                    slidesToShow: 3
-                  }
-                }
-              ]
-            });
-            
-            function adjustSlideContainerHeight(nextSlide){
-              var firstSlide = $(ce.slides[nextSlide]);
-              var secondSlide = $(ce.slides[nextSlide + 1]);
-              var thirdSlide = (function(){
-                if ($(document.body).width() < 1800 && $(document.body).width() >= 1240) {
-                  return $(ce.slides[nextSlide + 2]);
-                } else return false;
-              })();
-              
-              /** Finds max height of visible slides and applies it to parent slideshow container **/
-              
-              var maxHeight = _.max(_.map(
-                [firstSlide, secondSlide, thirdSlide], 
-                function(slide){
-                  if (!slide) return 0;
-                  return Math.max(
-                    parseInt(slide.children('span').css('top')) + parseInt(slide.children('span').height()) + 15, 
-                    parseInt(slide.outerHeight())
-                  );
-                }
-              ));
-              
-              ce.slidesContainer.find('.slick-list').height(maxHeight);
-              
-              _.each(
-                [firstSlide, secondSlide, thirdSlide],
-                function(slide){
-                  if (!slide) return;
-                  var span = slide.children('span');
-                  var spanTop = parseInt(span.css('top'));
-                  if (typeof spanTop !== 'number' || spanTop == 0) return;
-                  span.css('padding-bottom', maxHeight - spanTop + 7 + 'px');
-                }
-              );
-              
-            }
-            
-            function resize(){
-              ce.slides.not('[data-slick-index="5"]').find('span').css('top', ce.slides.find('img').height() + 'px');
-              adjustSlideContainerHeight(ce.slidesContainer.slick('slickCurrentSlide'));
-            }
-           
-            var throttledTabResize = _.throttle(function (tab){
-              if ($(tab[0]).attr('id') == 'panel1-for-constituents') {
-                ce.slidesContainer.slick('setPosition');
-                resize();
-              }
-            }, 250);
-            
-            /** Execution **/
-            
-            resize();
-            
-            /** Event Bindings **/
-            
-            $('ul.menu-front-tabs').on('toggled', function(event, tab) {
-              throttledTabResize(tab);
-            });
-           
-            ce.slidesContainer.on('beforeChange', function(event, slick, currentSlide, nextSlide){
-              adjustSlideContainerHeight(nextSlide);
-            });
-            
-            $(window).resize(function(){
-              setTimeout(resize, 150);
-            });
-            
-          });
-          
-          
-          
-        </script>
-        
-        </section>
-        
-        <section role="tabpanel" aria-hidden="true" class="content row collapse" id="panel2-for-legislature">
-          <div class="columns large-2 medium-12 xlarge-12" style="border-bottom: 1px solid #ddd;">
-            <p>
-            Community leaders such as representatives, government officials, politicians, as well as entrepreneurs & business owners
-            can benefit from a clearer image of what concerns their constituency the most, as well as various ideas for resolving those issues.
-            </p>
-          </div>
-          <div class="columns large-10 medium-12 xlarge-12">
-            <img src="/img/large/front_diagram_issues_sorted_3.jpg" class="primary">
-          </div>
-        </section>
-      </div>
-      
-      <hr class="smaller">
-      
-      <div class="row first-info" style="margin-top: 16px;">
-        <div class="large-6 columns">
-          <div class="panel clearfix" style="display: block; z-index: 4; position: relative;">
-            <p>
-              <em>{{ site_name }}</em> is currently in development and open to beta users.<br>
-              If you'd like access (in exchange for your feedback), please <a href="{{ root }}register">request an account</a> and include an identifiable "About Me" section.
-              If you were invited to join, this is not needed.
-            </p>
-          </div>
-        </div>
-        <div class="large-6 columns">
-          {% include 'components/donate-button.tpl' %}
-        </div>
-      </div>
       
     </div>
     
+    {# End of Guest Section #}
     {% endif %}
 
-    <div class="{% if user %}large-8 xlarge-9{% else %}large-12 xlarge-5{% endif %} columns issues-section">
+
+    {# Start of Issues Listing Section #}
+
+    <div class="{% if user %}large-8 xlarge-9{% else %}large-12 xlarge-9 right{% endif %} columns issues-section">
     
         {# Title w/ sorting opts #}
     
@@ -463,9 +268,10 @@
         {% endfor %}
         
         </div>
-        
-        
+ 
     </div>
+    
+    {# End of Main Listing Section #}
       
     {% if user %}   
     
@@ -477,10 +283,8 @@
         <br>
         {% include 'components/donate-button.tpl' %}
     </div>
-    
-    
+        
     {% endif %}
-    
     
 </div>
 
