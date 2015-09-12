@@ -83,35 +83,43 @@
                 Read More <i class="fa fa-fw fa-arrow-right right" style="font-size: 1.75rem; margin: -1px 0 0 7px;"></i>
             </a>
             
+            {#
             <div class="hide-for-medium hide-for-large show-for-xlarge" style="height: 78px;">
-            &nbsp;
+                &nbsp;
             </div>
+            #}
+            
+            <p class="content" style="margin: 0;">
+                <i class="fa fa-sort-amount-desc" style="margin-right: 10px; position: relative; top: 3px; font-size: 1.5em; color: #bbb;"></i>
+                <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> 
+                aims to succinctly represent constituencies' aggregate preferences. 
+            </p>
             
             <script>
               $(document).ready(function(){
                 if (typeof ce == 'undefined') window.ce = {};
                 window.ce.bigIntroButton = $('.button.bigside');
+                window.ce.bigIntroButtonParent = ce.bigIntroButton.parent();
 
                 function resizeBigIntroButton(){
-                  var parentElemHeight = ce.bigIntroButton.parent().children('.content').outerHeight();
-                  
+                  var parentElemHeight = ce.bigIntroButtonParent.children('.content').outerHeight();
                   if (ce.bigIntroButton.parent().outerWidth() > 594) {
                   
                     ce.bigIntroButton.css({
-                      'height' : parentElemHeight - parseInt(ce.bigIntroButton.css('margin-top')) - parseInt(ce.bigIntroButton.css('margin-bottom')) + 'px',
-                      'padding-top' : parseInt((parentElemHeight - parseInt(ce.bigIntroButton.css('margin-top'))) / 2) - 6 + 'px',
+                      'height' : parentElemHeight + parseInt(ce.bigIntroButtonParent.css('padding-top')) + parseInt(ce.bigIntroButtonParent.css('padding-bottom')) + 'px',
+                      'padding-top' : parseInt((parentElemHeight + parseInt(ce.bigIntroButtonParent.css('padding-top'))) / 2) - 6 + 'px',
                       'margin' : '',
                       'width' : ''
-                    });
+                    }).prependTo(ce.bigIntroButtonParent);
                   
                   } else {
                   
                     ce.bigIntroButton.css({
                       'height' : '',
                       'padding-top' : '',
-                      'margin' : '0px',
+                      'margin' : '12px 0px 8px 0px',
                       'width'  : '100%'
-                    });
+                    }).insertAfter(ce.bigIntroButtonParent.children('.content'));
                   
                   }
                   
@@ -126,11 +134,6 @@
               });
             </script>
             
-            <p class="content">
-                <i class="fa fa-sort-amount-desc" style="margin-right: 10px; position: relative; top: 3px; font-size: 1.5em; color: #bbb;"></i>
-                <em><strong style="font-size: 1.125em;">{{ site_name }}</strong></em> 
-                aims to succinctly represent constituencies' aggregate preferences. 
-            </p>
             
         </div>
         

@@ -28,6 +28,7 @@
     </div>
         
     <div class="columns xlarge-8 large-12 medium-12">
+    
         <div class="intro-section">
             <p>
                 <i class="fa fa-sort-amount-desc" style="margin-right: 10px; position: relative; top: 3px; font-size: 1.5em; color: #bbb;"></i>
@@ -41,6 +42,8 @@
                 with preferences regarding potential responses to those issues aggregated similarly.
             </p>
         </div>
+        
+        <hr class="smaller">
         
         {% include 'sections/marketing/my_issues_is_for.tpl' %}
         
