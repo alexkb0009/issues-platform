@@ -139,20 +139,25 @@
       
         <hr class="smaller">
       
-        <div class="panel clearfix columns large-12 xlarge-12">
-            <div class="row" data-equalizer="first-info">
-                <div class="medium-6 large-6 xlarge-12 columns" data-equalizer-watch="first-info">
-                    <h6 style="border-bottom: 1px dotted #ccc; padding-bottom: 15px;"><em>{{ site_name }}</em> is currently in development and open to beta users.</h6>
+        <div class="row" data-equalizer="first-info">
+            <div class="medium-6 large-6 xlarge-12 columns">
+                <div class="panel" data-equalizer-watch="first-info">
+                    <h6 style="border-bottom: 1px dotted #ccc; padding-bottom: 15px; line-height: 1.25rem;">
+                        <em>{{ site_name }}</em> is currently in development and open to beta users.
+                    </h6>
                     <p>
                         If you'd like access (in exchange for your feedback), please <a href="{{ root }}register">request an account</a> and include an identifiable "About Me" section.
                         If you were invited to join, this is not needed.
                     </p>
                 </div>
-            
-                <div class="medium-6 large-6 xlarge-12 columns" data-equalizer-watch="first-info">
+            </div>
+        
+            <div class="medium-6 large-6 xlarge-12 columns">
+                <div class="panel" data-equalizer-watch="first-info">
                     {% include 'sections/marketing/donate-button.tpl' %}
                 </div>
             </div>
+            
         </div>
       
     </div>

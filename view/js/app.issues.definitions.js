@@ -86,7 +86,7 @@ isApp.Models.Revision = Backbone.Model.extend({
         author: 'billyg123',        // Revision author
         parentIssue: false,         // ID of rel. issue
         previousRevision: false,    // Set by backend to _id, set to JSON obj of details in collection parse
-        firstRevision: false,        // Set by backend
+        firstRevision: false,       // Set by backend
         active: false               // Set here
     },
     
@@ -503,7 +503,10 @@ isApp.Views.IssueView = Backbone.View.extend({
         if (typeof obj == 'undefined' && (this.className.indexOf('min') >= 0 || window.innerWidth <= 600)) minimize = true;
         
         // Or if guest.
-        if (!isApp.me.get('logged_in') && this.$el.hasClass('listview')) minimize = true;
+        //if (!isApp.me.get('logged_in') && this.$el.hasClass('listview')) minimize = true;
+        
+        // Or if length of list is.. long
+        if (this.$el.hasClass('listview') && this.model.collection.length > 10) minimize = true;
         
         this.$el.html(this.template( this.model.toJSON() ));
         
@@ -616,37 +619,46 @@ isApp.Views.IssueView = Backbone.View.extend({
     },
     
     subscribe: function(){
-        isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; line-height: 1.875em; font-size: 0.825em;');
+        isApp.u.setLoaderInElem(this.$el.find('.subscribe-icon'), true, 'right', 'color: #888; line-height: 1.75em; font-size: 0.825em;');
         this.subscribeAction();
     },
     
     subscribeAction: function(callback){
     
-        this.model.get('meta').save({'am_subscribed': !(this.model.get('meta').get('am_subscribed'))}, { patch: true, wait: true, success: $.proxy(function(resp, status, xhr){
-            // Set myIssues if needed.
-            if (isApp.myIssues != null){
-                isApp.myIssues.reset();
-                isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
-                isApp.myIssues.fetch();
+        this.model.get('meta').save(
+            {'am_subscribed': !(this.model.get('meta').get('am_subscribed'))},  // Opposite of current value
+            {
+              patch: true, 
+              wait: true, 
+              success: $.proxy(function(resp, status, xhr){
+                
+                // Set my (subscribed) issues list view if needed.
+                if (isApp.myIssues != null){
+                    isApp.myIssues.reset();
+                    isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
+                    isApp.myIssues.fetch();
+                }
+                
+                // Set am subscribed appropriately on local-side.
+                if (this.model.get('meta').get('am_subscribed')){
+                    this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') + 1);
+                } else {
+                    this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') - 1);
+                }
+                
+                // Send analytics event
+                ga('send', 'event', 'user', 'subscribed', isApp.me.get('username') + ' to ' + this.model.get('title'), this.model.get('meta').get('am_subscribed') ? 1 : -1);
+                
+                // Do callback (optional)
+                if (callback) callback(resp, status, xhr);
+            
+              }, this), 
+              error: function(issue){
+                issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
+                ga('send', 'event', 'error', 'subscribing', issue.get('title'));
+              } 
             }
-            
-            // Set am subscribed appropriately on local-side.
-            if (this.model.get('meta').get('am_subscribed')){
-                this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') + 1);
-            } else {
-                this.model.get('scoring').set('subscribed', this.model.get('scoring').get('subscribed') - 1);
-            }
-            
-            // Send analytics event
-            ga('send', 'event', 'user', 'subscribed', isApp.me.get('username') + ' to ' + this.model.get('title'), this.model.get('meta').get('am_subscribed') ? 1 : -1);
-            
-            // Do callback (optional)
-            if (callback) callback(resp, status, xhr);
-            
-        }, this), error: function(issue){
-            issue.get('meta').set('am_subscribed', issue.get('meta').previous('am_subscribed'));
-            ga('send', 'event', 'error', 'subscribing', issue.get('title'));
-        } });
+        );
     }
     
 });

@@ -26,7 +26,6 @@ isApp.u.setLoaderInElem = function(element, replace, extraClassName, extraStyle)
     if (typeof replace == 'undefined' || !replace) replace = false;
     if (typeof color == 'undefined' || !color) color = 'inherit';
     if (typeof extraClassName == 'undefined' || extraClassName) extraClassName = '';
-    var rawElement;
     if (!(element instanceof jQuery)) element = $(element);
     var loadElem = document.createElement('i');
     loadElem.style.cssText = extraStyle;
