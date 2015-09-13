@@ -136,12 +136,6 @@
             
             
         </div>
-        
-        {#
-        <div class="columns xlarge-1 show-for-xlarge-only">
-            <i class="fa fa-arrow-right" style="font-size: 7.2rem; margin-top: -30px; margin-left: 24px; opacity: 0.12;"></i>
-        </div>
-        #}
       
         <hr class="smaller">
       
@@ -284,7 +278,9 @@
         <h4 id="my_issues_title" class="major section-header noselect">Subscribed Issues</h4>
         <div id="my_issues"></div>
         <br>
-        {% include 'components/donate-button.tpl' %}
+        <div class="panel clearfix">
+          {% include 'sections/marketing/donate-button.tpl' %}
+        </div>
     </div>
         
     {% endif %}
