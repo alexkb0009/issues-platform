@@ -65,6 +65,8 @@ Backbone.sync = function(method, model, options){
     isApp.u._existingSync.call(this, method, model, options);
 }
 
+/** JS Diff of MarkDown **/
+
 isApp.u.jsdiffExt = function(oldText, newText){
     if (typeof diffString == 'undefined') return false;
     var fullDiff = diffString(oldText,newText);

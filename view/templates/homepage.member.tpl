@@ -45,6 +45,7 @@
     <div class="large-12 columns">
       <span class="inline">Welcome, {{ user.firstname }}!</span>
       <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a>
+      <span class="authenticate-notice"></span>
     </div>
   </div>
 </div>
@@ -109,7 +110,8 @@
                       'height' : parentElemHeight + parseInt(ce.bigIntroButtonParent.css('padding-top')) + parseInt(ce.bigIntroButtonParent.css('padding-bottom')) + 'px',
                       'padding-top' : parseInt((parentElemHeight + parseInt(ce.bigIntroButtonParent.css('padding-top'))) / 2) - 6 + 'px',
                       'margin' : '',
-                      'width' : ''
+                      'width' : '',
+                      'border-left' : '.9375rem solid #DBDDE4'
                     }).prependTo(ce.bigIntroButtonParent);
                   
                   } else {
@@ -118,7 +120,8 @@
                       'height' : '',
                       'padding-top' : '',
                       'margin' : '12px 0px 8px 0px',
-                      'width'  : '100%'
+                      'width'  : '100%',
+                      'border-left' : ''
                     }).insertAfter(ce.bigIntroButtonParent.children('.content'));
                   
                   }
@@ -143,7 +146,7 @@
             <div class="medium-6 large-6 xlarge-12 columns">
                 <div class="panel" data-equalizer-watch="first-info">
                     <h6 style="border-bottom: 1px dotted #ccc; padding-bottom: 15px; line-height: 1.25rem;">
-                        <em>{{ site_name }}</em> is currently in development and open to beta users.
+                        <em>{{ site_name }}</em> is currently in development and open to alpha users.
                     </h6>
                     <p>
                         If you'd like access (in exchange for your feedback), please <a href="{{ root }}register">request an account</a> and include an identifiable "About Me" section.

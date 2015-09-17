@@ -20,9 +20,9 @@ def index(search_term = None):
     If guest, get guest / marketing content + login access.
     '''
     from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions, saveUserScale
-    status = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
+    status  = request.query.get('s') # Status (e.g. for error), if any. (E.g. 'login_failed')
     session = request.environ['beaker.session']
-    scale = request.query.get('scale')
+    scale   = request.query.get('scale')
     searchParam = request.query.get('search')
     
     if searchParam: search_term = searchParam
@@ -40,14 +40,14 @@ def index(search_term = None):
         'search_term' : search_term
     }
     
-    if not search_term: 
-        # Get some initial issues for us.
-        from app.functions.issues import getScaledPagifiedIssuesIterableBySort, getIssuesFromCursor
-        import json
-        (iterable, more) = getScaledPagifiedIssuesIterableBySort(session.get('last_sort') or 'trending', 1)
-        returnObj['issues'] = getIssuesFromCursor(iterable)
-        returnObj['formatted_issues'] = json.dumps(returnObj['issues'])
-        returnObj['next_page'] = more
+    # if not search_term: 
+    # Get some initial issues for us.
+    from app.functions.issues import getScaledPagifiedIssuesIterableBySort, getIssuesFromCursor
+    import json
+    (iterable, more) = getScaledPagifiedIssuesIterableBySort(session.get('last_sort') or 'trending', 1)
+    returnObj['issues'] = getIssuesFromCursor(iterable)
+    returnObj['formatted_issues'] = json.dumps(returnObj['issues'])
+    returnObj['next_page'] = more
         
     if authd:
     
