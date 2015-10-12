@@ -4,9 +4,9 @@
 
 This is the repository of the code which runs it! This readme is a brief overview of implementation details & requirements. Please browse through the repository's _Source_ if you would like to get acquainted with and understand the code a little.
 
-#### Please Note (Code Quality) ####
+### Please Note (Code Quality) ###
 
-Most of this platform has been rapidly prototyped in under 4 months (Jan-April 2015), with the primary goal of obtaining feedback on concepts and user experience in order to iterate on platform design. Due to this, much of the code isn't super-ideal for production - for example, there are no proper classes built for the concepts of users, issues, etc., (yet), partly because dictionaries' structure/variables might be more easily adjusted than classes when rapidly prototyping, along w/ structure of corresponding MongoDB doc(s).
+Much of this platform has been rapidly prototyped in under 4 months (Jan-April 2015), with the primary goal of obtaining feedback on concepts and user experience in order to iterate on platform design. Due to this, much of the code isn't super-ideal for production - for example, there are no proper classes built for the concepts of users, issues, etc., (yet), partly because dictionaries' structure may be adjusted more easily than classes when rapidly prototyping and parallel structure of corresponding MongoDB documents.
 
 
 ### How do I get set up? ###
