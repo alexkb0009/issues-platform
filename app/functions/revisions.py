@@ -15,7 +15,7 @@ def revisionFromRequestObj(issueReq, parentIssueID = None):
 def saveNewRevisionFromRequestObj(issueReq, issue):
     newRevisionDict = revisionFromRequestObj(issueReq, issue.get('_id'))
     newRevisionDict.update({'previousRevision' : issue.get('current_revision')})
-    newRevisionId = db.revisions.insert(newRevisionDict, safe = True)
+    newRevisionId = db.revisions.insert(newRevisionDict)
     
     db.issues.update(
         {'_id' : issue['_id']}, 
