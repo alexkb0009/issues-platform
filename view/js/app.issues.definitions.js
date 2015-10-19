@@ -441,21 +441,21 @@ isApp.Views.RevisionView = Backbone.View.extend({
     
     setRevision : function(e){
     
-        if (app.ce.issueTitle && diffString){
+        if (app.ce.issueTitle && isApp.u.diffMatch){
             app.ce.issueContentContainer.children('.revision-view-label').remove();
             if (!this.$el.children('.heading').hasClass('active')){
                 app.ce.issueContentContainer.prepend('<div class="revision-view-label">viewing difference of <b>revision</b> @ ' + this.model.get('date') + ' to <b>current</b> </strong>');
             } 
-            app.ce.issueTitle.html(diffString((this.model.get('title') || ""), app.ce.issueTitle.data('realContent')));
+            app.ce.issueTitle.html(isApp.u.diffMatch((this.model.get('title') || ""), app.ce.issueTitle.data('realContent'), null, true));
         }
         
-        if (app.ce.issueDescription && diffString){
-            app.ce.issueDescription.html(diffString((this.model.get('description') || ""), app.ce.issueDescription.data('realContent')));
+        if (app.ce.issueDescription && isApp.u.diffMatch){
+            app.ce.issueDescription.html(isApp.u.diffMatch((this.model.get('description') || ""), app.ce.issueDescription.data('realContent'), null, true));
         }
         
-        if (app.ce.issueBody && isApp.currentIssue && diffString){
+        if (app.ce.issueBody && isApp.currentIssue && isApp.u.diffMatch){
             if (!this.$el.children('.heading').hasClass('active')){
-                app.ce.issueBody.html(diffString((this.model.get('body') || ""), isApp.currentIssue.get('body')) + '<br><br>');
+                app.ce.issueBody.html(isApp.u.diffMatch((this.model.get('body') || ""), isApp.currentIssue.get('body'), null, true) + '<br><br>');
             } else {
                 app.ce.issueBody.html(app.ce.issueBody.data('realContent'));
             }

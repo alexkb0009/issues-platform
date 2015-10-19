@@ -66,7 +66,7 @@ Backbone.sync = function(method, model, options){
 }
 
 
-isApp.u.diffMatch = function(oldText, newText, bounds){
+isApp.u.diffMatch = function(oldText, newText, bounds, raw){
      
     // Check and initialize diff_match_patch.
     // For more info see https://code.google.com/p/google-diff-match-patch/.
@@ -101,6 +101,9 @@ isApp.u.diffMatch = function(oldText, newText, bounds){
     }
     
     var fullDiff = output.join('');
+    
+    if (typeof raw == "boolean" && raw == true) return fullDiff;
+    
     if (typeof bounds !== "number") bounds = 100;
     
     var regex = "([\\S\\s]{0," + bounds  + "}(<ins>[\\s\\S]+?<\/ins>|<del>[\\s\\S]+?<\/del>)+[\\S\\s]{0," + bounds + "})+";
