@@ -16,7 +16,7 @@ print = logMachine.log # Debug stuff better
 def index(search_term = None):
     '''
     This is the primary index page. It outputs two different templates/views, depending on if user is guest or authenticated user.
-    If authenticated, render the homepage.member.tpl template which contains lists of Issues, etc. to make up users' home portal.
+    If authenticated, render the homepage.tpl template which contains lists of Issues, etc. to make up users' home portal.
     If guest, get guest / marketing content + login access.
     '''
     from app.functions.sort import getIssuesSortOptions, getIssuesScaleOptions, saveUserScale
@@ -40,7 +40,6 @@ def index(search_term = None):
         'search_term' : search_term
     }
     
-    # if not search_term: 
     # Get some initial issues for us.
     from app.functions.issues import getScaledPagifiedIssuesIterableBySort, getIssuesFromCursor
     import json
@@ -50,7 +49,6 @@ def index(search_term = None):
     returnObj['next_page'] = more
         
     if authd:
-    
         if scale is not None:
             if saveUserScale(scale, request.user):
                 request.user['meta']['current_scale'] = scale
@@ -60,12 +58,12 @@ def index(search_term = None):
           # 'route' : [('Home', '', 'Return to homepage')]
         })
             
-        return template('homepage.member.tpl', returnObj)
+        return template('homepage.tpl', returnObj)
         
     else:
         if status in ['login_failed', 'logged_out']:
             returnObj['subheader_message'] = status
-        return template('homepage.member.tpl', returnObj)
+        return template('homepage.tpl', returnObj)
         
 @app.route('/is/<issue_slug>')
 def view_issue(issue_slug):
@@ -281,7 +279,7 @@ def password_reset():
 ## Admin Panel
     
 @app.route('/administrate')
-@view('homepage.tpl')
+@view('admin/homepage.tpl')
 def admin():
     session_auth()
     if not request.user or 'admin' not in request.user['roles']:

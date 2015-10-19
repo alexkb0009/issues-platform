@@ -41,6 +41,9 @@ def create_issue():
         response.status = 401
         return { 'message' : 'Need to be authenticated.' }
         
+    if not request.user['profile']['approved']:
+        response.status = 401
+        return { 'message' : 'You are not approved to define new issues yet. Please authenticate your constituency.' }
     
     issueId = saveNewIssueFromRequestObj(request.json)
     if issueId:

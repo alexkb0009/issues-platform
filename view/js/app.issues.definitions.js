@@ -408,9 +408,12 @@ isApp.Collections = {
 
 }
 
+
+
 /********************************/
 /**      Views Definitions     **/
 /********************************/
+
 
 isApp.Views.RevisionView = Backbone.View.extend({
     
@@ -494,24 +497,28 @@ isApp.Views.IssueView = Backbone.View.extend({
     
     /** A Component of this.render() **/
     renderInitial: function(obj){
-        var minimize = false;
+        this.minimize = false;
         
-        // Retain minimize if was before.
-        if (typeof obj != 'undefined' && this.$el.find('.description').hasClass('closed')) minimize = true;
-        
-        // Else minimize if small screen or is set in init classSize.
-        if (typeof obj == 'undefined' && (this.className.indexOf('min') >= 0 || window.innerWidth <= 600)) minimize = true;
+        // Minimize intro description if small screen or is set in initialization 
+        // CSS class ("min") or was closed previously (somehow) or is lots of items.
+        if (
+          typeof obj == 'undefined' &&
+          this.$el.hasClass('listview') && (
+            this.className.indexOf('min') >= 0 ||
+            window.innerWidth <= 600 ||
+            this.$el.find('.description').hasClass('closed') ||
+            this.model.collection.length > 10
+          )
+        ) this.minimize = true;
         
         // Or if guest.
-        //if (!isApp.me.get('logged_in') && this.$el.hasClass('listview')) minimize = true;
+        //if (!isApp.me.get('logged_in') && this.$el.hasClass('listview')) this.minimize = true;
         
-        // Or if length of list is.. long
-        if (this.$el.hasClass('listview') && this.model.collection.length > 10) minimize = true;
         
         this.$el.html(this.template( this.model.toJSON() ));
         
-        if (minimize){ 
-          this.toggleDescriptionOpenRaw(null, false); // evt = null, transition = false
+        if (this.minimize == true){ 
+            this.toggleDescriptionOpenRaw(null, false); // evt = null, transition = false
         }
         
         this.toggleDescriptionOpen = _.throttle(this.toggleDescriptionOpenRaw, 500, {trailing: false});
@@ -672,6 +679,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
           this.template = _.template($('#' + options.templateID).html());
         }
         this.render();
+        this.setupRevisions();
     },
     
     bindings: {
@@ -691,8 +699,6 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
             '.subscribed-score > h4' : 'subscribed',
             '.num-votes > h4' : 'num_votes'
         });
-        
-        this.setupRevisions();
         
         return this;
     },
@@ -1002,8 +1008,10 @@ isApp.Views.CollectionViewBase = Backbone.View.extend({
 isApp.Views.RevisionsView = isApp.Views.CollectionViewBase.extend({
     
     render: function(){
-        this.renderInitial(isApp.Views.RevisionView);
-        $(document).foundation('dropdown', 'reflow');
+        setTimeout(function(t){
+            t.renderInitial(isApp.Views.RevisionView);
+            $(document).foundation('dropdown', 'reflow');
+        }, 50, this);
         
         if (this.nextLink) this.nextLink.remove();
         if (this.prevLink) this.prevLink.remove();

@@ -3,7 +3,7 @@
 
 {# Requires additional JS + CSS #}
 
-<link rel="stylesheet" href="{{ root }}css/pagespecific/constituents-coalition-story.css">
+<link rel="stylesheet" href="{{ root }}css/page-specific/constituents-coalition-story.css">
 <script type="text/javascript" src="{{ root }}js/vendor/slick.min.js"></script>
 <link rel="stylesheet" href="{{ root }}css/vendor/slick.css">
 

@@ -10,6 +10,7 @@
     <div class="description">
         <%= description %>
     </div>
+    
 </script>
 
 

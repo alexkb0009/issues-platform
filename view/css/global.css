@@ -248,7 +248,7 @@ div.main-content.row div.intro-section {
   padding: 16px 27px 17px;
   background-color: #fff;
   background-color: rgba(255,255,255,0.25);
-  margin-bottom: 12px;
+  margin-bottom: 1.25rem;
 }
 
 div.main-content.row div.intro-section p {
@@ -259,7 +259,6 @@ div.main-content.row div.intro-section p:last-child {
 }
 
 div.main-content.row div.intro-section .button.bigside {
-  height: 100%;
   margin: -16px -27px -17px 12px; /* Opposite of div.intro-section padding, except for left */
   font-size: 1.45rem;
   font-weight: 100;
@@ -303,9 +302,16 @@ h4 > .ext, h5 > .ext, h6 > .ext {
 
 hr.smaller {
   border-color: #ccc;
-  margin: 10px 0 12px;
+  margin: 10px 0 0.9375em;
 }
 
+.vertical-text {
+  transform: rotate(-90deg) translate(-20px,18px);
+  transform-origin: bottom left 0;
+  font-size: 0.925rem;
+  text-align: center;
+  color: rgba(0,0,0,0.5);
+}
 
 
 /* responsive edits */
@@ -771,6 +777,8 @@ div.main-body > .main-content.row.issue.full {
   }
 }
 
+/* Aside Components */
+
 .issue.full .info-aside.large-4 {
   padding-top: 9px;
 }
@@ -841,14 +849,19 @@ div.main-body > .main-content.row.issue.full {
   
 }
 
+/* Social Icons */
+
 .issue.full .social-row.row {
   margin-bottom: 20px;
   margin-top: 15px;
+  padding: 1.15rem 0.75rem 0.75rem;
+  background-color: #e8e8e8;
+  background-color: rgba(240,240,240,0.25);
 }
 
 .issue.full .social-row.row > .columns {
   text-align: center;
-  font-size: 1.75em;
+  font-size: 1.25rem;
 }
 
 .issue.full .social-row.row > .columns i {
@@ -959,25 +972,25 @@ a.previous-revisions-link:hover {
 
 @media screen and (min-width: 40.063rem) and (max-width: 64.07rem) {
   .issue.full #revisions_container .revision-details {
-    max-width: 96% !important;
+    width: 96% !important;
   }
 }
 
 @media screen and (min-width: 64.063rem) and (max-width: 1239px) {
   .issue.full #revisions_container .revision-details {
-    max-width: 650px !important;
+    width: 650px !important;
   }
 }
 
 @media screen and (min-width: 1240px) and (max-width: 1719px) {
   .issue.full #revisions_container .revision-details {
-    max-width: 782px !important;
+    width: 782px !important;
   }
 }
 
 @media screen and (min-width: 1720px) {
   .issue.full #revisions_container .revision-details {
-    max-width: 900px !important;
+    width: 900px !important;
   }
 }
 

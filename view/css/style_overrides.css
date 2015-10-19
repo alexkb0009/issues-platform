@@ -52,6 +52,29 @@
     padding-right: 5px;
     padding-left: 5px;
   }
+  
+/* No padding for columns > full columns hierarchy elems */
+
+@media screen and (min-width: 1720px) {
+  .columns > .xlarge-12.columns {
+    padding-left: 0;
+    padding-right: 0;
+  }
+} 
+
+@media only screen and (min-width: 64.063em) and (max-width: 1719px) {
+  .columns > .large-12.columns {
+    padding-left: 0;
+    padding-right: 0;
+  }
+} 
+
+@media only screen and (min-width: 40.063em) and (max-width: 64.063em) {
+  .columns > .medium-12.columns {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 
  
  /** Fonts **/

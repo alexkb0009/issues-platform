@@ -1,7 +1,5 @@
 <script id="backbone_issue_template_full" type="text/template">
 
-    <% this.$el.addClass('row').addClass('issue').addClass('full') %>
-    
     <div class="large-8 xlarge-9 columns right">
         <div class="content-container page clearfix">
         
@@ -85,48 +83,16 @@
                
             </div>
         </div>
+        
     </div>
     
     <div class="large-4 xlarge-3 columns info-aside left">
         
-        <!--<h2 style="margin: 2px 0 5px;">Vote</h2>-->
-        <h4 class="major section-header voting-title">Importance of Issue</h4>
-        <div class="row collapse voting-row page">
-            <div class="large-4 small-4 columns text-center">
-                <a class="button expand page vote-option" name="up">
-                    <h2><i class="fa fa-fw fa-arrow-up"></i></h2>
-                </a>
-            </div>
-            <div class="large-4 small-4 columns text-center">
-                <a class="button expand page vote-option" name="down">
-                    <h2><i class="fa fa-fw fa-arrow-down"></i></h2>
-                </a>
-            </div>
-            <div class="large-4 small-4 columns text-center secondary">
-                <a class="button expand page vote-option" name="report">
-                    <h2><i class="fa fa-fw fa-exclamation-circle"></i></h2>
-                </a>
-            </div>
+        <div class="medium-6 large-12 small-12 xlarge-12 columns">
+            {% include 'components/issue/voting.row.bb.tpl' %}
+            {% include 'components/issue/scoring.row.bb.tpl' %}
+            {% include 'components/issue/social_icons.row.bb.tpl' %}
         </div>
-
-        
-        <div class="row collapse scoring-container">
-            <div class="large-4 small-4 columns aggregated-score">
-                <h4><%= scoring.get('score') %></h4>
-                <p>Score</p>
-            </div>
-            <div class="large-4 small-4 columns subscribed-score">
-                <h4><%= scoring.get('subscribed') %></h4>
-                <p>Subscribed</p>
-            </div>
-            <div class="large-4 small-4 columns num-votes">
-                <h4><%= scoring.get('num_votes') %></h4>
-                <p>Votes</p>
-            </div>
-        </div>
-        
-        <h4 class="major section-header">Share</h4>
-        {% include 'components/social_icons.row.bb.tpl' %}
         
         <div class="hide" style="opacity: 0.2">
             <h4 class="major section-header issue-title">Responses</h4>
@@ -139,13 +105,10 @@
             </div>
         </div>
         
-        <h4 class="major section-header revisions-title noselect">Recent Edits</h4>
-        <div class="revisions-container" id="revisions_container" style="margin-bottom: 20px;">
-            <div class="text-center">
-                <i class="fa fa-circle-o-notch fa-spin fa-fw loader-icon" style="margin: 20px auto 0;"></i>
-            </div>
+        <div class="medium-6 large-12 small-12 xlarge-12 columns">
+            {% include 'components/issue/recent-edits.row.bb.tpl' %}
         </div>
-        
+
         
         <div class="hide" style="opacity: 0.2">
             <h3 class="major section-header issue-title">Discussion</h3>
@@ -165,58 +128,6 @@
     
 </script>
 
-<script id="backbone_revision_template" type="text/template">
-
-    <% if (!firstRevision && !previousRevision) { return; } // Skip those w/o worthwhile comparisons. %>
-
-    <div class="heading clearfix<% if (firstRevision){ %> first-revision<% } %><% if (active){ %> active<% } %>" data-dropdown="rev_<%= _id['$oid'] %>" data-options="align:right; pip: bottom;" aria-controls="rev_<%= _id['$oid'] %>" aria-expanded="false">
-        <span class="left">
-            <strong><%= date.getMonth() + 1 %> / <%= date.getDate() %> /</strong> <%= date.getFullYear() %>
-        </span>
-        <% if (previousRevision) { %>
-            <div class="text-right right text-count-difference"><%= this.model.getTextCountDifference() %></div>
-        <% } else if (firstRevision){ %>
-            <div class="text-right right text-count-difference"><b><%= this.model.getTextCount() %></b></div>
-        <% } else { %>
-            <div class="text-right right text-count-difference" style="color: rgba(0,0,0,0.25);">...</div>
-        <% } %>
-    </div>
-
-    <div class="revision-details f-dropdown f-dropdown large" data-dropdown-content tabindex="-1" aria-hidden="true" id="rev_<%= _id['$oid'] %>">
-        <div class="rev-rating icons-container right">
-            <i class="fa fa-fw fa-thumbs-up"></i> 
-            <i class="fa fa-fw fa-ban"></i>
-        </div>
-        <div class="description">
-            <% if (previousRevision) { %>
-                <% if (previousRevision.title != title) { %>
-                    <h6 class="detail-header" style="margin-bottom: 3px;">Title</h6>
-                    <h6 style="margin-top: 0px;"><%= diffString(previousRevision.title, title) %></h6>
-                <% } %>
-                <% if (previousRevision.description != description) { %>
-                    <h6 class="detail-header">Introduction <span class="ext">/ Short Description</span></h6>
-                    <%= isApp.u.jsdiffExt(previousRevision.description, description) %>
-                <% } %>
-                <% if (previousRevision.body != body) { %>
-                    <h6 class="detail-header">Body <span class="ext">/ Extended Description</span></h6>
-                    <span class=""><%= isApp.u.jsdiffExt(previousRevision.body, body) %></span>
-                <% } %>
-            <% } else if (firstRevision) { %>
-                <h6 class="detail-header"><em>Original</em></h6>
-                <h6><%= title %></h6>
-                <%= description %>
-                <span class=""><%= body %></span>
-            <% } %>
-        </div>
-        
-        <div class="time info">
-            <%= date.toTimeString() %>
-            <% if (!active){ %><a class="revision-view-inline right">&nbsp; View difference with current revision in-line</a><% } %>
-            <span class="refid right"><b>ref:</b> <%= _id['$oid'] %></span>
-        </div>
-    </div>
-
-</script>
 
 <script id="backbone_issue_template_full_edit" type="text/template">
 

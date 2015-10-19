@@ -35,6 +35,16 @@
 {% block content %}
 
 <div class="main-content row">
+
+    {% if not user.meta.approved %}
+    <div class="large-12 columns">
+        <div data-alert class="alert-box warning radius">
+            You must authenticate your constituency before being able to define new issues.
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="large-8 columns">
     
         {# Title w/ sorting opts #}
@@ -250,6 +260,7 @@
         /** Override form submit & parse into JSON API call **/
         
         $("form#define_issue").submit(function( event ) {
+
             event.preventDefault();
             var formData = $(this).serializeObject();
             formData['meta'] = {
@@ -263,11 +274,12 @@
             isApp.newIssue = new isApp.Models.Issue(formData, {parse: true});
             isApp.newIssue.save({},{
                 success : function(model,response,objects){
-                    var successText = "<h4>Issue Successfully Defined!</h4>";
+                    var successText = "<br><h4>Issue Successfully Defined!</h4>";
                     successText += "<p>See it on the <a href=\"{{root}}\">home page</a> under \"Latest\" sorting or at <a href='{{root}}is/" + response.id + "'>http://{{site_domain}}{{root}}is/" + response.id + "</a>.</p>";
                     $("form#define_issue").html(successText);
                     ga('send', 'event', 'issue', 'defined', isApp.newIssue.get('title'));
-                }, error: function(model){
+                }, error: function(model, response, xhr){
+                    $("form#define_issue button[type='submit']").before("<div data-alert class='alert-box warning radius'>" + response.responseJSON.message + "<a href='#' class='close'>&times;</a></div>");
                     ga('send', 'event', 'error', 'defining', isApp.newIssue.get('title'));
                 }
             });

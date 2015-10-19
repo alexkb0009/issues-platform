@@ -65,14 +65,52 @@ Backbone.sync = function(method, model, options){
     isApp.u._existingSync.call(this, method, model, options);
 }
 
-/** JS Diff of MarkDown **/
 
-isApp.u.jsdiffExt = function(oldText, newText){
-    if (typeof diffString == 'undefined') return false;
-    var fullDiff = diffString(oldText,newText);
-    var diff = (fullDiff).match(/(\s?[^<>\s]+\s+){0,7}((<ins>[^<>]+<\/ins>|<del>[^<>]+<\/del>)+(\s?[^<>\s]+\s+){0,7})+/g);
-    var diffText = '<ul class="diffText-items">';
+isApp.u.diffMatch = function(oldText, newText, bounds){
+     
+    // Check and initialize diff_match_patch.
+    // For more info see https://code.google.com/p/google-diff-match-patch/.
+    if (typeof isApp.dmp_engine == 'undefined') {
+        if (typeof diff_match_patch == 'undefined') return false;
+        isApp.dmp_engine = new diff_match_patch();
+    }
+
+    var fullDiff = isApp.dmp_engine.diff_main(oldText, newText);
+    isApp.dmp_engine.diff_cleanupSemantic(fullDiff);
+    
+    /* Output */
+    var output = [];
+    for (var x = 0; x < fullDiff.length; x++) {
+        var op = fullDiff[x][0];    // Operation (insert, delete, equal)
+        var data = fullDiff[x][1];  // Text of change.
+        var text = data.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/\n/g, '&nbsp;<br>');
+        switch (op) {
+            case DIFF_INSERT:
+                output[x] = '<ins>' + text + '</ins>';
+                break;
+                
+            case DIFF_DELETE:
+                output[x] = '<del>' + text + '</del>';
+                break;
+                
+            case DIFF_EQUAL:
+                output[x] = text; //'<span>' + text + '</span>';
+                break;
+        }
+    }
+    
+    var fullDiff = output.join('');
+    if (typeof bounds !== "number") bounds = 100;
+    
+    var regex = "([\\S\\s]{0," + bounds  + "}(<ins>[\\s\\S]+?<\/ins>|<del>[\\s\\S]+?<\/del>)+[\\S\\s]{0," + bounds + "})+";
+    
+    regex = new RegExp(regex, "g");
+    var diff = fullDiff.match(regex);
+    delete regex;
+    
     if (diff){
+        var diffText = '<ul class="diffText-items">';
         for (var i = 0; i < diff.length; i++){
             var charIndex = fullDiff.indexOf(diff[i]);
             diffText += '<li>';
@@ -82,9 +120,12 @@ isApp.u.jsdiffExt = function(oldText, newText){
             if (fullDiff.length > diff[i].length + charIndex) diffText += '<span class="ext"> ...</span>';
             diffText += '</li>';
         }
+        diffText += '</ul>';
     }
-    diffText += '</ul>';
+    
     return diffText;
+    
+    //return isApp.dmp_engine.diff_prettyHtml(fullDiff);
 }
 
 /** Adding some jQuery Functions **/

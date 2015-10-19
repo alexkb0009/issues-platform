@@ -38,8 +38,14 @@ $(window).load(function(){
 });
 
 function resizeBody(){
+  
+  /* Body */
   app.cd.innerBodyMinHeight = Math.max(Math.max(window.innerHeight, app.ce.body.height()) - app.ce.footer.outerHeight() - app.ce.topBar.outerHeight(), 360 + (app.ce.mainBody.children('div.main-subheader').outerHeight() || 0));
-    app.ce.mainBody.css('min-height', app.cd.innerBodyMinHeight);
+  app.ce.mainBody.css('min-height', app.cd.innerBodyMinHeight);
+  
+  /* Vertically center certain elements within their parent elem */
+  setTimeout(verticalCenterElements, 150);
+  
 }
 
 $(window).resize(resizeBody);
@@ -55,6 +61,13 @@ function verticalCenterOffset(parentHeight, childHeight){
   if (typeof parentHeight != 'Number') parentHeight = parseInt(parentHeight);
   if (typeof childHeight != 'Number') childHeight = parseInt(childHeight);
   return parseInt((parentHeight - childHeight) / 2);
+}
+
+function verticalCenterElements(){
+  $('.vertical-centered').each(function(){
+    var t = $(this);
+    this.style.marginTop = verticalCenterOffset(t.parent().height(), t.outerHeight()) + 'px';
+  });
 }
 
 /** ------------ **/

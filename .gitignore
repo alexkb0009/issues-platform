@@ -1,6 +1,8 @@
 *.pyc
 logs/*
 Thumbs.db
+*/Thumbs.db
+*.deprecated
 *.bak
 web.config
 settings.ini

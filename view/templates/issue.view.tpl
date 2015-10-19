@@ -20,9 +20,8 @@
 <meta name="description" content="{{ issue['description']|e }}" />
 
 <script src="{{ root }}js/vendor/marked.js"></script>
-<script src="{{ root }}js/vendor/jsdiff.js"></script>
+<script src="{{ root }}js/vendor/diff_match_patch.js"></script>
 
-<link rel="stylesheet" href="{{ root }}css/homepage.css">
 <script>
     window.session = {
         sort: {{ sort }}
@@ -36,10 +35,11 @@
 {%- endblock %} 
 
 
-{% block js_templates %}
+{% block js_templates -%}
 
-{# Below: Template for issues to be used by backbone #}
-{% include 'components/issue.full.bb.tpl' %}
+    {# Below: Template for issues to be used by backbone #}
+    {% include 'sections/issue.full.bb.tpl' %}
+    {% include 'sections/revision.issue.full.bb.tpl' %}
 
 {%- endblock %}
   
