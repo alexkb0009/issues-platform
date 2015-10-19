@@ -20,7 +20,7 @@ def admin_homepage():
         returnObj.update({
           'user' : request.user,
           'admin' : "admin" in request.user['roles'],
-          'route' : [('Administrate', 'admin', 'Return to homepage')]
+          'route' : [('Administration', 'admin', 'Return to homepage')]
         })
         return template('admin/homepage.tpl', returnObj)
         
@@ -45,7 +45,7 @@ def admin_users():
         'user' : request.user,
         'users' : users,
         'admin' : "admin" in request.user['roles'],
-        'route' : [('Administrate', 'admin', 'Administrative Dashboard'),('Users', 'admin/users', 'Users page')]
+        'route' : [('Administration', 'admin', 'Administrative Dashboard'),('Users', 'admin/users', 'Users page')]
     }
     
     return template('admin/users.tpl', returnObj)

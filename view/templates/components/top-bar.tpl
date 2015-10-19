@@ -36,9 +36,10 @@
           {{ user['firstname'] }} {{ user['lastname'] }}
         </a>
         <ul class="dropdown">
-          <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a></li>
+          <li><a href="#"><i class="fa fa-gear fa-fw"></i>Account Settings</a></li>
           {% if 'admin' in user['roles'] -%}
             <li><a href="{{ root }}admin"><i class="fa fa-gears fa-fw"></i>Admin Panel</a></li>
+            <li><a href="{{ root }}admin/users"><i class="fa fa-users fa-fw"></i>User List</a></li>
           {%- endif %}
           <li><a href="{{ root }}do/logout"><i class="fa fa-power-off fa-fw"></i>Log Out</a></li>
         </ul>

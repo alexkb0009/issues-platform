@@ -33,13 +33,24 @@
 {% block content %}
 
 <div class="main-content row">
+
+    <br><br>
+
     {% if not admin -%}
-    <div class="large-12 columns">
-        <div data-alert class="alert-box warning radius">
-            <h4>You must be an admin to view this page.</h4>
-            <a href="#" class="close">&times;</a>
+        <div class="large-12 columns">
+            <div data-alert class="alert-box warning radius">
+                <h4>You must be an admin to view this page.</h4>
+                <a href="#" class="close">&times;</a>
+            </div>
         </div>
-    </div>
+    {% else %}
+    
+        <div class="large-4 columns">
+            <a href="{{ root }}admin/users" class="button page page-shadow secondary" style="width: 100%;">
+                <i class="fa fa-fw fa-users"></i> View User List
+            </a>
+        </div>
+    
     {%- endif %}
 </div>
 
