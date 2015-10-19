@@ -142,11 +142,19 @@ def search_issues():
         else:
             scaleQuery = getMongoScaleQuery(0.0, False)
         
-        issues = db.command('text', 'issues', search = query, filter = scaleQuery, limit = 11)
-        if len(issues['results']) > 0:
-            issues['more'] = len(issues['results']) > 10
-            issues['results'] = getIssuesFromCursor(map(lambda r: r['obj'], issues['results'][:10]))
-            return json.dumps(issues)
+        scaleQuery.update({
+          '$text': { '$search' : query }, 
+        })
+        
+        issues = db.issues.find(scaleQuery).limit(11)
+        
+        if issues.count() > 0:
+            returnObj = {
+                'more' : issues.count() > 10,
+                #'results' : getIssuesFromCursor(map(lambda r: r['obj'], issues[:10]))
+                'results' : getIssuesFromCursor(issues[:10])
+            }
+            return json.dumps(returnObj)
             
     return {'message' : 'No issues found matching "' + query + '"', 'results' : [], 'more' : False}
     
