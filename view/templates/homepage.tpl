@@ -45,7 +45,7 @@
     <div class="large-12 columns">
       <span class="inline">Welcome, {{ user.firstname }}!</span>
       
-      {% if not user.meta.approved %}
+      {% if not user.profile.approved %}
       <a class="button right success super-tiny radius authenticate-notice" style="margin-left: 8px;" data-ot="In Development" data-ot-tip-joint="top center">
           Authenticate
       </a>
