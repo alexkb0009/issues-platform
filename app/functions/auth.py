@@ -170,7 +170,7 @@ def register_new_account(db, form, config):
             'passhash' :  generateHash(form.get('password'), config),
             'firstname' : form.get('firstname'),
             'lastname' :  form.get('lastname'),
-            'roles' :     ['citizen'],
+            'roles' :     ['constituent'],
             'meta' : {
               'date_registered' : datetime.now(),
               # 'dob'    : datetime(int(form.get('dob[year]')), int(form.get('dob[month]')), int(form.get('dob[day]'))),

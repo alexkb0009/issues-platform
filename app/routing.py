@@ -66,3 +66,4 @@ def filterlogs():
 import app.routes.static_files as static_files
 import app.routes.pages as pages
 import app.routes.api as api
+import app.routes.admin as admin

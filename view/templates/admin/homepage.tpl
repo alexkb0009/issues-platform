@@ -1,7 +1,7 @@
 {% extends "exoskeletons/default.tpl" %}
 
 
-{% block title %}{{ site_name }} > Home{% endblock %} 
+{% block title %}{{ site_name }} > Administrate{% endblock %} 
 
 {% block additionalheader -%}
 
@@ -31,27 +31,22 @@
 {%- endblock %}
 
 {% block content %}
-<div id="bgImg"></div>
-<div id="bgImgOverlay"></div>
+
 <div class="main-content row">
-    {% if not logged_in %}
-      <div class="large-8 columns">
-        <div id="introContainer">
-          <h1 class="intro title">Issues</h1>
-          <h4 class="intro subtitle">Discuss Problems, Create Solutions</h4>
+    {% if not admin -%}
+    <div class="large-12 columns">
+        <div data-alert class="alert-box warning radius">
+            <h4>You must be an admin to view this page.</h4>
+            <a href="#" class="close">&times;</a>
         </div>
-      </div>
-      <div class="large-4 columns login-block">
-        <h2 class="block-title">Welcome!</h2>
-        <h6 class="subheader text-center">Please log in or <a href="register">register</a>.</h6>
-        {% include 'view/templates/components/login-block.tpl' %}
-      </div>
-    {% endif %}
+    </div>
+    {%- endif %}
 </div>
+
 {% endblock %}
 
 {% block additionalfooter -%}
   {%- if not logged_in -%}
-    <script src="{{ root }}js/homepage.guest.js"></script>
+  
   {%- endif -%}
 {%- endblock %}

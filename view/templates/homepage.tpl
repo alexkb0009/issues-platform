@@ -80,7 +80,7 @@
     
     <div class="large-12 xlarge-3 right columns left-guest-side" style="padding: 0;" data-equalizer="first-info" data-equalizer-mq="large">
         
-        <div class="columns xlarge-12 large-4 medium-12">
+        <div class="columns xlarge-12 large-4 medium-12 retain-padding">
             <div class="intro-section clearfix" data-equalizer-watch="first-info">
                 <a href="/about" class="button right bigside" style="height: 65px; padding-top: 18px;">
                     Read More <i class="fa fa-fw fa-arrow-right right" style="font-size: 1.75rem; margin: -1px 0 0 7px;"></i>

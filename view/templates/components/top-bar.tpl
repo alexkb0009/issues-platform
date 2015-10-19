@@ -32,9 +32,14 @@
       {% if user %}
       <li class="has-dropdown">
         <a title="{{ user['username'] }}">{# <i class="fa fa-user fa-fw"></i> #}
-        <img data-ot="Avatars set via <a href='http://gravatar.com' target='_blank'>Gravatar</a>" data-ot-show-on="click" data-ot-hide-on="['keydown','click']" data-ot-hide-trigger="closeButton" data-ot-tip-joint="top right" data-ot-offset="[0, 5]" src="{{ gravatar(user, 27) }}" style="height: 27px; width: 27px; border-radius: 30%; margin-right: 10px;">{{ user['firstname'] }} {{ user['lastname'] }}</a>
+          <img data-ot="Avatars set via <a href='http://gravatar.com' target='_blank'>Gravatar</a>" data-ot-show-on="click" data-ot-hide-on="['keydown','click']" data-ot-hide-trigger="closeButton" data-ot-tip-joint="top right" data-ot-offset="[0, 5]" src="{{ gravatar(user, 27) }}" style="height: 27px; width: 27px; border-radius: 30%; margin-right: 10px;">
+          {{ user['firstname'] }} {{ user['lastname'] }}
+        </a>
         <ul class="dropdown">
           <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a></li>
+          {% if 'admin' in user['roles'] -%}
+            <li><a href="{{ root }}admin"><i class="fa fa-gears fa-fw"></i>Admin Panel</a></li>
+          {%- endif %}
           <li><a href="{{ root }}do/logout"><i class="fa fa-power-off fa-fw"></i>Log Out</a></li>
         </ul>
       </li>
