@@ -103,10 +103,10 @@ def check_login(db, username, password, ip):
     user = db.users.find_one({ 'username': username }, {'passhash' : 1, 'username': 1, 'firstname' : 1, 'lastname' : 1})
     
     # Find last failed login attempt by IP.
-    lastattempts = db.flood_ip.aggregate({ '$limit' : 3 })
-    log("Previous recent failed attempts (3 max): " + str(len(lastattempts['result'])))
+    lastattempts = db.flood_ip.find({'ip' : ip}).limit(3)
+    log("Previous recent failed attempts (3 max): " + str(lastattempts.count()))
     if lastattempts:
-        if (len(lastattempts['result']) > 2):
+        if (lastattempts.count() > 2):
             log('More than 3 failed attempts for ' + ip)
             return False
     
