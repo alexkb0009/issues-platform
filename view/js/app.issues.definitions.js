@@ -757,6 +757,7 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                     t.template = _.template($('#backbone_issue_template_full').html());
                     t.model.get('meta').set('revisions', t.model.get('meta').get('revisions') + 1);
                     t.render();
+                    t.model.get('revisions').view.render();
                     ga('send', 'event', 'issue', 'saved', t.model.get('title'));
                 }, this), error: function(issue){
                     ga('send', 'event', 'error', 'saving', 'Revision on: ' + t.model.get('title'));

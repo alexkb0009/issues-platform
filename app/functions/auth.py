@@ -113,10 +113,12 @@ def check_login(db, username, password, ip):
     if user != None and pbkdf2_sha256.verify(password, str(user['passhash'])):
         log(user['username'] + " (" + user['firstname'] + " " + user['lastname'] + ") has been authenticated.")
         result = user
+        db.users.update({'username' : user['username']}, {
+            "$currentDate": { "profile.last_login" : True }
+        })
     
-    else: result = False
-        
-    if result == False:
+    else: 
+        result = False
         log("Login failed for " + ("User" if user != None else "Guest Attempt @ Username") + " " + str(username) + " at " + ip)
         db.flood_ip.insert({
           'ip' : ip,
