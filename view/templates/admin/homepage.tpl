@@ -9,9 +9,13 @@
 
 {% block sub_menu_block -%}
   {%- if user -%}
-    <div class="intro large-12 columns main-subheader">
-      <span class="inline">Welcome, {{ user.firstname }}!</span>
-      <a href="{{root}}logout" class="button right super-tiny radius">Log out</a>
+    <div class="intro main-subheader">
+      <div class="row">
+        <div class="large-12 columns">
+          <span class="inline">Welcome, {{ user.firstname }}!</span>
+          <a href="{{root}}do/logout" class="button right super-tiny radius">Log out</a>
+        </div>
+      </div>
     </div>
   {%- else -%}
     {%- if subheader_message == 'login_failed' -%}
@@ -33,8 +37,6 @@
 {% block content %}
 
 <div class="main-content row">
-
-    <br><br>
 
     {% if not admin -%}
         <div class="large-12 columns">
