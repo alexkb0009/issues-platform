@@ -67,7 +67,7 @@ def create_issue():
 ## PATCH (Individual Update) Issue Properties. 
 ## Used most for meta or scoring.
 
-@app.route('/' + app.config['app_info.api_request_path'] + 'issue/<issue_id>', method='PATCH') # = /api/do/login
+@app.route('/' + app.config['app_info.api_request_path'] + 'issue/<issue_id>', method='PATCH') # = /api/issue/<issue_id>
 def patch_issue(issue_id):
     
     # Need to be logged in before adjusting any issues.
@@ -110,10 +110,9 @@ def patch_issue(issue_id):
     
     # Is this a vote?
     vote = request.json.get('my_vote')
-    if vote:
-        vote['issue'] = issue['_id'] # Just to be sure
+    if vote is not None:
         from app.functions.issues import registerVoteCurrentUser
-        (returnObj['vote_result'], returnObj['score_change']) = registerVoteCurrentUser(vote)
+        (returnObj['vote_result'], returnObj['score_change']) = registerVoteCurrentUser(issue_id, vote)
         if not returnObj['vote_result']: 
             response.status = 401
         
@@ -157,6 +156,25 @@ def search_issues():
             return json.dumps(returnObj)
             
     return {'message' : 'No issues found matching "' + query + '"', 'results' : [], 'more' : False}
+    
+## Search/get tags
+@app.route('/' + app.config['app_info.api_request_path'] + 'tags', method=["GET","POST"]) # = /api/tags
+def get_tags():
+    query = request.json.get('search')
+    tags = None
+    if query is not None and len(query) > 1:
+        tags = list(db.tags.find(
+          {'$text': { '$search' : query }},
+          {'score': { '$meta': 'textScore'}}
+        ).sort(
+          [
+            ('score', {'$meta': 'textScore'}),
+            ('count', -1)
+          ]
+        ).limit(12))
+    else: 
+        tags = list(db.tags.find({}).sort('count', -1))
+    return json.dumps(tags)
     
     
 ## Set Scale 

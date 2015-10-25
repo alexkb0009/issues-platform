@@ -31,8 +31,21 @@
             </span>
         </h5>
         <div class="description">
-            <%= description %>       
+            <div class="inner">
+                <%= description %> 
+            </div>
+            <% if (tags.length > 0){ %>
+            <div class="extra-info">
+              <i class="fa fa-fw fa-folder-open-o"></i> &nbsp;
+              <% for (var tag in tags) { %>
+                <span class="tag"><%= tags[tag]['title'] %></span><% if (tag < tags.length - 1) { %>, <% } %>
+              <% } %>
+            </div>
+            <% } %>
         </div>
+        
+        
+        
       </div>
     </div>
 </script>

@@ -6,17 +6,17 @@
 
 <div class="row collapse voting-row page">
     <div class="large-4 small-4 columns text-center">
-        <a class="button expand page vote-option" name="up">
+        <a class="button expand page vote-option" name="up" vote-value="1">
             <h2><i class="fa fa-fw fa-arrow-up"></i></h2>
         </a>
     </div>
     <div class="large-4 small-4 columns text-center">
-        <a class="button expand page vote-option" name="down">
+        <a class="button expand page vote-option" name="down" vote-value="-1">
             <h2><i class="fa fa-fw fa-arrow-down"></i></h2>
         </a>
     </div>
     <div class="large-4 small-4 columns text-center secondary">
-        <a class="button expand page vote-option" name="report">
+        <a class="button expand page vote-option" name="report" vote-value="report">
             <h2><i class="fa fa-fw fa-exclamation-circle"></i></h2>
         </a>
     </div>

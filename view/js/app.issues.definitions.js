@@ -777,12 +777,12 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                 button.removeClass("active disabled semi-active");
                 
                 // Set conditionally.
-                if (t.model.get('my_vote').vote == button.attr('name')){
+                if (t.model.get('my_vote') == button.attr('vote-value')){
                     button.addClass('active');
                     if (tooltip){
                         tooltip.setContent("Click again to <b>un-vote</b>");
                     }
-                    if (t.model.get('my_vote').vote == 'report'){
+                    if (t.model.get('my_vote') == 'report'){
                         // Set "down" button to left of trash icon as semi-active.
                         button.parent().prev().find('.vote-option').addClass('semi-active');
                     }
@@ -802,21 +802,19 @@ isApp.Views.IssueViewFull = isApp.Views.IssueView.extend({
                     // Vote action/binding
                     $(this).on('click', function(){
                         var vote = $(this).attr('name');
-                        if ($(this).hasClass('active')) vote = null; 
+                        if (vote == 'up') { vote = 1; } else { vote = -1; }
+                        if ($(this).hasClass('active')) vote = 0; 
                         isApp.u.setLoaderInElem(t.$el.find('.aggregated-score > h4'));
-                        t.model.save({'my_vote' : {
-                            'issue' : t.model.get('id'),
-                            'vote'  : vote
-                        }}, {
+                        t.model.save({'my_vote' : vote}, {
                             patch: true, 
                             wait: true, 
                             success: $.proxy(function(issue, response, opts){
                                 var scoring = issue.get('scoring');
-                                scoring.set('score', scoring.get('score') + response.score_change);
-                                if (vote == null){
+                                scoring.set('score', scoring.get('score') + parseInt(response.score_change));
+                                if (vote == 0){
                                     scoring.set('num_votes', scoring.get('num_votes') - 1 );
                                 } else {
-                                    scoring.set('num_votes', scoring.get('num_votes') + (t.model.previous('my_vote').vote ? 0 : 1) );
+                                    scoring.set('num_votes', scoring.get('num_votes') + (t.model.previous('my_vote') ? 0 : 1) );
                                 }
                                 votingButtons.each(function(){applyClassesToVoteButton($(this))});
                                 ga('send', 'event', 'issue', 'vote', vote + ' on ' + t.model.get('title'));

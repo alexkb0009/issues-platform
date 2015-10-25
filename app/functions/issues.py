@@ -95,13 +95,19 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
             multi=False
         )
         issue['title'] = currentRevision['title']
+        
+    tags = []
+    
+    if issue.get('tags') is not None:
+        for tagId in issue.get('tags'):
+            tags.append(db.tags.find_one({'_id' : tagId}))
     
     issueWellFormed = {
         '_id' :             str( issue['_id'] ),
         'title' :           issue.get('title'),
         'description' :     currentRevision.get('description'),
         'scoring' :         issue.get('scoring'),
-        'tags' :            issue.get('tags'),
+        'tags' :            tags,
         'meta' : {
             'revision_date' :   currentRevision['date'].isoformat(),
             'revision_author' : currentRevisionAuthor,
@@ -117,9 +123,10 @@ def getWellFormedIssue(issue, redactFields = [], fullMode = False):
         from app.functions.sort import confirmScaleLocaleMatch
         issueWellFormed['meta']['am_subscribed'] = True if issue['_id'] in request.user['subscribed_issues'] else False
         issueWellFormed['meta']['am_allowed_vote'] = confirmScaleLocaleMatch(issue, request.user)
-        for issue_vote in request.user.get('votes').get('issues'):
-            if issueWellFormed.get('_id') == issue_vote.get('issue'):
-                issueWellFormed['my_vote'] = issue_vote
+        # Setup 'my vote' (current user's vote on this issue, if any)
+        for issue_name in request.user.get('votes').get('issues'):
+            if issueWellFormed.get('_id') == issue_name:
+                issueWellFormed['my_vote'] = request.user.get('votes').get('issues').get(issue_name)
                 break
         
     if fullMode:
@@ -233,44 +240,45 @@ def subscribeCurrentUserToIssue(issue_id):
     return subscribe
     
     
-def registerVoteCurrentUser(vote, skipExistingCheck = False): 
+def registerVoteCurrentUser(issue_id, vote, skipExistingCheck = False): 
     # Remove existing vote if exists for user; correct issue score.
     scoreChanged = 0
     if not skipExistingCheck:
-        for v in request.user.get('votes').get('issues'):
-            if v.get('issue') == vote.get('issue'):
+        for issue_name in request.user.get('votes').get('issues'):
+            v = request.user.get('votes').get('issues').get(issue_name)
+            if issue_name == issue_id:
                 db.users.update(
                     {'_id' : request.user['_id']}, 
-                    {'$pull' : {'votes.issues' : v} },
+                    {'$unset' : {'votes.issues.' + issue_name : ""} },
                     multi=False
                 )
-                scoreChanged = -1 if v.get('vote') == 'up' else 1
+                scoreChanged = -v
                 db.issues.update(
-                    {'_id' : v.get('issue')}, 
+                    {'_id' : issue_id}, 
                     {'$inc' : {'scoring.score' : scoreChanged, 'scoring.num_votes' : -1} },
                     multi=False
                 )
             
     # If an "un-vote", we're done.
-    if vote.get('vote') is None: return (True, scoreChanged)
+    if vote == 0: return (True, scoreChanged)
             
     # Else, continue and make sure scale + locality matches before casting vote.
-    issue = getIssueByID(vote.get('issue'), {'_id' : 0, 'meta' : 1})
+    issue = getIssueByID(issue_id, {'_id' : 0, 'meta' : 1})
     from app.functions.sort import confirmScaleLocaleMatch
     if not confirmScaleLocaleMatch(issue, request.user): return (False, scoreChanged)
             
     # Update user with new vote.
     db.users.update(
         {'_id' : request.user['_id']}, 
-        {'$addToSet' : {'votes.issues' : vote} },
+        {'$set' : {'votes.issues.' + issue_id : vote } },
         multi=False
     )
        
     # Finally, adjust score.
-    scoreChanged += 1 if vote.get('vote') == 'up' else -1
+    scoreChanged += vote
     db.issues.update(
-        {'_id' : vote.get('issue')}, 
-        {'$inc' : {'scoring.score' : (1 if vote.get('vote') == 'up' else -1), 'scoring.num_votes' : 1} },
+        {'_id' : issue_id}, 
+        {'$inc' : {'scoring.score' : vote, 'scoring.num_votes' : 1} },
         multi=False
     )
      

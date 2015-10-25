@@ -637,6 +637,14 @@ body.in-search div#main_issues {
   border-top: 1px solid #eee;
 }
 
+.issue.listview .extra-info {
+  font-size: 0.875rem;
+  border-top: 1px dotted #ddd;
+  margin: 8px -12px -7px;
+  padding: 10px 12px 8px;
+  background: #f5f5f5;
+  transition: .5s;
+}
 
 
 /** Issues Big / Full-Size **/
