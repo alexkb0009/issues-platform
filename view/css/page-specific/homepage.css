@@ -15,6 +15,89 @@ div.main-content.row .left-guest-side {
   margin-bottom: 3px;
 }
 
+/** Top Header Adjustment **/
+
+nav.top-bar {
+  height: 4em;
+}
+
+nav.top-bar ul.title-area li.name {
+  height: 4em;
+}
+
+nav.top-bar ul.title-area li.name h1 a {
+  line-height: 4.125rem;
+  min-width: 172px !important;
+}
+
+nav.top-bar ul.title-area li.name h1 a span.text {
+  font-size: 1.52rem;
+}
+
+nav.top-bar ul.title-area li.name h1 a img {
+  height: 42px !important;
+  width: 42px !important;
+  margin-top: -4px;
+}
+
+body:not(.logged_in) nav.top-bar ul.right {
+  margin-top: 12px;
+  margin-right: 14px;
+}
+
+body:not(.logged_in) nav.top-bar ul.right > li {
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  background: rgba(0,0,0,0.125);
+}
+
+body:not(.logged_in) nav.top-bar ul.right > li:first-child {
+  border-left: 1px solid rgba(0,0,0,0.25);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+body:not(.logged_in) nav.top-bar ul.right > li:last-child {
+  border-right: 1px solid rgba(0,0,0,0.25);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+body:not(.logged_in) nav.top-bar .top-bar-section ul.right > li > a {
+  background: transparent;
+  border-radius: inherit;
+  line-height: 2.4rem;
+}
+
+body.logged_in nav.top-bar .top-bar-section ul.right > li > a {
+  line-height: 4rem;
+}
+
+body.logged_in nav.top-bar .top-bar-section ul.right > li.has-dropdown > a:after {
+  margin-top: 7.5px;
+}
+
+body:not(.logged_in) nav.top-bar .top-bar-section ul.right > li:not(.has-dropdown) > a {
+  border-radius: inherit;
+}
+
+body:not(.logged_in) nav.top-bar .top-bar-section ul.right > li.has-dropdown > a:after {
+  margin-top: -4.5px;
+}
+
+.top-bar .login-block {
+  margin-top: 12px;
+}
+
+nav.top-bar ul li:not(.has-form):not(.active):not(.menu-icon) a:not(.button):hover, 
+.top-bar-section .dropdown li:not(.has-form):not(.active):hover > a:not(.button), 
+.top-bar-section li:not(.has-form) a:not(.button):hover,
+.top-bar li.has-dropdown.hover > a, 
+.top-bar-section ul li:hover:not(.has-form) > a, 
+.top-bar-section ul li:hover:not(.has-form):not(.hover) > a {
+  background-color: rgb(28, 44, 49);
+}
+
 /** Subheader Messages, etc. **/
 
 div.main-subheader h4 {

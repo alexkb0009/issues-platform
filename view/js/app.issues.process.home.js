@@ -2,10 +2,25 @@
 isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL; // Keep this binding still for future fetches.
 isApp.currentIssues.view = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger', childClassName: 'issue listview row' });
 
+// Load up subscribed issues if user is logged in.
 if (isApp.me.get('logged_in')){
   isApp.myIssues = new isApp.Collections.Issues([{},{},{}]);
   isApp.myIssues.url = app.settings.root + 'api/issues/subscribed';
-  isApp.myIssues.view = new isApp.Views.IssuesView({ el: $("#my_issues"), collection: isApp.myIssues, childTemplateID: 'backbone_issue_template', childClassName: 'issue listview min' });
+  isApp.myIssues.view = new isApp.Views.IssuesView({ 
+    el: $("#my_issues"), 
+    collection: isApp.myIssues, 
+    childTemplateID: 'backbone_issue_template', 
+    childClassName: 'issue listview min',
+    noResultsHTML: '' + 
+      '<div style="' + 
+          'padding: 10px 15px; background: rgba(0,0,0,0.075); border-radius: 3px;' + 
+      '"><em>' +
+          '<b>No subscribed issues yet</b>' + 
+          '<div style="font-size: 0.775rem; display: inline-block;">' + 
+          '<i class="fa fa-star-o left" style="font-size: 1.5rem; margin: 6px 9px 0 0; opacity: 0.25;"></i>' +
+          'Click the star icon next to an issue to subscribe to its future revisions</div>' + 
+      '</em></div>'
+  });
   isApp.myIssues.once('sync', isApp.myIssues.view.render, isApp.myIssues.view);
   isApp.myIssues.fetch();
 }

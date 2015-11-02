@@ -985,6 +985,7 @@ isApp.Views.CollectionViewBase = Backbone.View.extend({
         },this));
         if (this.collection.length == 0){
             this.$el.addClass('empty');
+            if (typeof this.noResultsHTML != 'undefined') this.$el.html(this.noResultsHTML);
         } else {
             this.$el.removeClass('empty');
         }
@@ -994,6 +995,7 @@ isApp.Views.CollectionViewBase = Backbone.View.extend({
         if (typeof options != 'undefined'){
             this.childTemplateID = options.childTemplateID;
             this.childClassName = options.childClassName;
+            this.noResultsHTML = options.noResultsHTML;
         }
         
         this.render();

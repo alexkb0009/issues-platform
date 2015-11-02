@@ -187,7 +187,7 @@ nav.top-bar ul.title-area li.crumb > a:hover {
 
 @media screen and (min-width: 40.063em){
   .top-bar .login-block { 
-    width: 360px;
+    width: 400px;
   }
 }
 
@@ -286,8 +286,8 @@ footer ul.inline-list {
 /** Common Elements' Styling **/
 
 div.main-body > .main-content.row {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 
 .section-header {

@@ -62,6 +62,13 @@
 
 <div class="main-content row">
 
+    {%- if subheader_message == 'logged_out' -%}
+        <div class="confirmation success alert-box radius" style="margin-left: 15px; margin-right: 15px; margin-bottom: 27px;" data-alert>
+          You have logged out successfully!
+          <a href="#" class="close">×</a>
+        </div>
+    {% endif %}
+    
     {% if not user %}
     
     {# Title for Guests #}
@@ -78,9 +85,9 @@
     
     {# Guest section w/ title, welcome content, etc. if not logged in  #}
     
-    <div class="large-12 xlarge-3 medium-12 right columns left-guest-side" style="padding: 0;" data-equalizer="first-info" data-equalizer-mq="large">
+    <div class="large-4 xlarge-3 medium-12 right columns left-guest-side" style="padding: 0;" data-equalizer="first-info" data-equalizer-mq="large">
         
-        <div class="columns xlarge-12 large-4 medium-12 retain-padding">
+        <div class="columns xlarge-12 large-12 medium-6 small-12 retain-padding">
             <div class="intro-section clearfix" data-equalizer-watch="first-info">
                 <a href="/about" class="button right bigside" style="height: 65px; padding-top: 18px; display: none;">
                     Read More <i class="fa fa-fw fa-arrow-right right" style="font-size: 1.75rem; margin: -1px 0 0 7px;"></i>
@@ -150,10 +157,10 @@
             </div>    
         </div>
       
-        <hr class="smaller hide-for-large-only hide-for-xlarge-only">
+        <hr class="smaller hide-for-medium-only">
       
             
-        <div class="medium-6 large-4 xlarge-12 columns">
+        <div class="medium-6 large-12 xlarge-12 small-12 columns retain-padding">
             <div class="panel" data-equalizer-watch="first-info">
                 <h6 style="border-bottom: 1px dotted #ccc; padding-bottom: 15px; line-height: 1.25rem;">
                     <em>{{ site_name }}</em> is currently in development and open to alpha users.
@@ -165,11 +172,7 @@
             </div>
         </div>
     
-        <div class="medium-6 large-4 xlarge-12 columns">
-            <div class="panel" data-equalizer-watch="first-info">
-                {% include 'sections/marketing/donate-button.tpl' %}
-            </div>
-        </div>
+        
                 
       
     </div>
@@ -180,7 +183,7 @@
 
     {# Start of Issues Listing Section #}
 
-    <div class="{% if user %}large-8 xlarge-9{% else %}large-12 xlarge-9 right{% endif %} columns issues-section">
+    <div class="{% if user %}large-8 xlarge-9{% else %}large-8 xlarge-9{% endif %} columns issues-section">
     
         {# Title w/ sorting opts #}
     
@@ -303,12 +306,16 @@
         <h4 id="my_issues_title" class="major section-header noselect">Subscribed Issues</h4>
         <div id="my_issues"></div>
         <br>
-        <div class="panel clearfix">
-          {% include 'sections/marketing/donate-button.tpl' %}
-        </div>
+        
     </div>
         
     {% endif %}
+   
+    <div class="{% if user %}medium-12 large-4{% else %}medium-11 large-4{% endif %} xlarge-3 columns right">
+        <div class="panel" data-equalizer-watch="first-info">
+            {% include 'sections/marketing/donate-button.tpl' %}
+        </div>
+    </div>
     
 </div>
 

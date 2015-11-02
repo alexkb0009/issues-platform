@@ -12,7 +12,7 @@ def do_login():
     if login_user() != False:
         redirect(path) # Redirect home after login
     else:
-        redirect(app.config['app_info.root_directory'] + '?s=login_failed') # Redirect home after fail, w/ error message
+        redirect(path + '?s=login_failed') # Redirect to same page after fail, w/ error message
         
         
         

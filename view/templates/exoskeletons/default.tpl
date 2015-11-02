@@ -75,24 +75,24 @@
     
     <div class="main-body">
     
+    
+    {% block sub_menu_block %}{% endblock %}
     {% block sub_menu_messages %}
       {%- if subheader_message == 'login_failed' -%}
         <div class="warning main-subheader alert-box" data-alert>
-          <h4>Login failed.</h4>
-          <ul>
-            <li>Check your username & password combination.
-            <li>After three incorrect attempts you will be prevented from accessing the site for 30 minutes.</li>
-          </ul>
-          <a href="#" class="close" style="top: 20px;">×</a>
-        </div>
-      {%- elif subheader_message == 'logged_out' -%}
-        <div class="confirmation main-subheader alert-box" data-alert>
-          You have logged out successfully!
-          <a href="#" class="close">×</a>
+          <div class="row">
+            <div class="large-12 columns">
+              <h4 style="margin-top: 9px;">Login Failed</h4>
+              <ul>
+                <li>Check your username & password combination.
+                <li>After three incorrect attempts you will be prevented from accessing the site for 30 minutes.</li>
+              </ul>
+            </div>
+          </div>
+          <a href="#" class="close right" style="top: 20px;">×</a>
         </div>
       {%- endif -%}
     {% endblock %}
-    {% block sub_menu_block %}{% endblock %}
     
     
     {% block content -%}
