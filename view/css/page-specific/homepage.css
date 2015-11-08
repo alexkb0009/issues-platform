@@ -94,7 +94,8 @@ nav.top-bar ul li:not(.has-form):not(.active):not(.menu-icon) a:not(.button):hov
 .top-bar-section li:not(.has-form) a:not(.button):hover,
 .top-bar li.has-dropdown.hover > a, 
 .top-bar-section ul li:hover:not(.has-form) > a, 
-.top-bar-section ul li:hover:not(.has-form):not(.hover) > a {
+.top-bar-section ul li:hover:not(.has-form):not(.hover) > a, 
+body nav.top-bar .top-bar-section ul.right > li:hover > a {
   background-color: rgb(28, 44, 49);
 }
 
