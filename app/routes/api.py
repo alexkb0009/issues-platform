@@ -8,11 +8,17 @@ from app.functions.issues import getIssuesFromCursor
 ## Sorted by score, returns 20.
 
 @app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>', method="GET") # = /api/issues/trending
-@app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<page:int>', method="GET") # = /api/issues/trending
-def issues_list_sorted(sorting, page = 1):
+@app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<page:int>', method="GET") # = /api/issues/trending/1
+@app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<topics>', method="GET") # = /api/issues/trending/net-neutrality
+@app.route('/' + app.config['app_info.api_request_path'] + 'issues/<sorting>/<topics>/<page:int>', method="GET") # = /api/issues/trending/net-neutrality/1
+def issues_list_sorted(sorting, topics = None, page = 1):
     from app.functions.issues import getScaledPagifiedIssuesIterableBySort
-    headers_key_auth() # So we have request.users if/when needed   
-    (iterable, more) = getScaledPagifiedIssuesIterableBySort(sorting, page)
+    headers_key_auth() # So we have request.users if/when needed 
+    if topics is not None:
+        # Split into array
+        topics = topics.split(",")
+        map(str.strip, topics)
+    (iterable, more) = getScaledPagifiedIssuesIterableBySort(sorting, topics, page)
     return json.dumps({'results' : getIssuesFromCursor(iterable), 'more' : more })
 
     
@@ -135,15 +141,16 @@ def search_issues():
     query = request.json.get('search')
     if query:
         scaleQuery = None
+        topics = request.json.get('tagsString')
+        if topics: topics = topics.split(',')
         headers_key_auth()
         if hasattr(request, 'user'):
             scaleQuery = getMongoScaleQuery(float(request.json.get('scale')), request.user)
         else:
             scaleQuery = getMongoScaleQuery(0.0, False)
         
-        scaleQuery.update({
-          '$text': { '$search' : query }, 
-        })
+        scaleQuery['$text'] = { '$search' : query }
+        if topics and len(topics) > 0: scaleQuery['tags']  = { '$in' : topics }
         
         issues = db.issues.find(scaleQuery).limit(11)
         
@@ -175,7 +182,13 @@ def get_tags():
     else: 
         tags = list(db.tags.find({}).sort('count', -1))
     return json.dumps(tags)
-    
+
+## Get name & other info of tag by its ID
+@app.route('/' + app.config['app_info.api_request_path'] + 'tags/<tag_id>', method=["GET"]) # = /api/tags/<tag_id>
+def get_tag_info(tag_id):
+    if tag_id is not None:
+        return json.dumps(db.tags.find_one({'_id' : tag_id}))
+        
     
 ## Set Scale 
 @app.route('/' + app.config['app_info.api_request_path'] + 'user/scale', method="PUT")

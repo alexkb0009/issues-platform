@@ -6,6 +6,9 @@
  
 isApp.u.getCurrentIssuesEndpointURL = function(){
     var url = app.settings.root + 'api/issues/' + ((isApp.me.get('current_sort')['key'] || session['sort']['key'] ) || 'trending');
+    if (isApp.me.get('currentTopicsString') != null){
+        url += '/' + isApp.me.get('currentTopicsString');
+    }
     if (typeof isApp.me.get('current_scale') != 'undefined' && isApp.me.get('current_scale') >= 0){
         url += '?scale=' + isApp.me.get('current_scale');
     }

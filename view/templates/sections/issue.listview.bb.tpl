@@ -4,8 +4,10 @@
 
     <h5 class="issue-title clearfix noselect">
         <a class="title" href="<%= path %>"><%= title %></a>
-        <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
-        <span class="subscribed-container"></span>
+        <span class="icons right">
+            <i class="open-icon fa fa-fw fa-angle-up" title="Show/hide description"></i>
+            <span class="subscribed-container"></span>
+        </span>
     </h5>
     <div class="description">
         <%= description %>
@@ -36,9 +38,11 @@
             </div>
             <% if (tags.length > 0){ %>
             <div class="extra-info">
-              <i class="fa fa-fw fa-folder-open-o"></i> &nbsp;
+              <i class="fa fa-fw fa-folder-open-o tag-icon"></i> &nbsp;
               <% for (var tag in tags) { %>
-                <span class="tag"><%= tags[tag]['title'] %></span><% if (tag < tags.length - 1) { %>, <% } %>
+                <span class="tag" name="<%= tags[tag]['_id'] %>">
+                    <%= tags[tag]['title'] %>
+                </span><% if (tag < tags.length - 1 && this.tagAction == null) { %>, <% } %>
               <% } %>
             </div>
             <% } %>

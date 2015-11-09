@@ -1,7 +1,7 @@
 from app.state import app, db, logMachine
 from app.includes.bottle import request
 
-def getScaledPagifiedIssuesIterableBySort(sorting, page = 1):
+def getScaledPagifiedIssuesIterableBySort(sorting, topics = None, page = 1):
     from app.functions.sort import getIssuesSortOptions, getSortedIssuesIterableFromDB
     from app.functions.auth import getCurrentIP
     session = request.environ['beaker.session']
@@ -13,7 +13,7 @@ def getScaledPagifiedIssuesIterableBySort(sorting, page = 1):
         else: scale = 0 # Anywhere is default for logged-in users.
         
     if not getIssuesSortOptions(sorting): return False
-    (iterable, more) = getSortedIssuesIterableFromDB(sorting, scale = float(scale), page = page, user = user)
+    (iterable, more) = getSortedIssuesIterableFromDB(sorting, topics = topics, scale = float(scale), page = page, user = user)
     
     if user:
         session['last_sort'] = sorting

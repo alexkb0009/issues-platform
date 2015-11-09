@@ -16,6 +16,10 @@ window.isApp = {
         IssuesView : null
     },
     
+    Routing : {             // Defined & initialized on specific pages where needed.
+        Home : null
+    },
+    
     /** Objects **/
     me: null,               // Models.User --> Currently Logged In User
     currentIssues: null,    // Collections.Issues of Models.Issue --> Currently Sorted/Browsable Issues
@@ -49,7 +53,8 @@ isApp.Models.User = Backbone.Model.extend({
     defaults: {
         firstname: 'G.',
         lastname: 'Uest',
-        username: 'guest'
+        username: 'guest',
+        currentTopicsString: null
     },
     
     validate: function(attributes){
@@ -306,8 +311,9 @@ isApp.Models.SearchBar = Backbone.Model.extend({
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({ 
-                search : query, 
-                scale  : isApp.me.get('current_scale')
+                search     : query, 
+                scale      : isApp.me.get('current_scale'),
+                tagsString : isApp.me.get('currentTopicsString')
             }),
             success: $.proxy(function(data, textStatus, xhr){
                 this.get('results').reset(data, {parse: true});
@@ -544,6 +550,10 @@ isApp.Views.IssueView = Backbone.View.extend({
         if (typeof options.templateID != 'undefined'){
           this.template = _.template($('#' + options.templateID).html());
         }
+        this.tagAction = null;
+        if (typeof options.tagAction != 'undefined'){
+          this.tagAction = options.tagAction;
+        }
 
         this.render();
         this.model.on('sync', this.render, this);
@@ -559,6 +569,20 @@ isApp.Views.IssueView = Backbone.View.extend({
         } else {
             /** Set disabled class on buttons here **/
         }
+        
+        /** Tags / Topics **/
+        if (typeof this.tagAction != 'undefined' && this.tagAction == "filterCurrentIssues"){
+
+            this.$el.find('.extra-info .tag').on('click', function(){
+                if (typeof isApp.ex.topicTitle != 'undefined' && typeof isApp.router != 'undefined') { 
+                // Ensure topic title is set (e.g. is on homepage) via app.issues.process.home.js
+                // as well as router setup.
+                    isApp.router.navigate("topic/" + $(this).attr('name'), {trigger: true});
+                }
+            }).addClass('clickable');
+        
+        }
+        
         return this;
     },
     
@@ -621,7 +645,13 @@ isApp.Views.IssueView = Backbone.View.extend({
         var score_number = this.$el.find('.scoring-container .aggregated-score');
         if (score_number.length > 0){ 
             score_number.data('tooltip', new Opentip(score_number, "Score in relation to others of same scale, aggregated from all votes"));
-        }          
+        }     
+
+        /* Topics (or tags) Icon */
+        var topics_icon = this.$el.find('.tag-icon');
+        if (topics_icon.length > 0){ 
+            topics_icon.data('tooltip', new Opentip(topics_icon, "Topics related to this issue"));
+        }      
         
     },
     
@@ -980,6 +1010,7 @@ isApp.Views.CollectionViewBase = Backbone.View.extend({
             var optsObj = { model: itemModel }; // Minimum
             if (typeof this.childTemplateID != 'undefined') optsObj.templateID = this.childTemplateID;
             if (typeof this.childClassName != 'undefined') optsObj.className = this.childClassName;
+            if (typeof this.tagAction != 'undefined') optsObj.tagAction = this.tagAction;
             itemModel.view = new itemView(optsObj);
             this.$el.append(itemModel.view.el);
         },this));
@@ -993,9 +1024,11 @@ isApp.Views.CollectionViewBase = Backbone.View.extend({
     
     initializeInitial: function(options){
         if (typeof options != 'undefined'){
+            this.options = options;
             this.childTemplateID = options.childTemplateID;
             this.childClassName = options.childClassName;
             this.noResultsHTML = options.noResultsHTML;
+            this.tagAction = options.tagAction;
         }
         
         this.render();

@@ -137,3 +137,17 @@ ins {
 del {
   background-color: rgb(255, 206, 192);
 }
+
+/** Title **/
+
+h4#main_issues_title #topic_title_section #topic_title {
+  font-size: .875em;
+}
+
+h4#main_issues_title #topic_title_section a {
+  color: inherit;
+}
+
+h4#main_issues_title #topic_title_section a:hover {
+  opacity: 0.5;
+}

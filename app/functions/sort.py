@@ -191,7 +191,7 @@ def getMongoScaleQuery(scale = 2.0, user = False):
     
         
  
-def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1, user = False):
+def getSortedIssuesIterableFromDB(sorting, topics = None, limit = 20, scale = 2.0, page = 1, user = False):
     from app.state import db, logMachine
     from app.includes.bottle import request
     
@@ -199,9 +199,13 @@ def getSortedIssuesIterableFromDB(sorting, limit = 20, scale = 2.0, page = 1, us
     sortSet = getIssuesSortOptions(sorting, True)['func']
     
     # Get scale in context of user
-    matchQuery = getMongoScaleQuery(scale, user)
+    query = getMongoScaleQuery(scale, user)
     
-    iterable = db.issues.find(matchQuery, skip = ((page - 1) * limit), limit = limit + 1, sort = sortSet)
+    # Filter by topics, if any
+    if topics is not None:
+        query['tags'] = { '$in' : topics }
+    
+    iterable = db.issues.find(query, skip = ((page - 1) * limit), limit = limit + 1, sort = sortSet)
     more = iterable.count(True) > limit
     iterable = iterable[:limit]
         

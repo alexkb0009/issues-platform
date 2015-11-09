@@ -1,7 +1,4 @@
 
-isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL; // Keep this binding still for future fetches.
-isApp.currentIssues.view = new isApp.Views.IssuesView({ el: $("#main_issues"), collection: isApp.currentIssues, childTemplateID: 'backbone_issue_template_bigger', childClassName: 'issue listview row' });
-
 // Load up subscribed issues if user is logged in.
 if (isApp.me.get('logged_in')){
   isApp.myIssues = new isApp.Collections.Issues([{},{},{}]);
@@ -25,14 +22,32 @@ if (isApp.me.get('logged_in')){
   isApp.myIssues.fetch();
 }
 
-isApp.searchBar = new isApp.Models.SearchBar({results: new isApp.Collections.Issues()}, {input : $('#search_issues_row form input'), container : $('#search_issues_row')});
-isApp.searchBar.get('results').view = new isApp.Views.IssuesView({ el: $("#search_issues_row .search-results"), collection: isApp.searchBar.get('results'), childTemplateID: 'backbone_issue_template' });
+// Load & initialize current issues
 
+isApp.currentIssues.url = isApp.u.getCurrentIssuesEndpointURL; // Keep this binding still for future fetches.
+isApp.currentIssues.view = new isApp.Views.IssuesView({ 
+    el: $("#main_issues"), 
+    collection: isApp.currentIssues, 
+    childTemplateID: 'backbone_issue_template_bigger', 
+    childClassName: 'issue listview row',
+    tagAction: 'filterCurrentIssues'
+});
+
+isApp.searchBar = new isApp.Models.SearchBar(
+    { results: new isApp.Collections.Issues() }, 
+    { input : $('#search_issues_row form input'), container : $('#search_issues_row') }
+);
+
+isApp.searchBar.get('results').view = new isApp.Views.IssuesView({ 
+    el: $("#search_issues_row .search-results"), 
+    collection: isApp.searchBar.get('results'), 
+    childTemplateID: 'backbone_issue_template' 
+});
 
 // Title container
 app.ce.currentIssuesTitle = $('#main_issues_title');
 
-// Sorted-By Title
+// 'Sorted-By' Title
 isApp.ex.sortTitle = app.ce.currentIssuesTitle.children('#sorted_by_title');
 isApp.ex.sortTitle.data('tooltip', new Opentip(isApp.ex.sortTitle, 'Sort by', {delay : 0.4, tipJoint: 'bottom'}));
 
@@ -61,16 +76,17 @@ isApp.ex.titleSortLink = app.ce.currentIssuesTitle.next('#main_issues_title_sort
 isApp.ex.scaleTitle = app.ce.currentIssuesTitle.children('#scale_title');
 isApp.ex.scaleTitle.data('tooltip', new Opentip(isApp.ex.scaleTitle, {delay : 0.4, tipJoint: 'bottom'}));
 if (isApp.me.get('logged_in')){
-  isApp.ex.scaleTitle.data('tooltip').setContent('Set your scale');
+    isApp.ex.scaleTitle.data('tooltip').setContent('Set your scale');
 } else {
     isApp.ex.scaleTitle.data('tooltip').setContent('Guests may only browse through <b>national</b> issues.');
 }
+
 isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(function(){
 
     var clickedLink = $(this);
     isApp.u.setLoaderInElem(isApp.ex.scaleTitle);
     
-    isApp.me.set('current_scale', $(this).attr('name'));
+    isApp.me.set('current_scale', clickedLink.attr('name'));
     
     // Set scale thru jQuery AJAX
     $.ajax({
@@ -93,10 +109,73 @@ isApp.ex.titleScaleLink = $('#main_issues_title_scale_options').find('a').click(
             this.trigger('changeSet');
           }).fetch();
           isApp.searchBar.find();
-          ga('send', 'event', 'user', 'scale', isApp.me.get('username') + ' set scale', Math.ceil(isApp.me.get('current_scale')));
+          // ga('send', 'event', 'user', 'scale', isApp.me.get('username') + ' set scale', Math.ceil(isApp.me.get('current_scale')));
         }
       }
     });
     
 });
 
+// Selecting new topic
+isApp.ex.topicSection = app.ce.currentIssuesTitle.find('#topic_title_section');
+isApp.ex.topicTitle = isApp.ex.topicSection.find('#topic_title');
+
+isApp.Routing.Home = Backbone.Router.extend({
+
+    routes: {
+        "topic/:topicsString" : "setTopics",
+        "" : "home"
+    },
+    
+    home: function(){
+        if (isApp.me.get('currentTopicsString') != null) this.setTopics(null); // Reset topics, if not already
+    },
+    
+    setTopics : function(topicsString){
+       
+        function setTitle(){
+            return $.ajax({
+                url: app.settings.root + 'api/tags/' + topicsString,
+                type: 'GET',
+                dataType: 'JSON',
+                headers : {
+                    'Authorization': isApp.me.get('auth_key')
+                },
+                success: function(data, textStatus, xhr){
+                    if (typeof data.title != "undefined"){
+                        isApp.ex.topicTitle.html(data.title + ' <a class="close"><i class="fa fa-times-circle"></i></a>');
+                        isApp.ex.topicTitle.children('a.close').on('click', function(){
+                            isApp.router.navigate('', {trigger: true});
+                        });
+                    }
+                }
+            });
+        }
+        
+        if (isApp.me.get('currentTopicsString') == topicsString) {
+            setTitle();
+            isApp.ex.topicSection.fadeIn();
+        } else {
+        
+            isApp.me.set('currentTopicsString', topicsString);
+            isApp.u.setLoaderInElem(isApp.ex.topicTitle);
+        
+            isApp.currentIssues.reset();
+            isApp.currentIssues.once('sync',function(){
+                if (topicsString != null && topicsString != 'all'){
+                    setTitle();
+                    isApp.ex.topicSection.fadeIn();
+                } else {
+                    isApp.ex.topicTitle.html('All');
+                    isApp.ex.topicSection.css('display', 'none');
+                }
+                this.trigger('changeSet');
+            }).fetch();
+        
+        }
+    }
+  
+});
+
+isApp.router = new isApp.Routing.Home();
+Backbone.history.start({pushState : true});

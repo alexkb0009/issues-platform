@@ -13,7 +13,8 @@ print = logMachine.log # Debug stuff better
 
 @app.route('/')
 @app.route('/search/<search_term>')
-def index(search_term = None):
+@app.route('/topic/<topics>')
+def index(search_term = None, topics = None):
     '''
     This is the primary index page. It outputs two different templates/views, depending on if user is guest or authenticated user.
     If authenticated, render the homepage.tpl template which contains lists of Issues, etc. to make up users' home portal.
@@ -34,16 +35,22 @@ def index(search_term = None):
     
     authd = session_auth()
     
+    if topics is not None:
+        # Split into array
+        topics = topics.split(",")
+        map(str.strip, topics)
+    
     returnObj = {
         'logged_in' : authd,
         'session' : session,
-        'search_term' : search_term
+        'search_term' : search_term,
+        'topics' : topics
     }
     
     # Get some initial issues for us.
     from app.functions.issues import getScaledPagifiedIssuesIterableBySort, getIssuesFromCursor
     import json
-    (iterable, more) = getScaledPagifiedIssuesIterableBySort(session.get('last_sort') or 'trending', 1)
+    (iterable, more) = getScaledPagifiedIssuesIterableBySort(session.get('last_sort') or 'trending', topics, 1)
     returnObj['issues'] = getIssuesFromCursor(iterable)
     returnObj['formatted_issues'] = json.dumps(returnObj['issues'])
     returnObj['next_page'] = more
@@ -64,6 +71,10 @@ def index(search_term = None):
         if status in ['login_failed', 'logged_out']:
             returnObj['subheader_message'] = status
         return template('homepage.tpl', returnObj)
+        
+@app.route('/topic/')
+def redirect_home():
+    redirect('/')
         
 @app.route('/is/<issue_slug>')
 def view_issue(issue_slug):

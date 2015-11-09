@@ -25,6 +25,9 @@
         sort: {{ sort }}
     };
     isApp.me.set('current_sort', {{ sort }});
+    {% if topics -%}
+        isApp.me.set('currentTopicsString', "{{ topics|join(',') }}");
+    {%- endif %}
 </script>
 
 {%- endblock %} 
@@ -187,16 +190,26 @@
     
         {# Title w/ sorting opts #}
     
-        <h4 id="main_issues_title" class="major section-header noselect">
-            <a {# href="#" #}data-dropdown="main_issues_title_sorting_options" aria-controls="main_issues_title_sorting_options" aria-expanded="false" id="sorted_by_title">
+        <h4 id="main_issues_title" class="major section-header noselect clearfix">
+        
+            <a {# href="#" #}data-dropdown="main_issues_title_sorting_options" aria-controls="main_issues_title_sorting_options" aria-expanded="false" id="sorted_by_title" class="ext">
                 {{ sort['title'] }}
             </a>
           
             <span class="divider"> / </span>
           
-            <a {# href="#" #}data-dropdown="main_issues_title_scale_options" aria-controls="main_issues_title_scale_options" aria-expanded="false" id="scale_title" class="ext">
+            <a {# href="#" #}data-dropdown="main_issues_title_scale_options" aria-controls="main_issues_title_scale_options" aria-expanded="false" id="scale_title" class="">
                 {{ current_scale['title'] }}
             </a>
+            
+            <span id="topic_title_section" class="right" {% if not topics %}style="display: none;"{% endif %}>
+                {#<span class="divider"> / </span>#}
+                <small data-ot="Only showing issues relating to this topic(s)" style="cursor: default;">Topic: </small>
+                <span {# href="#" #}{#data-dropdown="main_issues_title_scale_options" aria-controls="main_issues_title_scale_options" aria-expanded="false" #} id="topic_title" class="ext">
+                    {{ topics }}
+                </span>
+            </span>
+            
         </h4>
         
         {# Title Dropdowns #}
