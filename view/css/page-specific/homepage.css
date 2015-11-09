@@ -17,24 +17,24 @@ div.main-content.row .left-guest-side {
 
 /** Top Header Adjustment **/
 
-nav.top-bar {
+body:not(.logged_in) nav.top-bar {
   height: 4em;
 }
 
-nav.top-bar ul.title-area li.name {
+body:not(.logged_in) nav.top-bar ul.title-area li.name {
   height: 4em;
 }
 
-nav.top-bar ul.title-area li.name h1 a {
+body:not(.logged_in) nav.top-bar ul.title-area li.name h1 a {
   line-height: 4.125rem;
   min-width: 172px !important;
 }
 
-nav.top-bar ul.title-area li.name h1 a span.text {
+body:not(.logged_in) nav.top-bar ul.title-area li.name h1 a span.text {
   font-size: 1.52rem;
 }
 
-nav.top-bar ul.title-area li.name h1 a img {
+body:not(.logged_in) nav.top-bar ul.title-area li.name h1 a img {
   height: 42px !important;
   width: 42px !important;
   margin-top: -4px;
@@ -66,9 +66,9 @@ body:not(.logged_in) nav.top-bar ul.right > li:last-child {
 body:not(.logged_in) nav.top-bar .top-bar-section ul.right > li > a {
   background: transparent;
   border-radius: inherit;
-  line-height: 2.4rem;
+  line-height: 2.3rem;
 }
-
+/*
 body.logged_in nav.top-bar .top-bar-section ul.right > li > a {
   line-height: 4rem;
 }
@@ -76,7 +76,7 @@ body.logged_in nav.top-bar .top-bar-section ul.right > li > a {
 body.logged_in nav.top-bar .top-bar-section ul.right > li.has-dropdown > a:after {
   margin-top: 7.5px;
 }
-
+*/
 body:not(.logged_in) nav.top-bar .top-bar-section ul.right > li:not(.has-dropdown) > a {
   border-radius: inherit;
 }
@@ -85,7 +85,7 @@ body:not(.logged_in) nav.top-bar .top-bar-section ul.right > li.has-dropdown > a
   margin-top: -4.5px;
 }
 
-.top-bar .login-block {
+body:not(.logged_in) .top-bar .login-block {
   margin-top: 12px;
 }
 
