@@ -8,10 +8,15 @@ This is the repository of the code which runs it! This readme is a brief overvie
 
 Much of this platform has been rapidly prototyped in under 4 months (January-April 2015), with the primary goal of obtaining feedback on concepts and user experience in order to iterate on platform design. Due to this, much of the code (particularly the back-end) isn't production-grade; for example, there are no proper classes for the concepts of users, issues, etc., in part because dictionaries' structures/schemas may be adjusted more easily than classes/ODMs when rapidly prototyping, in parallel with the schema of their corresponding MongoDB document(s).
 
+### Sections
+- [How do I get set up?](#how-do-i-get-set-up)
+- [Background and Direction of Project](#background-and-direction-of-project)
+- [Screenshots](#screenshots)
+
 
 ----
 
-### How do I get set up? ###
+## How do I get set up? ##
 
 #### (Probably Don't) ####
 
@@ -37,7 +42,7 @@ Module dependencies are listed in both the OpenShift-specific _setup.py_ file as
 
 ----
 
-## Background & Direction of Project ##
+## Background and Direction of Project ##
 
 My Issues is an online platform which seeks to increase representation of any constituency’s interests to constituency’s legislature by leveraging evolving concepts of user experience (UX) design and collaborative content generation in the field of software development. Ideally, the platform will counter-balance the influence of special-interest lobbyists – many of whom are not direct members of the constituency of the legislator which they are lobbying to. In a dangerous plausible scenario, a lobbyist’s interests might be more closely aligned with interests of a foreign power than with interests of the constituency.
 
@@ -59,3 +64,34 @@ The My Issues platform adapts concepts exemplified in precedent online collabora
 - “Population Clock,” United States Census Bureau, accessed July 14, 2015, http://www.census.gov/popclock/.
 
 [5] E.g. shopping for groceries & essential products, taking care of & educating children, household maintenance & upkeep.
+
+----
+
+## Screenshots ##
+
+- __Home Page__ - Not logged in 
+![Home Page - Not logged in](/screenshots/myissues1.jpg)
+
+- __Home Page__ - Filtering by Topic
+![Home page - Filtering by Topic](/screenshots/myissues2.jpg)
+
+- __Home Page__ - Searching
+![Alt text](/screenshots/myissues3.jpg)
+
+- __About Page__ - Introduction
+![Alt text](/screenshots/myissues4.jpg)
+
+- __Issue Page__ - Not logged in
+![Alt text](/screenshots/myissues5.jpg)
+
+- __Issue Page__ - Logged in
+![Alt text](/screenshots/myissues6.jpg)
+
+- __Issue Page__ - Editing / Contributing / Revising
+![Alt text](/screenshots/myissues7.jpg)
+
+- __Home Page__ - Logged In, zooming into local community
+![Alt text](/screenshots/myissues8.jpg)
+
+- __Home Page__ - Logged In, zooming out to anywhere
+![Alt text](/screenshots/myissues9.jpg)
