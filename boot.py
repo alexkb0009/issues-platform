@@ -163,8 +163,8 @@ def application():
     return application
 
     
-# Run on local w/ CherryPy if not on OpenShift.
-if os.environ.get('OPENSHIFT_APP_NAME') == None:
+# Run on local w/ CherryPy if launched directly.
+if __name__ == "__main__":
 
     application = application()
     # CherryPy Server Setup
@@ -184,11 +184,9 @@ if os.environ.get('OPENSHIFT_APP_NAME') == None:
     # Debug
     print('Ran through boot process. Starting server.')
 
-    # Go (Using CherryPy)
-    if __name__ == '__main__':
-        cherrypy.engine.signals.subscribe()
-        cherrypy.engine.start()
-        cherrypy.engine.block()
+    cherrypy.engine.signals.subscribe()
+    cherrypy.engine.start()
+    cherrypy.engine.block()
 
 
     
